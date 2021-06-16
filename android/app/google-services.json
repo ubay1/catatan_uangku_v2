@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "141019716372",
+    "project_id": "catatan-uangku",
+    "storage_bucket": "catatan-uangku.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141019716372:android:235bede1c5413a3a1a4001",
+        "android_client_info": {
+          "package_name": "com.catatanuangku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141019716372-3paf4h1sllqh92oitv9gv16jkuo4ao0p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ46sZda9eBbUzCnDGVJc7YtgEvJSA_2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141019716372-3paf4h1sllqh92oitv9gv16jkuo4ao0p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-6232514642053563~3349345546"
+    }
+  ],
+  "configuration_version": "1"
+}
