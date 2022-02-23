@@ -1,8 +1,12 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator, TransitionSpecs, HeaderStyleInterpolators } from '@react-navigation/stack';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AppIntroScreen from './src/screens/Intro';
@@ -103,7 +107,7 @@ const MyTransition = {
       },
     };
   },
-}
+};
 
 
 // ini jika ingin pake top tabs navigator
@@ -112,14 +116,14 @@ const Stack = createStackNavigator();
 
 
 const HomeNavigator = () => {
-  const navigationredux = useSelector((state: RootState) => state.navigationredux)
+  const navigationredux = useSelector((state: RootState) => state.navigationredux);
   return (
     <Stack.Navigator
-      initialRouteName={"Beranda"}
-      mode={"modal"}
+      initialRouteName={'Beranda'}
+      mode={'modal'}
       screenOptions={{
         headerShown: false,
-        ...horizontalAnimation
+        ...horizontalAnimation,
       }}
     >
       <Stack.Screen name="Beranda" component={HomeScreen} />
@@ -128,55 +132,55 @@ const HomeNavigator = () => {
       <Stack.Screen name="InputPemasukan" component={InputPemasukanScreen} />
       <Stack.Screen name="InputPengeluaran" component={InputPengeluaranScreen} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const LaporanNavigator = () => {
-  const navigationredux = useSelector((state: RootState) => state.navigationredux)
+  const navigationredux = useSelector((state: RootState) => state.navigationredux);
   return (
     <Stack.Navigator
-      initialRouteName={"Laporan"}
-      mode={"modal"}
+      initialRouteName={'Laporan'}
+      mode={'modal'}
       screenOptions={{
-        headerShown: !navigationredux.showTab
+        headerShown: !navigationredux.showTab,
       }}
     >
       <Stack.Screen name="Laporan" component={LaporanScreen}/>
       <Stack.Screen name="ListLaporan" component={ListLaporanScreen} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const SetelanNavigator = () => {
-  const navigationredux = useSelector((state: RootState) => state.navigationredux)
+  const navigationredux = useSelector((state: RootState) => state.navigationredux);
   return (
     <Stack.Navigator
-      initialRouteName={"Setelan"}
-      mode={"modal"}
+      initialRouteName={'Setelan'}
+      mode={'modal'}
       screenOptions={{
-        headerShown: !navigationredux.showTab
+        headerShown: !navigationredux.showTab,
       }}
     >
       <Stack.Screen name="Setelan" component={SetelanScreen} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 // custom bottom navigation
 function MyTabBar({ state, descriptors, navigation }: any) {
-  const dispatch: AppDispatch = useDispatch()
-  const navigationredux = useSelector((state: RootState) => state.navigationredux)
-  
-  
+  const dispatch: AppDispatch = useDispatch();
+  const navigationredux = useSelector((state: RootState) => state.navigationredux);
+
+
   return (
-    <View style={{ 
+    <View style={{
       flexDirection: 'row',
-      justifyContent:"center",
-      alignItems:"center", 
+      justifyContent:'center',
+      alignItems:'center',
       backgroundColor:  '#fff',
       height:70,
       elevation: 10,
-      display: navigationredux.showTab === true ? "flex" : "none",
+      display: navigationredux.showTab === true ? 'flex' : 'none',
       }}
     >
       {state.routes.map((route: any, index: any) => {
@@ -189,7 +193,7 @@ function MyTabBar({ state, descriptors, navigation }: any) {
             : options.title !== undefined
             ? options.title
             : route.name;
-        
+
             let iconName: any;
 
             if (route.name === 'Beranda') {
@@ -197,7 +201,7 @@ function MyTabBar({ state, descriptors, navigation }: any) {
             } else if (route.name === 'Laporan') {
               iconName = 'history';
             } else {
-              iconName = 'plus'
+              iconName = 'plus';
             }
 
         const isFocused = state.index === index;
@@ -213,9 +217,9 @@ function MyTabBar({ state, descriptors, navigation }: any) {
 
           if (!isFocused && !event.defaultPrevented) {
             dispatch(setPage({
-              page: route.name
-            }))
-            navigation.navigate(route.name)
+              page: route.name,
+            }));
+            navigation.navigate(route.name);
           }
         };
 
@@ -235,15 +239,15 @@ function MyTabBar({ state, descriptors, navigation }: any) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{ flex: 1, alignItems:"center" }}
+            style={{ flex: 1, alignItems:'center' }}
           >
-            <View style={{ 
+            <View style={{
               position: 'relative',
               bottom: iconName === 'plus' ? 20 : 0,
               backgroundColor: iconName === 'plus' ? '#D0D9F9' : 'transaprent',
               borderRadius: iconName === 'plus' ? 100 : 0,
               elevation: iconName === 'plus' ? 2 : 0,
-              alignItems: 'center'
+              alignItems: 'center',
             }}>
               {
                 iconName === 'plus' ?
@@ -253,20 +257,20 @@ function MyTabBar({ state, descriptors, navigation }: any) {
                   colors={['#4E54C8', '#8F94FB']}
                   style={{ borderRadius: 100, padding: 10, elevation: 5 }}
                 >
-                  <IconMCI 
-                    name={iconName} 
-                    size={iconName === 'plus' ? 40 : 30} 
-                    color='#fff'
+                  <IconMCI
+                    name={iconName}
+                    size={iconName === 'plus' ? 40 : 30}
+                    color="#fff"
                   />
                 </LinearGradient>
                 :
                 <>
-                <IconMCI 
-                  name={iconName} 
-                  size={iconName === 'plus' ? 40 : 30} 
-                  color={isFocused ? '#4E54C8' : iconName === 'plus' ? '#859CF1' : '#C4C4C4'} 
+                <IconMCI
+                  name={iconName}
+                  size={iconName === 'plus' ? 40 : 30}
+                  color={isFocused ? '#4E54C8' : iconName === 'plus' ? '#859CF1' : '#C4C4C4'}
                 />
-                <Text style={{color: isFocused ? '#4E54C8': '#c4c4c4', fontSize: 12, textTransform: 'uppercase', fontWeight: 'bold'}}>{label}</Text> 
+                <Text style={{color: isFocused ? '#4E54C8' : '#c4c4c4', fontSize: 12, textTransform: 'uppercase', fontWeight: 'bold'}}>{label}</Text>
                 </>
               }
             </View>
@@ -278,75 +282,75 @@ function MyTabBar({ state, descriptors, navigation }: any) {
 }
 
 const Routes = () => {
-  
-  const dispatches: AppDispatch = useDispatch()
-  const loading = useSelector((state: RootState) => state.loading)
-  const appIntro = useSelector((state: RootState) => state.appIntro)
-  const navigationredux = useSelector((state: RootState) => state.navigationredux)
-  const user = useSelector((state: RootState) => state.user)
-  const auth = useSelector((state: RootState) => state.auth)
 
-  const [stateAppIntro, setstateAppIntro] = useState(false)
+  const dispatches: AppDispatch = useDispatch();
+  const loading = useSelector((state: RootState) => state.loading);
+  const appIntro = useSelector((state: RootState) => state.appIntro);
+  const navigationredux = useSelector((state: RootState) => state.navigationredux);
+  const user = useSelector((state: RootState) => state.user);
+  const auth = useSelector((state: RootState) => state.auth);
+
+  const [stateAppIntro, setstateAppIntro] = useState(false);
 
   const emptyRedux = () => {
-    dispatches(setUserName({name: ''}))
+    dispatches(setUserName({name: ''}));
     dispatches(setIntroFinish({
-      introFinish: false
-    }))
-  }
+      introFinish: false,
+    }));
+  };
 
   const storeToRedux = (profile: any, introFinish: any) => {
     // console.log(profile, userAuth,auth)
-    dispatches(setUserName(profile))
+    dispatches(setUserName(profile));
     dispatches(setIntroFinish({
-      introFinish: introFinish
-    }))
-  }
+      introFinish: introFinish,
+    }));
+  };
 
   React.useEffect(() => {
     const bootstrapAsync = async () => {
-      dispatches(setPage({page: 'Beranda'}))
-      let username
+      dispatches(setPage({page: 'Beranda'}));
+      let username;
       try {
         const valueStorage = await AsyncStorage.getItem('auth');
 
-        const parseValueStorage = JSON.parse(valueStorage as any)
-        
-        console.log(parseValueStorage.isIntroFinish, parseValueStorage.name)
+        const parseValueStorage = JSON.parse(valueStorage as any);
+
+        console.log(parseValueStorage.isIntroFinish, parseValueStorage.name);
 
         /**
          * jika app intro = true, maka akan lanjut ke global screen
          * jika tidak maka akan menampilkan screen App intro
          */
         if (parseValueStorage.isIntroFinish === true || parseValueStorage.isIntroFinish !== null) {
-          console.log('app intro = ',parseValueStorage.isIntroFinish)
+          console.log('app intro = ',parseValueStorage.isIntroFinish);
           dispatches(setIntroFinish({
-            introFinish: true
-          }))
-          setstateAppIntro(true)
+            introFinish: true,
+          }));
+          setstateAppIntro(true);
         } else {
-          setstateAppIntro(false)
+          setstateAppIntro(false);
           dispatches(setIntroFinish({
-            introFinish: false
-          }))
+            introFinish: false,
+          }));
         }
-        
+
         if (parseValueStorage.name === null) {
-          emptyRedux()
+          emptyRedux();
         } else {
           const dataProfil = {
             name: parseValueStorage.name,
-          }
+          };
 
           username = parseValueStorage.name;
-          storeToRedux(dataProfil, true)
+          storeToRedux(dataProfil, true);
         }
       } catch (e) {
-        console.log('error - '+ e)
+        console.log('error - ' + e);
         // Restoring token failed
       }
 
-      dispatches(setUserName({name: `${username}`}))
+      dispatches(setUserName({name: `${username}`}));
     };
 
     bootstrapAsync();
@@ -356,19 +360,19 @@ const Routes = () => {
     signIn: async (name: any, isIntroFinish: any) => {
       const dataProfil = {
         name: name,
-      }
+      };
 
-      storeToRedux(dataProfil, isIntroFinish)
+      storeToRedux(dataProfil, isIntroFinish);
       // AsyncStorage.setItem('name', dataProfil.name)
       AsyncStorage.setItem('auth', JSON.stringify({
         name: name,
-        isIntroFinish: true
-      }))
+        isIntroFinish: true,
+      }));
     },
     signOut: () => {
-      AsyncStorage.removeItem('name')
-      emptyRedux()
-    }
+      AsyncStorage.removeItem('name');
+      emptyRedux();
+    },
   }),
     []
   );
@@ -377,22 +381,22 @@ const Routes = () => {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {
-          user.isLoading ? 
+          user.isLoading ?
             <Stack.Navigator
-              initialRouteName={"Splash"}
+              initialRouteName={'Splash'}
               mode="card"
               screenOptions={{
-                headerShown: !navigationredux.showTab
+                headerShown: !navigationredux.showTab,
               }}
             >
               <Stack.Screen name="Splash" component={SplashScreenss} />
             </Stack.Navigator>
           : appIntro.introFinish === false ?
             <Stack.Navigator
-              initialRouteName={"AppIntro"}
+              initialRouteName={'AppIntro'}
               mode="card"
               screenOptions={{
-                headerShown: !navigationredux.showTab
+                headerShown: !navigationredux.showTab,
               }}
             >
               {/* <Stack.Screen name="AppIntro">
@@ -400,7 +404,7 @@ const Routes = () => {
               </Stack.Screen> */}
               <Stack.Screen name="AppIntro" component={AppIntroScreen} />
             </Stack.Navigator>
-              : 
+              :
                 <Tab.Navigator
                   // tabBar={props => <MyTabBar {...props} />}
                   // tabBarPosition={'bottom'}
@@ -421,9 +425,9 @@ const Routes = () => {
                       //     </TouchableOpacity>
                       //   )
                       // } else {
-                        return <IconMCI name={iconName} size={30} color={color} />
+                        return <IconMCI name={iconName} size={30} color={color} />;
                       // }
-                      
+
                     },
                   })}
                   swipeEnabled={true}
@@ -452,7 +456,7 @@ const Routes = () => {
                       borderBottomColor: '#fff',
                       borderBottomWidth: 0,
                       overflow: 'hidden',
-                      display: navigationredux.showTab === true ? "flex" : "none",
+                      display: navigationredux.showTab === true ? 'flex' : 'none',
                     },
                   }}
                 >
@@ -464,7 +468,7 @@ const Routes = () => {
       </NavigationContainer>
     </AuthContext.Provider>
   );
-}
+};
 
 //  <Stack.Navigator
 //           mode="card"
@@ -482,7 +486,7 @@ const Routes = () => {
 //                 headerTitle: getFocusedRouteNameFromRoute(route),
 //                 headerRight: () => (
 //                   <View style={{ marginRight: 10 }}>
-//                     <Button danger 
+//                     <Button danger
 //                       onPress={handleSignOut}
 //                       style={{ padding: 10 }}>
 //                       <Text style={{ color: '#fff' }}>Sign Out</Text>
@@ -491,7 +495,7 @@ const Routes = () => {
 //                 ),
 //               })}
 //             />
-//           ) : 
+//           ) :
 //           (
 //             <>
 //               <Stack.Screen name="SignIn">
@@ -508,6 +512,6 @@ const Routes = () => {
 //               <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
 //             </>
 //           )}
-//         </Stack.Navigator> 
+//         </Stack.Navigator>
 
 export default Routes;

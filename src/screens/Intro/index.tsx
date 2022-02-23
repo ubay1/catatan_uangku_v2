@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Keyboard, ScrollView, Text, TouchableWithoutFeedback, View, Alert, Dimensions } from 'react-native'
+/* eslint-disable no-shadow */
+/* eslint-disable react-native/no-inline-styles */
+import React, { useEffect, useState } from 'react';
+import { Image, Keyboard, ScrollView, Text, TouchableWithoutFeedback, View, Alert, Dimensions } from 'react-native';
 
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { TextInput, Button, Colors } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../../context/AuthContext';
-import {scale,verticalScale,moderateScale} from "../../helper/responsive";
 
 const AppIntroScreen = () => {
-  
+
   const [name, setName] = React.useState('');
   const [loading, setloading] = React.useState(false);
 
@@ -21,23 +21,22 @@ const AppIntroScreen = () => {
     else {
       setorientationScreen('landscape');
     }
-  }
+  };
 
   useEffect(() => {
-    getOrientation()
+    getOrientation();
     Dimensions.addEventListener('change', () => {
-      getOrientation()
-    })
-  }, [])
-  
+      getOrientation();
+    });
+  }, []);
+
   const { signIn } = React.useContext<any>(AuthContext);
 
   const backgroundScreen =  '#fff';
-  const textInputColor = '#000';
 
   return (
     <ScrollView style={{
-      backgroundColor: backgroundScreen
+      backgroundColor: backgroundScreen,
     }}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
         <View style={{height: responsiveHeight(100), marginHorizontal: 20, justifyContent: 'center'}}>
@@ -46,17 +45,17 @@ const AppIntroScreen = () => {
             alignItems: 'center',
             marginVertical: 20,
             // height: orientationScreen === 'portrait' ? responsiveHeight(24) : responsiveHeight(45) ,
-            // width: '100%', 
+            // width: '100%',
             // backgroundColor: 'red'
           }}>
             <Image source={require('../../assets/logo/logo2.png')}
               resizeMode="stretch"
               style={{
                 // width: scale(180),
-                // height: verticalScale(150) 
+                // height: verticalScale(150)
                 width: orientationScreen === 'portrait' ? responsiveHeight(25) : responsiveHeight(50),
-                height: orientationScreen === 'portrait' ? responsiveHeight(25) : responsiveHeight(50)
-                // height: orientationScreen === 'portrait' ? verticalScale(24) : verticalScale(35) 
+                height: orientationScreen === 'portrait' ? responsiveHeight(25) : responsiveHeight(50),
+                // height: orientationScreen === 'portrait' ? verticalScale(24) : verticalScale(35)
               }}
             />
           </View>
@@ -64,11 +63,11 @@ const AppIntroScreen = () => {
           {/* <Text style={{fontSize: responsiveFontSize(1.5)}}>{orientationScreen} {width} x {height}</Text> */}
 
           <TextInput
-            style={{ 
-              // borderColor: '#c2c2c2', paddingLeft: 10, borderWidth: 1, borderRadius: 10, color: '#000', 
+            style={{
+              // borderColor: '#c2c2c2', paddingLeft: 10, borderWidth: 1, borderRadius: 10, color: '#000',
               backgroundColor:'#fff',
-              marginBottom: 10, 
-              
+              marginBottom: 10,
+
               /* ---------------------------- // height: '10%' ---------------------------- */
             }}
             mode="outlined"
@@ -82,27 +81,27 @@ const AppIntroScreen = () => {
           />
 
           <Button
-            uppercase={false} 
-            color={Colors.blue400} 
-            mode="contained" 
+            uppercase={false}
+            color={Colors.blue400}
+            mode="contained"
             onPress={() => {
               if (name === '') {
-                Alert.alert('Harap isi form yang disediakan')
+                Alert.alert('Harap isi form yang disediakan');
               } else {
-                setloading(true)
+                setloading(true);
                 setTimeout(() => {
-                  setloading(false)
-                  signIn(name, true)
+                  setloading(false);
+                  signIn(name, true);
                 }, 2000);
               }
             }}
-            contentStyle={{paddingVertical: 5}} 
+            contentStyle={{paddingVertical: 5}}
             style={{borderRadius: 10}}
-            disabled={loading === true ? true: false}
+            disabled={loading === true ? true : false}
             theme={{ colors: { disabled: 'grey' } }}
           >
             {
-              loading === true ? 
+              loading === true ?
               // <ActivityIndicator size="large" color="#fff" style={{position: 'absolute', zIndex: 100}}/>
               <Text style={{ color: 'grey'}}>Menyimpan data ..</Text>
               :
@@ -114,7 +113,7 @@ const AppIntroScreen = () => {
         </View>
       </TouchableWithoutFeedback>
     </ScrollView>
-  )
-}
+  );
+};
 
-export default AppIntroScreen
+export default AppIntroScreen;

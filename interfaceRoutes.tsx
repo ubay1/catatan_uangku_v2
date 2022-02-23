@@ -1,5 +1,5 @@
-import { RouteProp } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
   Intro: undefined,
@@ -12,12 +12,12 @@ export type RootStackParamList = {
   },
   InputPemasukan: {
     data?: any,
-    saldoAtm?: any, 
+    saldoAtm?: any,
     saldoDompet?: any,
   },
-  InputPengeluaran: { 
-    data?: any, 
-    saldoAtm?: any, 
+  InputPengeluaran: {
+    data?: any,
+    saldoAtm?: any,
     saldoDompet?: any,
   },
   Laporan: undefined,

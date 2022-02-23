@@ -1,9 +1,11 @@
-import moment from "moment";
-import Realm from "realm";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-shadow */
+import moment from 'moment';
+import Realm from 'realm';
 
 // Declare Schema
 
-export const SALDO_SCHEMA = 'saldo'
+export const SALDO_SCHEMA = 'saldo';
 export const SaldoSchema = {
   name: SALDO_SCHEMA,
   primaryKey: 'id',
@@ -16,10 +18,10 @@ export const SaldoSchema = {
     nominal: 'int',
     keterangan: 'string',
     kategori: 'string',
-  }
+  },
 };
 
-export const KATEGORI_SCHEMA = 'kategori'
+export const KATEGORI_SCHEMA = 'kategori';
 export const KategoriSchema = {
   name: KATEGORI_SCHEMA,
   primaryKey: 'id',
@@ -27,19 +29,19 @@ export const KategoriSchema = {
     id: 'int?',
     nama_kategori: 'string',
     tipe_kategori: 'string',
-  }
+  },
 };
 
 // Create realm
 let realm = new Realm({
   schema: [SaldoSchema, KategoriSchema],
-  schemaVersion: 1
+  schemaVersion: 1,
 });
 
 const dbOptions = {
   schema : [SaldoSchema, KategoriSchema],
   schemaVersion : 1,
-}
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                crud catatan                                */
@@ -62,7 +64,7 @@ const dbOptions = {
 // };
 
 export const createCatatan =  (data: any) => new Promise<void>((resolve, reject) => {
-  Realm.open(dbOptions).then(realm => { 
+  Realm.open(dbOptions).then(realm => {
     realm.write(() => {
       realm.create(SALDO_SCHEMA, {
         id: data.id,
@@ -76,7 +78,7 @@ export const createCatatan =  (data: any) => new Promise<void>((resolve, reject)
       });
       resolve();
     });
-  }).catch((error) => reject(error));;
+  }).catch((error) => reject(error));
 });
 
 // export const getAllCatatan = () => {
@@ -84,13 +86,13 @@ export const createCatatan =  (data: any) => new Promise<void>((resolve, reject)
 //   return allSaldo;
 // };
 
-export const getAllCatatan = () => new Promise((resolve, reject) => {    
-  Realm.open(dbOptions).then(realm => {        
-      let allCatatan = realm.objects(SALDO_SCHEMA).sorted("id", true);
-      resolve(allCatatan);  
-  }).catch((error) => {        
-      reject(error);  
-  });;
+export const getAllCatatan = () => new Promise((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
+      let allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
+      resolve(allCatatan);
+  }).catch((error) => {
+      reject(error);
+  });
 });
 
 export const getFilterCatatanByMonth = (value?: any) => new Promise((resolve, reject) => {
@@ -99,13 +101,13 @@ export const getFilterCatatanByMonth = (value?: any) => new Promise((resolve, re
       const filtered: any[] = [];
       data.map((item: any) => {
         if (moment(item.tanggal).format('M') === value) {
-          filtered.push(item)
+          filtered.push(item);
         }
-      })
+      });
       resolve(filtered);
   }).catch((error) => {
       reject(error);
-  });;
+  });
 });
 
 const formatDate = (date: any) => {
@@ -118,7 +120,7 @@ const formatDate = (date: any) => {
   new_date.setUTCHours(0);
 
   return new_date;
-}
+};
 
 export const getFilterCatatanByDate = (start_date?: any, end_date?: any) =>
 new Promise((resolve, reject) => {
@@ -126,15 +128,15 @@ new Promise((resolve, reject) => {
   const toIsoFromDate = formatDate(start_date);
   const toIsoToDate = formatDate(end_date);
 
-  console.log(toIsoFromDate, '-', toIsoToDate)
+  console.log(toIsoFromDate, '-', toIsoToDate);
 
   Realm.open(dbOptions).then(realm => {
       let data: any = realm.objects(SALDO_SCHEMA).filtered('tanggal >= $0 && tanggal <= $1', toIsoFromDate, toIsoToDate);
-      
+
       resolve(data);
   }).catch((error) => {
       reject(error);
-  });;
+  });
 });
 
 
@@ -155,10 +157,10 @@ new Promise((resolve, reject) => {
 //   return 'data catatan telah diperbarui';
 // };
 
-export const updateCatatan = (data: any) => new Promise<void>((resolve, reject) => {    
-  Realm.open(dbOptions).then(realm => {        
+export const updateCatatan = (data: any) => new Promise<void>((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
       realm.write(() => {
-          let catatan: any = realm.objectForPrimaryKey(SALDO_SCHEMA, data.id);   
+          let catatan: any = realm.objectForPrimaryKey(SALDO_SCHEMA, data.id);
           catatan.tipe = data.tipe;
           catatan.tanggal = data.tanggal;
           catatan.akun = data.akun;
@@ -166,36 +168,36 @@ export const updateCatatan = (data: any) => new Promise<void>((resolve, reject) 
           catatan.nominal = data.nominal;
           catatan.keterangan = data.keterangan;
           catatan.kategori = data.kategori;
-          resolve();     
+          resolve();
       });
-  }).catch((error) => reject(error));;
+  }).catch((error) => reject(error));
 });
 
-export const deleteCatatan = (id: any) => new Promise<void>((resolve, reject) => {    
-  Realm.open(dbOptions).then(realm => {        
+export const deleteCatatan = (id: any) => new Promise<void>((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
       realm.write(() => {
         let deletingTodoList = realm.objectForPrimaryKey(SALDO_SCHEMA, id);
         realm.delete(deletingTodoList);
-        resolve();   
+        resolve();
       });
-  }).catch((error) => reject(error));;
+  }).catch((error) => reject(error));
 });
 
 // export const deleteAllCatatan =  () => {
 //   realm.write(()=>{
-//     let all = realm.delete(realm.objects(SALDO_SCHEMA));          
+//     let all = realm.delete(realm.objects(SALDO_SCHEMA));
 //     return all;
 //   })
 // };
 
-export const deleteAllCatatan = () => new Promise<void>((resolve, reject) => {    
-  Realm.open(dbOptions).then(realm => {        
+export const deleteAllCatatan = () => new Promise<void>((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
       realm.write(() => {
           let allTodoLists = realm.objects(SALDO_SCHEMA);
           realm.delete(allTodoLists);
           resolve();
       });
-  }).catch((error) => reject(error));;
+  }).catch((error) => reject(error));
 });
 
 export const createDefaultKategori =  () => new Promise((resolve, reject) => {
@@ -215,7 +217,7 @@ export const createDefaultKategori =  () => new Promise((resolve, reject) => {
       } else {
         resolve('data default sudah ada');
       }
-  }).catch((error) => reject(error));;
+  }).catch((error) => reject(error));
 });
 
 export const createKategori =  (data: any) => new Promise<void>((resolve, reject) => {
@@ -229,26 +231,26 @@ export const createKategori =  (data: any) => new Promise<void>((resolve, reject
 
       resolve();
     });
-  }).catch((error) => reject(error));;
+  }).catch((error) => reject(error));
 });
 
-export const getAllKategori = () => new Promise((resolve, reject) => {    
-  Realm.open(dbOptions).then(realm => {        
-      let allKategori = realm.objects(KATEGORI_SCHEMA).sorted("id", true);
-      resolve(allKategori);  
-  }).catch((error) => {        
-      reject(error);  
-  });;
+export const getAllKategori = () => new Promise((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
+      let allKategori = realm.objects(KATEGORI_SCHEMA).sorted('id', true);
+      resolve(allKategori);
+  }).catch((error) => {
+      reject(error);
+  });
 });
 
 export const updateKategori =  (data: any) => new Promise<void>((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
     realm.write(() => {
-      let kategori: any = realm.objectForPrimaryKey(KATEGORI_SCHEMA, data.id);  
+      let kategori: any = realm.objectForPrimaryKey(KATEGORI_SCHEMA, data.id);
       kategori.nama_kategori = data.nama_kategori;
       resolve();
     });
-  }).catch((error) => reject(error));;
+  }).catch((error) => reject(error));
 });
 
 export const deleteKategori =  (id: any) => new Promise<void>((resolve, reject) => {
@@ -257,10 +259,10 @@ export const deleteKategori =  (id: any) => new Promise<void>((resolve, reject) 
     realm.write(() => {
       let deleteKategori = realm.objectForPrimaryKey(KATEGORI_SCHEMA, id);
       realm.delete(deleteKategori);
-      resolve();   
+      resolve();
     });
-  }).catch((error) => reject(error));;
+  }).catch((error) => reject(error));
 });
 
 // Export the realm
-export default new Realm(dbOptions)
+export default new Realm(dbOptions);

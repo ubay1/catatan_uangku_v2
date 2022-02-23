@@ -1,11 +1,12 @@
-import { combineReducers } from '@reduxjs/toolkit'
-import AppIntroReducer from './appIntro'
-import LoadingReducer from "./loading";
-import NavigationReduxReducer from './navigation_redux'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { combineReducers } from '@reduxjs/toolkit';
+import AppIntroReducer from './appIntro';
+import LoadingReducer from './loading';
+import NavigationReduxReducer from './navigation_redux';
 import UserReducer from './user';
-import AuthReducer from './auth'
-import whatsPageReduce from './whatsPage'
-import laporanReduce from './laporan'
+import AuthReducer from './auth';
+import whatsPageReduce from './whatsPage';
+import laporanReduce from './laporan';
 // import GlobalScreenActiveReducer from "./global_screen_active";
 // import MapsReducer from "./maps";
 
@@ -20,6 +21,6 @@ const rootReducer = combineReducers({
   // laporan: laporanReduce,
   // globalScreenActive: GlobalScreenActiveReducer,
   // maps: MapsReducer
-})
+});
 export type RootState = ReturnType<typeof rootReducer>
-export default rootReducer
+export default rootReducer;

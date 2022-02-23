@@ -9,10 +9,9 @@
  */
 
  import React, { useEffect } from 'react';
- import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View, } from 'react-native';
- import { DebugInstructions, Header, LearnMoreLinks, ReloadInstructions,} from 'react-native/Libraries/NewAppScreen';
- import {DefaultTheme, Provider as PaperProvider, DarkTheme, Colors } from 'react-native-paper';
- import SplashScreen from 'react-native-splash-screen'
+ import { StatusBar } from 'react-native';
+ import {DefaultTheme, Provider as PaperProvider, Colors } from 'react-native-paper';
+ import SplashScreen from 'react-native-splash-screen';
  import { Provider } from 'react-redux';
  import { store } from './src/store';
 import Boot from './src/boot/boot';
@@ -23,7 +22,7 @@ export const adUnitId = 'ca-app-pub-6232514642053563/5051942477';
   useEffect(() => {
     SplashScreen.hide();
     // admobStart();
-  }, [])
+  }, []);
 
 
   const theme = {
@@ -33,7 +32,7 @@ export const adUnitId = 'ca-app-pub-6232514642053563/5051942477';
       ...DefaultTheme.colors,
       primary: '#91B3FA',
       text: Colors.black,
-      disabled: Colors.grey400
+      disabled: Colors.grey400,
       // accent: '#f1c40f',
     },
   };
@@ -41,8 +40,8 @@ export const adUnitId = 'ca-app-pub-6232514642053563/5051942477';
    return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        <StatusBar barStyle={'light-content'} 
-          backgroundColor={Colors.blue400} 
+        <StatusBar barStyle={'light-content'}
+          backgroundColor={Colors.blue400}
         />
         <Boot />
       </PaperProvider>
