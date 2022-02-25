@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
   introFinish: false,
-}
+};
 
 // Slice
 const appIntroSlice = createSlice({
@@ -10,11 +10,11 @@ const appIntroSlice = createSlice({
   initialState,
   reducers: {
     setIntroFinish(state, action: PayloadAction<{introFinish: boolean}>) {
-      state.introFinish = action.payload.introFinish
-    }
+      state.introFinish = action.payload.introFinish;
+    },
   },
 });
 
 // Actions
-export const { setIntroFinish } = appIntroSlice.actions
-export default appIntroSlice.reducer
+export const { setIntroFinish } = appIntroSlice.actions;
+export default appIntroSlice.reducer;

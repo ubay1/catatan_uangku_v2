@@ -1,28 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import { Image, LogBox, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Modal, Dimensions, FlatList, Pressable, Alert } from 'react-native'
+/* eslint-disable radix */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from 'react';
+import { Image, LogBox, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Modal, Dimensions, Pressable } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 // import Database from "../../../db/database";
 import { AppDispatch } from '../../store';
 import { RootState } from '../../store/rootReducer';
-import { Avatar, ActivityIndicator, Divider, FAB, Portal, Card, IconButton, Paragraph, Title, Colors, TextInput } from 'react-native-paper';
+import { Avatar, ActivityIndicator, Divider, FAB, Colors } from 'react-native-paper';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFh from 'react-native-vector-icons/Feather';
 import 'intl';
 import 'intl/locale-data/jsonp/id';
 import LinearGradient from 'react-native-linear-gradient';
-import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { StackBeranda } from '../../../interfaceRoutes';
 import moment from 'moment';
-import { setShowTab } from '../../store/navigation_redux';
+import { setShowTab } from '../../store/navigationRedux';
 import { setPage } from '../../store/whatsPage';
 // import Animated from 'react-native-reanimated';
-import InputPemasukanScreen from '../Input/pemasukan'
-import InputPengeluaranScreen from '../Input/pengeluaran'
-import IconEntypo from "react-native-vector-icons/Entypo";
+import IconEntypo from 'react-native-vector-icons/Entypo';
 import InfoScreen from '../Info';
 import { StyleSheet } from 'react-native';
-import realm, { deleteAllCatatan, getAllCatatan, getAllKategori, getFilterCatatanByMonth, } from '../../../db/database';
+import { getAllCatatan, getAllKategori, getFilterCatatanByMonth } from '../../../db/database';
 import DetailScreen from '../DetailCatatan';
 export interface IListKategori {
   id: any,
@@ -30,11 +32,10 @@ export interface IListKategori {
 }
 
 const HomeScreen = ({ navigation }: StackBeranda) => {
-  const onFailToRecieveAd = (error: any) => console.log(error);
 
-  const dispatch: AppDispatch = useDispatch()
-  const user = useSelector((state: RootState) => state.user)
-  const whatspage = useSelector((state: RootState) => state.whatsPage)
+  const dispatch: AppDispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
+  const whatspage = useSelector((state: RootState) => state.whatsPage);
 
   const [orientationScreen, setorientationScreen] = useState('');
 
@@ -45,46 +46,43 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
     else {
       setorientationScreen('landscape');
     }
-  }
+  };
 
   const [stateOpenFabGroup, setStateOpenFabGroup] = React.useState({ open: false });
 
-  const onStateChangeFabGroup = ({ open }: any) => {
-    setStateOpenFabGroup({ open })
-  };
   const { open } = stateOpenFabGroup;
 
-  const [pemasukan, setpemasukan] = useState(0)
-  const [pemasukanATM, setpemasukanATM] = useState(0)
-  const [pemasukanDompet, setpemasukanDompet] = useState(0)
-  const [pengeluaranATM, setpengeluaranATM] = useState(0)
-  const [pengeluaranDompet, setpengeluaranDompet] = useState(0)
-  const [totalsaldo, settotalsaldo] = useState(0)
-  const [saldoatm, setsaldoatm] = useState(0)
-  const [saldodompet, setsaldodompet] = useState(0)
-  const [fetchSaldo, setfetchSaldo] = useState<any>(false)
+  const [pemasukan, setpemasukan] = useState(0);
+  const [pemasukanATM, setpemasukanATM] = useState(0);
+  const [pemasukanDompet, setpemasukanDompet] = useState(0);
+  const [pengeluaranATM, setpengeluaranATM] = useState(0);
+  const [pengeluaranDompet, setpengeluaranDompet] = useState(0);
+  const [totalsaldo, settotalsaldo] = useState(0);
+  const [saldoatm, setsaldoatm] = useState(0);
+  const [saldodompet, setsaldodompet] = useState(0);
+  const [fetchSaldo, setfetchSaldo] = useState<any>(false);
 
   const [allKategori, setallKategori] = useState<any>([]);
   const [filterLabelValueKategori, setfilterLabelValueKategori] = useState<any>([]);
   const [filterKategori, setfilterKategori] = useState<any>([]);
-  const [fetchAllCatatan, setfetchAllCatatan] = useState<any>(false)
-  const [allCatatan, setallCatatan] = useState<any[]>([])
+  const [fetchAllCatatan, setfetchAllCatatan] = useState<any>(false);
+  const [allCatatan, setallCatatan] = useState<any[]>([]);
 
   LogBox.ignoreAllLogs();//Ignore all log notifications
 
   function formatRupiah(value: any) {
-    return new Intl.NumberFormat('id').format(value)
+    return new Intl.NumberFormat('id').format(value);
   }
 
   const [selectTipeInput, setselectTipeInput] = useState('');
-  const [visiblemodal, setvisiblemodal] = React.useState(false)
+  const [visiblemodal, setvisiblemodal] = React.useState(false);
   const setModal = React.useCallback(() => {
     setvisiblemodal(true);
-  }, [visiblemodal])
+  }, [visiblemodal]);
 
   const closeModalAddCatatan = React.useCallback(() => {
     setvisiblemodal(false);
-  }, [visiblemodal])
+  }, [visiblemodal]);
 
   const TypeInput = () => {
     return (
@@ -98,7 +96,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
           start={{ x: 1, y: 1 }}
           end={{ x: 0, y: 0 }}
           colors={[Colors.green100, Colors.green50]}
-          style={{ height: responsiveHeight(15), position: 'relative', width: '100%', borderRadius: 5, elevation: 2, marginBottom: 20, }}
+          style={{ height: responsiveHeight(15), position: 'relative', width: '100%', borderRadius: 5, elevation: 2, marginBottom: 20 }}
         >
           <Pressable style={{
             borderRadius: 5, width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row',
@@ -111,18 +109,18 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
                 data: _filterKategori('pemasukan'),
                 saldoAtm: saldoatm,
                 saldoDompet: saldodompet,
-              })
+              });
               // dispatch(setPage({ page: 'Input' }))
               // setselectTipeInput('pemasukan')
             }}
           >
-            <Text style={{ color: Colors.green400, textTransform: 'uppercase', fontWeight: 'bold', }}>Pemasukan</Text>
+            <Text style={{ color: Colors.green400, textTransform: 'uppercase', fontWeight: 'bold' }}>Pemasukan</Text>
             <Image source={require('../../assets/images/pemasukan.png')}
               resizeMode="stretch"
               style={{
                 width: responsiveHeight(20),
-                height: responsiveHeight(20)
-                // height: orientationScreen === 'portrait' ? verticalScale(24) : verticalScale(35) 
+                height: responsiveHeight(20),
+                // height: orientationScreen === 'portrait' ? verticalScale(24) : verticalScale(35)
               }}
             />
           </Pressable>
@@ -131,7 +129,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
           start={{ x: 1, y: 1 }}
           end={{ x: 0, y: 0 }}
           colors={[Colors.red100, Colors.red50]}
-          style={{ height: responsiveHeight(15), position: 'relative', width: '100%', borderRadius: 5, elevation: 2, marginBottom: 10, }}
+          style={{ height: responsiveHeight(15), position: 'relative', width: '100%', borderRadius: 5, elevation: 2, marginBottom: 10 }}
         >
           <Pressable style={{
             borderRadius: 5, width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row',
@@ -144,25 +142,25 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
                 data: _filterKategori('pengeluaran'),
                 saldoAtm: saldoatm,
                 saldoDompet: saldodompet,
-              })
+              });
               // dispatch(setPage({ page: 'Input' }))
               // setselectTipeInput('pengeluaran')
             }}
           >
-            <Text style={{ color: Colors.red400, textTransform: 'uppercase', fontWeight: 'bold', }}>Pengeluaran</Text>
+            <Text style={{ color: Colors.red400, textTransform: 'uppercase', fontWeight: 'bold' }}>Pengeluaran</Text>
             <Image source={require('../../assets/images/pengeluaran.png')}
               resizeMode="stretch"
               style={{
                 width: responsiveHeight(20),
-                height: responsiveHeight(20)
-                // height: orientationScreen === 'portrait' ? verticalScale(24) : verticalScale(35) 
+                height: responsiveHeight(20),
+                // height: orientationScreen === 'portrait' ? verticalScale(24) : verticalScale(35)
               }}
             />
           </Pressable>
         </LinearGradient>
       </View>
-    )
-  }
+    );
+  };
 
   const ModalOpenAddCatatan = () => {
     return (
@@ -173,7 +171,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
       >
         <View style={{
           flex: 1,
-          backgroundColor: '#fff'
+          backgroundColor: '#fff',
         }}>
           <FAB
             style={{
@@ -181,16 +179,16 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
               justifyContent: 'center', alignItems: 'center',
               top: 10, left: 10,
               height: responsiveHeight(6),
-              width: responsiveHeight(6)
+              width: responsiveHeight(6),
             }}
             icon={() => {
               return (
                 <IconMCI name="close" color={Colors.white} size={23} />
-              )
+              );
             }}
             onPress={() => {
-              closeModalAddCatatan()
-              dispatch(setPage({ page: 'Beranda' }))
+              closeModalAddCatatan();
+              dispatch(setPage({ page: 'Beranda' }));
             }}
           />
 
@@ -206,20 +204,20 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
           }
         </View>
       </Modal>
-    )
-  }
+    );
+  };
 
   const [selectTipeInputDetail, setselectTipeInputDetail] = useState('');
-  const [visiblemodalDetail, setvisiblemodalDetail] = React.useState(false)
-  const [dataItemDetail, setdataItemDetail] = React.useState()
+  const [visiblemodalDetail, setvisiblemodalDetail] = React.useState(false);
+  const [dataItemDetail, setdataItemDetail] = React.useState();
   const setModalDetail = React.useCallback((data: any) => {
     setvisiblemodalDetail(true);
-    setdataItemDetail(data)
-  }, [visiblemodalDetail])
+    setdataItemDetail(data);
+  }, [visiblemodalDetail]);
 
   const closeModalDetailCatatan = React.useCallback(() => {
     setvisiblemodalDetail(false);
-  }, [visiblemodalDetail])
+  }, [visiblemodalDetail]);
 
   const ModalOpenDetailCatatan = () => {
     return (
@@ -230,7 +228,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
       >
         <View style={{
           flex: 1,
-          backgroundColor: '#fff'
+          backgroundColor: '#fff',
         }}>
           <FAB
             style={{
@@ -238,16 +236,16 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
               justifyContent: 'center', alignItems: 'center',
               top: 10, left: 10,
               height: responsiveHeight(6),
-              width: responsiveHeight(6)
+              width: responsiveHeight(6),
             }}
             icon={() => {
               return (
                 <IconMCI name="close" color={Colors.white} size={23} />
-              )
+              );
             }}
             onPress={() => {
-              closeModalDetailCatatan()
-              dispatch(setPage({ page: 'Beranda' }))
+              closeModalDetailCatatan();
+              dispatch(setPage({ page: 'Beranda' }));
             }}
           />
 
@@ -264,8 +262,8 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
           } */}
         </View>
       </Modal>
-    )
-  }
+    );
+  };
 
   function _filterKategori(type: string) {
     const filterItem: any[] = [];
@@ -274,34 +272,34 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
         const list: any = {
           label: item.nama_kategori,
           value: item.nama_kategori,
-        }
+        };
         filterItem.push(list);
       }
-    })
+    });
     return filterItem;
   }
 
   const getListKategori = () => {
     getAllKategori()
       .then((respListKategori: any) => {
-        console.log('data kategori = ', respListKategori)
+        console.log('data kategori = ', respListKategori);
 
-        const filterData: any[] = []
+        const filterData: any[] = [];
         respListKategori.map((item: any) => {
           const list: any = {
             label: item.nama_kategori,
             value: item.nama_kategori,
-          }
-          filterData.push(list)
-        })
-        setfilterLabelValueKategori(filterData)
-        setallKategori(respListKategori)
+          };
+          filterData.push(list);
+        });
+        setfilterLabelValueKategori(filterData);
+        setallKategori(respListKategori);
       })
       .catch((err) => {
-        console.log('error = ', err)
-      })
+        console.log('error = ', err);
+      });
 
-    // try { 
+    // try {
     //   const respListKategori: any = await getAllKategori();
     //   console.log('kategori = ',respListKategori)
 
@@ -318,19 +316,19 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
     // } catch (error) {
     //   console.log('error kategori = ',error)
     // }
-  }
+  };
 
   const getListCatatan = () => {
     getAllCatatan()
       .then((respListCatatan: any) => {
-        console.log('data catatan = ', respListCatatan)
-        setallCatatan(respListCatatan)
-        setfetchAllCatatan(true)
+        console.log('data catatan = ', respListCatatan);
+        setallCatatan(respListCatatan);
+        setfetchAllCatatan(true);
       })
       .catch((err) => {
-        console.log('error = ', err)
-      })
-    // try { 
+        console.log('error = ', err);
+      });
+    // try {
     //   const respListCatatan: any = getAllCatatan();
     //   console.log('data = ',respListCatatan)
     //   setallCatatan(respListCatatan)
@@ -338,24 +336,24 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
     // } catch (error) {
     //   console.log(error)
     // }
-  }
+  };
 
   const getCatatanByMonth = () => {
     getFilterCatatanByMonth('06')
       .then((respListCatatan: any) => {
-        console.log('data tanggal catatan = ', respListCatatan)
+        console.log('data tanggal catatan = ', respListCatatan);
       })
       .catch((err) => {
-        console.log('error = ', err)
-      })
-  }
+        console.log('error = ', err);
+      });
+  };
 
   useEffect(() => {
-    dispatch(setShowTab())
+    dispatch(setShowTab());
     navigation.addListener('focus', () => {
-      dispatch(setPage({ page: 'Beranda' }))
+      dispatch(setPage({ page: 'Beranda' }));
     });
-  }, [navigation])
+  }, [navigation]);
 
   useEffect(() => {
     // deleteAllCatatan();
@@ -365,46 +363,46 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
 
     getOrientation();
     Dimensions.addEventListener('change', () => {
-      getOrientation()
-    })
-  }, [])
+      getOrientation();
+    });
+  }, []);
 
   useEffect(() => {
-    let pemasukan_atm: any[] = []
-    let pemasukan_dompet: any[] = []
-    let pengeluaran_atm: any[] = []
-    let pengeluaran_dompet: any[] = []
+    let pemasukan_atm: any[] = [];
+    let pemasukan_dompet: any[] = [];
+    let pengeluaran_atm: any[] = [];
+    let pengeluaran_dompet: any[] = [];
 
     if (allCatatan.length !== 0) {
       allCatatan.map((item: any) => {
         // jika akun ATM
         if (item.akun === 'atm') {
           if (item.tipe === 'pemasukan') {
-            pemasukan_atm.push(parseInt(item.nominal))
+            pemasukan_atm.push(parseInt(item.nominal));
           } else {
             if (item.tujuan === 'tarik tunai') {
-              pemasukan_dompet.push(parseInt(item.nominal))
-              pengeluaran_atm.push(parseInt(item.nominal))
+              pemasukan_dompet.push(parseInt(item.nominal));
+              pengeluaran_atm.push(parseInt(item.nominal));
             } else {
-              pengeluaran_atm.push(parseInt(item.nominal))
+              pengeluaran_atm.push(parseInt(item.nominal));
             }
           }
         } else {
           if (item.tipe === 'pemasukan') {
-            pemasukan_dompet.push(parseInt(item.nominal))
+            pemasukan_dompet.push(parseInt(item.nominal));
           } else {
-            pengeluaran_dompet.push(parseInt(item.nominal))
+            pengeluaran_dompet.push(parseInt(item.nominal));
           }
         }
-      })
+      });
 
-      const totalPemasukanAtm = pemasukan_atm.reduce((a, b) => a + b, 0)
-      const totalPemasukanDompet = pemasukan_dompet.reduce((a, b) => a + b, 0)
-      const totalPengeluaranAtm = pengeluaran_atm.reduce((a, b) => a + b, 0)
-      const totalPengeluaranDompet = pengeluaran_dompet.reduce((a, b) => a + b, 0)
+      const totalPemasukanAtm = pemasukan_atm.reduce((a, b) => a + b, 0);
+      const totalPemasukanDompet = pemasukan_dompet.reduce((a, b) => a + b, 0);
+      const totalPengeluaranAtm = pengeluaran_atm.reduce((a, b) => a + b, 0);
+      const totalPengeluaranDompet = pengeluaran_dompet.reduce((a, b) => a + b, 0);
       const totalSaldo = (totalPemasukanAtm + totalPemasukanDompet) - (totalPengeluaranAtm + totalPengeluaranDompet);
-      const totalSaldoAtm = totalPemasukanAtm - totalPengeluaranAtm
-      const totalSaldoDompet = totalPemasukanDompet - totalPengeluaranDompet
+      const totalSaldoAtm = totalPemasukanAtm - totalPengeluaranAtm;
+      const totalSaldoDompet = totalPemasukanDompet - totalPengeluaranDompet;
 
       // console.log('pemasukan', totalPemasukan)
       // console.log('pengeluaranATM', totalPengeluaranATM)
@@ -412,23 +410,23 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
       // console.log('dompet', totalDompet)
 
       // setpemasukan(totalPemasukan)
-      setpemasukanATM(totalPemasukanAtm)
-      setpengeluaranATM(totalPengeluaranAtm)
-      setpemasukanDompet(totalPemasukanDompet)
-      setpengeluaranDompet(totalPengeluaranDompet)
-      settotalsaldo(totalSaldo)
-      setsaldoatm(totalSaldoAtm)
-      setsaldodompet(totalSaldoDompet)
-      setfetchSaldo(true)
+      setpemasukanATM(totalPemasukanAtm);
+      setpengeluaranATM(totalPengeluaranAtm);
+      setpemasukanDompet(totalPemasukanDompet);
+      setpengeluaranDompet(totalPengeluaranDompet);
+      settotalsaldo(totalSaldo);
+      setsaldoatm(totalSaldoAtm);
+      setsaldodompet(totalSaldoDompet);
+      setfetchSaldo(true);
     }
     else {
-      const totalPemasukanAtm = 0
-      const totalPemasukanDompet = 0
-      const totalPengeluaranAtm = 0
-      const totalPengeluaranDompet = 0
+      const totalPemasukanAtm = 0;
+      const totalPemasukanDompet = 0;
+      const totalPengeluaranAtm = 0;
+      const totalPengeluaranDompet = 0;
       const totalSaldo = (totalPemasukanAtm + totalPemasukanDompet) - (totalPengeluaranAtm + totalPengeluaranDompet);
-      const totalSaldoAtm = totalPemasukanAtm - totalPengeluaranAtm
-      const totalSaldoDompet = totalPemasukanDompet - totalPengeluaranDompet
+      const totalSaldoAtm = totalPemasukanAtm - totalPengeluaranAtm;
+      const totalSaldoDompet = totalPemasukanDompet - totalPengeluaranDompet;
 
       // console.log('pemasukan', totalPemasukan)
       // console.log('pengeluaranATM', totalPengeluaranATM)
@@ -436,16 +434,16 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
       // console.log('dompet', totalDompet)
 
       // setpemasukan(totalPemasukan)
-      setpemasukanATM(totalPemasukanAtm)
-      setpengeluaranATM(totalPengeluaranAtm)
-      setpemasukanDompet(totalPemasukanDompet)
-      setpengeluaranDompet(totalPengeluaranDompet)
-      settotalsaldo(totalSaldo)
-      setsaldoatm(totalSaldoAtm)
-      setsaldodompet(totalSaldoDompet)
-      setfetchSaldo(true)
+      setpemasukanATM(totalPemasukanAtm);
+      setpengeluaranATM(totalPengeluaranAtm);
+      setpemasukanDompet(totalPemasukanDompet);
+      setpengeluaranDompet(totalPengeluaranDompet);
+      settotalsaldo(totalSaldo);
+      setsaldoatm(totalSaldoAtm);
+      setsaldodompet(totalSaldoDompet);
+      setfetchSaldo(true);
     }
-  }, [allCatatan])
+  }, [allCatatan]);
 
 
   useEffect(() => {
@@ -455,7 +453,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
       getListKategori();
       closeModalAddCatatan();
     }
-  }, [whatspage])
+  }, [whatspage]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -464,7 +462,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        marginTop: 20, marginHorizontal: 10
+        marginTop: 20, marginHorizontal: 10,
       }}>
 
         <View style={{
@@ -472,12 +470,12 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
           alignItems: 'center',
           flexDirection: 'row',
         }}>
-          <Avatar.Text 
-            size={responsiveHeight(6)} 
-            label={user.name.slice(0,1).toUpperCase()} 
-            color={Colors.blue400} 
-            style={{backgroundColor: Colors.blue50}} 
-            labelStyle={{fontWeight: 'bold'}} 
+          <Avatar.Text
+            size={responsiveHeight(6)}
+            label={user.name.slice(0,1).toUpperCase()}
+            color={Colors.blue400}
+            style={{backgroundColor: Colors.blue50}}
+            labelStyle={{fontWeight: 'bold'}}
           />
           <View style={{marginLeft: 10}}>
             <View>
@@ -489,7 +487,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
               <Text style={{
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-                color: '#000'
+                color: '#000',
               }}>{user.name}</Text>
             </View>
           </View>
@@ -503,25 +501,25 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
             bottom: 0, right: 0,
             height: responsiveHeight(6),
             width: responsiveHeight(6),
-            elevation: 0
+            elevation: 0,
           }}
           icon={() => {
             return (
               <IconMCI name="folder-image" color={Colors.blue400} size={23} />
-            )
+            );
           }}
           onPress={() => {
-            setselectTipeInput('info')
-            setModal()
+            setselectTipeInput('info');
+            setModal();
           }}
         />
 
         {/* <TouchableOpacity style={{
           backgroundColor: Colors.blue400,
           height: responsiveHeight(5),
-          width: responsiveHeight(5), 
+          width: responsiveHeight(5),
           borderRadius: 100,
-          justifyContent: 'center', alignItems: 'center', 
+          justifyContent: 'center', alignItems: 'center',
           elevation: 5
           // borderColor: '#5157CB', borderWidth: 2
         }}
@@ -548,7 +546,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
             backgroundColor: Colors.red400,
             padding: 5,
             borderRadius: 5,
-            marginRight: 10
+            marginRight: 10,
           }}>
             <IconFh name="dollar-sign" color="#fff" size={30} />
           </View>
@@ -575,7 +573,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
             backgroundColor: Colors.green400,
             padding: 5,
             borderRadius: 5,
-            marginRight: 10
+            marginRight: 10,
           }}>
             <IconEntypo name="credit-card" color="#fff" size={30} />
           </View>
@@ -594,7 +592,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
       <View style={{
         ...styles.boxSaldo,
         marginTop: 10,
-        backgroundColor: Colors.blue50
+        backgroundColor: Colors.blue50,
       }}
       >
         <View style={styles.between_center_row}>
@@ -602,7 +600,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
             backgroundColor: Colors.blue400,
             padding: 5,
             borderRadius: 5,
-            marginRight: 10
+            marginRight: 10,
           }}>
             <IconMCI name="bag-personal-outline" color="#fff" size={30} />
           </View>
@@ -622,32 +620,32 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
       {/* list catatan */}
       <View style={{
         justifyContent: 'center', alignItems: 'center',
-        flexDirection: 'row', marginVertical: 20, marginHorizontal: 10
+        flexDirection: 'row', marginVertical: 20, marginHorizontal: 10,
       }}>
         <View style={{
           marginTop: 10, borderColor: Colors.grey600, borderWidth: 2,
-          borderStyle: 'dotted', borderRadius: 1, width: '33.3333333333%'
+          borderStyle: 'dotted', borderRadius: 1, width: '33.3333333333%',
         }}
         />
         <Text style={{ width: '33.3333333333%', color: Colors.black, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase' }}>List Catatan</Text>
         <View style={{
           marginTop: 10, borderColor: Colors.grey600, borderWidth: 2,
-          borderStyle: 'dotted', borderRadius: 1, width: '33.3333333333%'
+          borderStyle: 'dotted', borderRadius: 1, width: '33.3333333333%',
         }}
         />
       </View>
       {
         allCatatan.length === 0 ?
           <View style={{
-            flex: 1, marginTop: 10, justifyContent: 'center', alignItems: 'center'
+            flex: 1, marginTop: 10, justifyContent: 'center', alignItems: 'center',
           }}
           >
             <Image source={require('../../assets/logo/logo2.png')}
               resizeMode="stretch"
               style={{
                 width: responsiveHeight(25),
-                height: responsiveHeight(25)
-                // height: orientationScreen === 'portrait' ? verticalScale(24) : verticalScale(35) 
+                height: responsiveHeight(25),
+                // height: orientationScreen === 'portrait' ? verticalScale(24) : verticalScale(35)
               }}
             />
             <Text>Belum ada data..</Text>
@@ -655,7 +653,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
           :
           <ScrollView style={{marginHorizontal: 10}}>
                 {
-                  allCatatan.map((item: any, index: any) => {
+                  allCatatan.map((item: any) => {
                   return (
                     <View key={`item-${item.id}`}>
                       <TouchableOpacity
@@ -665,8 +663,8 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
                           height: responsiveHeight(7),
                         }}
                         onPress={() => {
-                          dispatch(setPage({ page: 'Edit' }))
-                          setModalDetail(item)
+                          dispatch(setPage({ page: 'Edit' }));
+                          setModalDetail(item);
                           // <navigation.navigate('Detail', {
                           //   data: item,
                           //   listKategori: allKategori,
@@ -675,8 +673,8 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
                           // })>
                         }}
                       >
-                        <View style={{ flexDirection: 'row', }}>
-                          <View style={{ justifyContent: 'space-between', }}>
+                        <View style={{ flexDirection: 'row' }}>
+                          <View style={{ justifyContent: 'space-between' }}>
                             <View style={{ justifyContent: 'center', height: '50%' }}>
                               <Text style={{ fontWeight: 'bold', textTransform: 'capitalize', color: '#000' }}
                               >
@@ -691,9 +689,9 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
                               {
                                 item.tujuan === 'tarik tunai' ?
                                   <Text style={{
-                                    backgroundColor: item.tipe === 'pemasukan' ? Colors.green50 : Colors.red50, marginLeft: 10, fontWeight: 'bold', textTransform: 'uppercase', color: item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400, paddingHorizontal: 5
+                                    backgroundColor: item.tipe === 'pemasukan' ? Colors.green50 : Colors.red50, marginLeft: 10, fontWeight: 'bold', textTransform: 'uppercase', color: item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400, paddingHorizontal: 5,
                                   }}>Tarik Tunai</Text>
-                                  : <Text></Text>
+                                  : <Text />
                               }
                             </View>
                           </View>
@@ -703,7 +701,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
                           <View style={{ marginLeft: 10, height: '100%' }}>
                             <View style={{ justifyContent: 'center', height: '50%' }}>
                               <Text style={{
-                                fontWeight: 'bold', textTransform: 'capitalize', color: item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400
+                                fontWeight: 'bold', textTransform: 'capitalize', color: item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400,
                               }}>
                                 {item.tipe === 'pemasukan' ? '+ ' : '- '}
                                 Rp. {formatRupiah(item.nominal)}
@@ -721,13 +719,13 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
                         borderStyle: 'dotted', borderRadius: 1,
                       }}
                       /> */}
-                      <Divider 
+                      <Divider
                         style={{
-                          marginBottom: 5, borderColor: Colors.grey300, borderWidth: .3,
+                          marginBottom: 5, borderColor: Colors.grey300, borderWidth: 0.3,
                         }}
                       />
                     </View>
-                  )
+                  );
                 })
               }
           </ScrollView>
@@ -753,25 +751,25 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
             justifyContent: 'center', alignItems: 'center',
             bottom: 0, right: 20,
             height: responsiveHeight(6),
-            width: responsiveHeight(6)
+            width: responsiveHeight(6),
           }}
           icon={() => {
             return (
               <IconMCI name="plus" color={Colors.white} size={23} />
-            )
+            );
           }}
           onPress={() => {
-            dispatch(setPage({ page: 'Input' }))
-            setselectTipeInput('tipe_input')
-            setModal()
+            dispatch(setPage({ page: 'Input' }));
+            setselectTipeInput('tipe_input');
+            setModal();
             // openModalInputKategori(false)
           }}
         />
 
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   boxSaldo: {
@@ -782,15 +780,15 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     marginHorizontal: 10,
     borderRadius: 5,
-    elevation: 1
+    elevation: 1,
     // borderBottomColor: '#ddd',
     // borderBottomWidth: .5,
   },
   between_center_row: {
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexDirection: 'row'
-  }
-})
+    flexDirection: 'row',
+  },
+});
 
-export default HomeScreen
+export default HomeScreen;

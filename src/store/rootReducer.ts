@@ -2,7 +2,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import AppIntroReducer from './appIntro';
 import LoadingReducer from './loading';
-import NavigationReduxReducer from './navigation_redux';
+import NavigationReduxReducer from './navigationRedux';
 import UserReducer from './user';
 import AuthReducer from './auth';
 import whatsPageReduce from './whatsPage';

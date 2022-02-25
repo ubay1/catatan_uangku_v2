@@ -1,9 +1,19 @@
 export interface IPropsButton {
   title: string;
-  action: Function;
+  mode: any;
+  uppercase?: boolean;
+  color?: any;
+  disabled?: boolean;
+  theme?: object,
+  action?: any;
 }
 export interface IPropsButtonWithIcon {
   title: string;
+  mode: any;
   icon: string;
-  action: Function;
+  uppercase?: boolean;
+  color?: any;
+  disabled?: boolean;
+  theme?: object,
+  action?: any;
 }

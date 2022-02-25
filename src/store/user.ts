@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: true,
   name: '',
-}
+};
 
 // Slice
 const appIntroSlice = createSlice({
@@ -11,12 +11,12 @@ const appIntroSlice = createSlice({
   initialState,
   reducers: {
     setUserName(state, action: PayloadAction<{name: string}>) {
-      state.name = action.payload.name,
-      state.isLoading = false
-    }
+      state.name = action.payload.name;
+      state.isLoading = false;
+    },
   },
 });
 
 // Actions
-export const { setUserName } = appIntroSlice.actions
-export default appIntroSlice.reducer
+export const { setUserName } = appIntroSlice.actions;
+export default appIntroSlice.reducer;

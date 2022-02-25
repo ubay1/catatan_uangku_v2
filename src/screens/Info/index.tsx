@@ -1,16 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Alert, Dimensions, Image, Linking, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
-
-import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions';
-import { useDispatch } from 'react-redux';
-import { StackInfo } from '../../../interfaceRoutes'
-import { AppDispatch } from '../../store';
-import { setHideTab, setShowTab } from '../../store/navigation_redux';
-import { setPage } from '../../store/whatsPage';
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, Dimensions, Linking, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 
 const InfoScreen = () => {
-  const dispatch: AppDispatch = useDispatch()
-  
+
   const OpenURLButton = ({ url, children }: any) => {
     const handlePress = useCallback(async () => {
       // Checking if the link is supported for links with custom URL scheme.
@@ -40,15 +34,15 @@ const InfoScreen = () => {
     else {
       setorientationScreen('landscape');
     }
-  }
+  };
 
   useEffect(() => {
-    getOrientation()
+    getOrientation();
     Dimensions.addEventListener('change', () => {
-      getOrientation()
-    })
-  }, [])
-  
+      getOrientation();
+    });
+  }, []);
+
   // useEffect(() => {
   //   dispatch(setHideTab())
   //   navigation.addListener("beforeRemove", (param) => {
@@ -60,11 +54,11 @@ const InfoScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor:  '#fff' }}>
       <View style={{
-        justifyContent: 'center', alignItems: 'center', flex: 1, 
+        justifyContent: 'center', alignItems: 'center', flex: 1,
       }}>
         <View style={{flexDirection: 'row'}}>
           <Text style={{
-              color: '#000'
+              color: '#000',
             }}
           >
             * icon oleh vectorjuice cek
@@ -80,7 +74,7 @@ const InfoScreen = () => {
         </View>
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default InfoScreen
+export default InfoScreen;
