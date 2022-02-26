@@ -88,8 +88,18 @@ export const createCatatan =  (data: any) => new Promise<void>((resolve, reject)
 
 export const getAllCatatan = () => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
-      let allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
+      const allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
       resolve(allCatatan);
+  }).catch((error) => {
+      reject(error);
+  });
+});
+
+export const getSepuluhCatatanTerakhir = () => new Promise((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
+      const allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
+      const sliceCatatan = allCatatan.slice(0, 10);
+      resolve(sliceCatatan);
   }).catch((error) => {
       reject(error);
   });

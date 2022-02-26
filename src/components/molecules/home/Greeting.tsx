@@ -71,6 +71,7 @@ const stylesCustom = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginVertical: 20,
+    marginHorizontal: 10,
   },
   greeting: {
     justifyContent: 'flex-start',
