@@ -1,5 +1,7 @@
 export interface IPropsText {
   value: string;
+  color?: string;
   size?: number;
-  color: string;
+  fontWeight?: any;
+  textTransform?: any;
 }

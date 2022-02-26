@@ -248,7 +248,7 @@ export const updateKategori =  (data: any) => new Promise<void>((resolve, reject
     realm.write(() => {
       let kategori: any = realm.objectForPrimaryKey(KATEGORI_SCHEMA, data.id);
       kategori.nama_kategori = data.nama_kategori;
-      resolve();
+      resolve(kategori);
     });
   }).catch((error) => reject(error));
 });

@@ -23,6 +23,7 @@ return (
     <TextAtom
       color="#fff"
       value={title}
+      textTransform={uppercase ? 'uppercase' : 'none'}
     />
   </Button>
 )};
