@@ -5,3 +5,9 @@ export interface IPropsSnackbar {
   bgColor?: string;
   color?: string;
 }
+
+export interface IPropsModal {
+  closeModal: any;
+  visible: boolean;
+  children: any;
+}

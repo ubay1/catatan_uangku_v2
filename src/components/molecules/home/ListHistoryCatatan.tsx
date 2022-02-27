@@ -6,36 +6,49 @@ import {
   View,
   Text,
   Image,
-  ScrollView,
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-  FlatList,
+  Pressable,
 } from 'react-native';
 import {Colors, Divider} from 'react-native-paper';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
-import {
-  COLOR_ACTIVE,
-  COLOR_BLACK,
-  COLOR_ERROR,
-  COLOR_WHITE,
-} from '../../../assets/styles/global';
+import {COLOR_ACTIVE, COLOR_BLACK} from '../../../assets/styles/global';
 import {formatRupiah} from '../../../helper/formatNumber';
 import TextAtom from '../../atoms/text/TextAtom';
 import {IPropsListCatatan} from './types';
 import styles from '../../../assets/styles/global';
-import ButtonAtom from '../../atoms/button/ButtonAtom';
 import ButtonTextAtom from '../../atoms/button/ButtonTextAtom';
 import List from '../../atoms/List';
+import ModalAtom from '../../atoms/alert/ModalAtom';
+import LinearGradient from 'react-native-linear-gradient';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '../../../store';
+import {setPage} from '../../../store/whatsPage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Logo = require('../../../assets/logo/logo2.png');
 
-const ListHistoryCatatan = ({loading, allCatatan}: IPropsListCatatan) => {
+const ListHistoryCatatan = ({
+  loading,
+  allCatatan,
+  allKategori,
+  saldoAtm,
+  saldoDompet,
+  navigation,
+}: IPropsListCatatan) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
+  const dispatch: AppDispatch = useDispatch();
   // const [data, setData] = React.useState(null);
   const [loadings, setloadings] = React.useState(true);
+  const [visibleModalInputType, setVisibleModalInputType] = React.useState(
+    false,
+  );
+  const [visibleModalDetailNote, setVisibleModalDetailNote] = React.useState(
+    false,
+  );
 
   React.useEffect(() => {
     setloadings(loading);
@@ -61,13 +74,13 @@ const ListHistoryCatatan = ({loading, allCatatan}: IPropsListCatatan) => {
           }}
           onPress={() => {
             // dispatch(setPage({ page: 'Edit' }));
-            // setModalDetail(item);
-            // <navigation.navigate('Detail', {
-            //   data: item,
-            //   listKategori: allKategori,
-            //   saldoAtm: saldoatm,
-            //   saldoDompet: saldodompet,
-            // })>
+            // showModalDetailNote(item);
+            navigation.navigate('Detail', {
+              data: item,
+              listKategori: allKategori,
+              saldoAtm: saldoAtm,
+              saldoDompet: saldoDompet,
+            });
           }}>
           <View style={{flexDirection: 'row'}}>
             <View style={{justifyContent: 'space-between'}}>
@@ -166,12 +179,166 @@ const ListHistoryCatatan = ({loading, allCatatan}: IPropsListCatatan) => {
       </View>
     );
   };
+
+  /* ------------------------- Modal Select Input Type ------------------------ */
+  const showModalSelectInputType = () => {
+    setVisibleModalInputType(true);
+  };
+
+  const closeModalSelectInputType = () => {
+    setVisibleModalInputType(false);
+  };
+
+  const filterKategori = (type: string) => {
+    const filterItem: any[] = [];
+    allKategori.forEach((item: any) => {
+      if (item.tipe_kategori === type) {
+        const list: any = {
+          label: item.nama_kategori,
+          value: item.nama_kategori,
+        };
+        filterItem.push(list);
+      }
+    });
+    return filterItem;
+  };
+
+  const SelectTypeNote = () => {
+    return (
+      <View
+        style={{
+          // flex:1,
+          marginTop: 20,
+          marginHorizontal: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <LinearGradient
+          start={{x: 1, y: 1}}
+          end={{x: 0, y: 0}}
+          colors={[Colors.green100, Colors.green50]}
+          style={{
+            height: responsiveHeight(15),
+            position: 'relative',
+            width: '100%',
+            borderRadius: 5,
+            marginBottom: 20,
+          }}>
+          <Pressable
+            style={{
+              borderRadius: 5,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'row',
+              position: 'absolute',
+              bottom: 0,
+              top: 3,
+              // backgroundColor: 'red'
+            }}
+            onPress={() => {
+              navigation.navigate('AddNote', {
+                title: 'Input Pemasukan',
+                type: 'pemasukan',
+                data: filterKategori('pemasukan'),
+                saldoAtm: saldoAtm,
+                saldoDompet: saldoDompet,
+              });
+              closeModalSelectInputType();
+            }}>
+            <TextAtom
+              value="Pemasukan"
+              color={Colors.green400}
+              fontWeight="bold"
+            />
+            <Image
+              source={require('../../../assets/images/pemasukan.png')}
+              resizeMode="stretch"
+              style={{
+                width: responsiveHeight(20),
+                height: responsiveHeight(20),
+              }}
+            />
+          </Pressable>
+        </LinearGradient>
+        <LinearGradient
+          start={{x: 1, y: 1}}
+          end={{x: 0, y: 0}}
+          colors={[Colors.red100, Colors.red50]}
+          style={{
+            height: responsiveHeight(15),
+            position: 'relative',
+            width: '100%',
+            borderRadius: 5,
+            marginBottom: 10,
+          }}>
+          <Pressable
+            style={{
+              borderRadius: 5,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'row',
+              position: 'absolute',
+              bottom: 0,
+              top: 3,
+              // backgroundColor: 'red'
+            }}
+            onPress={() => {
+              navigation.navigate('AddNote', {
+                title: 'Input Pengeluaran',
+                type: 'pengeluaran',
+                data: filterKategori('pengeluaran'),
+                saldoAtm: saldoAtm,
+                saldoDompet: saldoDompet,
+              });
+              closeModalSelectInputType();
+            }}>
+            <TextAtom
+              value="Pengeluaran"
+              color={Colors.red400}
+              fontWeight="bold"
+            />
+            <Image
+              source={require('../../../assets/images/pengeluaran.png')}
+              resizeMode="stretch"
+              style={{
+                width: responsiveHeight(20),
+                height: responsiveHeight(20),
+              }}
+            />
+          </Pressable>
+        </LinearGradient>
+      </View>
+    );
+  };
+
+  const ModalOpenSelectTypeNote = () => {
+    return (
+      <ModalAtom
+        closeModal={closeModalSelectInputType}
+        visible={visibleModalInputType}>
+        <SelectTypeNote />
+      </ModalAtom>
+    );
+  };
+  /* ------------------------- Modal Select Input Type ------------------------ */
+
+  /* ---------------------------- Modal Detail Note --------------------------- */
+  const showModalDetailNote = (data: any) => {
+    setVisibleModalDetailNote(true);
+    // setdataItemDetail(data);
+  };
+  /* ---------------------------- Modal Detail Note --------------------------- */
+
   /* -------------------------------------------------------------------------- */
   /*                                   show page                                */
   /* -------------------------------------------------------------------------- */
 
   return (
     <>
+      <ModalOpenSelectTypeNote />
+
       <View style={stylesCustom.container}>
         <View style={stylesCustom.borderTitle}>
           <View style={{borderBottomWidth: 1}}>
@@ -190,6 +357,7 @@ const ListHistoryCatatan = ({loading, allCatatan}: IPropsListCatatan) => {
               rounded={5}
               textColor={COLOR_ACTIVE}
               uppercase={false}
+              action={showModalSelectInputType}
             />
           </View>
         </View>

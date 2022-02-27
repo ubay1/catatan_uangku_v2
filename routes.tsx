@@ -25,13 +25,14 @@ import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { setPage } from './src/store/whatsPage';
 import DetailScreen from './src/screens/DetailCatatan';
-import InputPemasukanScreen from './src/screens/Input/pemasukan';
-import InputPengeluaranScreen from './src/screens/Input/pengeluaran';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import SetelanScreen from './src/screens/Setelan';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from 'react-native-paper';
 import { COLOR_ACTIVE } from './src/assets/styles/global';
+import { StackCatatan } from './interfaceRoutes';
+import AddNote from './src/screens/Catatan/AddNote';
+import TextAtom from './src/components/atoms/text/TextAtom';
 
 const horizontalAnimation = {
   cardStyleInterpolator: ({ current, layouts }: any) => {
@@ -131,13 +132,27 @@ const HomeNavigator = () => {
       <Stack.Screen name="Beranda" component={HomeScreen} />
       <Stack.Screen name="Info" component={InfoScreen} />
       <Stack.Screen name="Detail" component={DetailScreen} />
-      <Stack.Screen name="InputPemasukan" component={InputPemasukanScreen} />
-      <Stack.Screen name="InputPengeluaran" component={InputPengeluaranScreen} />
+      <Stack.Screen name="AddNote" component={AddNote} />
     </Stack.Navigator>
   );
 };
 
-const CatatanNavigator = () => {
+const CatatanNavigator = ({ route, navigation }: StackCatatan) => {
+  const navigationredux = useSelector((state: RootState) => state.navigationredux);
+  return (
+    <Stack.Navigator
+      initialRouteName={'Catatan'}
+      mode={'modal'}
+      screenOptions={{
+        headerShown: !navigationredux.showTab,
+      }}
+    >
+      <Stack.Screen name="AddNote" component={AddNote}/>
+    </Stack.Navigator>
+  );
+};
+
+const LaporanNavigator = () => {
   const navigationredux = useSelector((state: RootState) => state.navigationredux);
   return (
     <Stack.Navigator
@@ -180,8 +195,10 @@ function MyTabBar({ state, descriptors, navigation }: any) {
       justifyContent:'center',
       alignItems:'center',
       backgroundColor:  '#fff',
-      height:70,
-      elevation: 10,
+      height:60,
+      // elevation: 10,
+      borderTopColor: '#eee',
+      borderTopWidth: 1,
       display: navigationredux.showTab === true ? 'flex' : 'none',
       }}
     >
@@ -197,11 +214,11 @@ function MyTabBar({ state, descriptors, navigation }: any) {
             let iconName: any;
 
             if (route.name === 'Beranda') {
-              iconName = 'home-outline';
+              iconName = 'home';
             } else if (route.name === 'Catatan') {
-              iconName = 'note-outline';
+              iconName = 'note';
             } else if (route.name === 'Kategori') {
-              iconName = 'plus-box-multiple-outline';
+              iconName = 'plus-box-multiple';
             } else {
               iconName = 'plus';
             }
@@ -255,10 +272,10 @@ function MyTabBar({ state, descriptors, navigation }: any) {
                 <>
                 <IconMCI
                   name={iconName}
-                  size={30}
-                  color={isFocused ? COLOR_ACTIVE : '#C4C4C4'}
+                  size={25}
+                  color={isFocused ? COLOR_ACTIVE : '#ddd'}
                 />
-                <Text style={{color: isFocused ? COLOR_ACTIVE : '#c4c4c4', fontSize: 12, textTransform: 'uppercase', fontWeight: 'bold'}}>{label}</Text>
+                <TextAtom color={isFocused ? COLOR_ACTIVE : '#ddd'} value={label} textTransform={'uppercase'} size={12} fontWeight="bold" />
                 </>
               }
             </View>
@@ -436,7 +453,7 @@ const Routes = () => {
                   // })}
                 >
                   <Tab.Screen name="Beranda" component={HomeNavigator} />
-                  <Tab.Screen name="Catatan" component={CatatanNavigator} />
+                  <Tab.Screen name="Catatan" component={LaporanNavigator} />
                   <Tab.Screen name="Kategori" component={SetelanNavigator}/>
                 </Tab.Navigator>
         }

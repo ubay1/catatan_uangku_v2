@@ -1,31 +1,31 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { IPropsListCatatan } from './src/components/molecules/home/types';
 
 export type RootStackParamList = {
-  Intro: undefined,
-  Beranda: undefined,
+  Intro: undefined;
+  Beranda: undefined;
+  Catatan: undefined;
+  AddNote: {
+    title: string;
+    type: string;
+    data?: any;
+    saldoAtm?: number,
+    saldoDompet?: number,
+  },
   Detail: {
-    data: any,
-    listKategori?: any,
-    saldoAtm?: any,
+    data: any;
+    listKategori?: any;
+    saldoAtm?: any;
     saldoDompet?: any
   },
-  InputPemasukan: {
-    data?: any,
-    saldoAtm?: any,
-    saldoDompet?: any,
-  },
-  InputPengeluaran: {
-    data?: any,
-    saldoAtm?: any,
-    saldoDompet?: any,
-  },
-  Laporan: undefined,
+  Laporan: undefined;
   ListLaporan: {
     tipe: string,
     tipe2: string,
-    fromDate?: any,
-    toDate?: any,
+    fromDate?: any;
+    toDate?: any;
   },
   Setelan: undefined
   Info: undefined
@@ -44,13 +44,13 @@ export type StackBeranda = {
   route: RouteProp<RootStackParamList, 'Beranda'>;
   navigation: BerandaScreenNavigationProp;
 }
-export type StackInputPemasukan = {
-  route: RouteProp<RootStackParamList, 'InputPemasukan'>;
-  navigation: StackNavigationProp<RootStackParamList, 'InputPemasukan'>;
+export type StackCatatan = {
+  route: RouteProp<RootStackParamList, 'Catatan'>;
+  navigation: StackNavigationProp<RootStackParamList, 'Catatan'>;
 }
-export type StackInputPengeluaran = {
-  route: RouteProp<RootStackParamList, 'InputPengeluaran'>;
-  navigation: StackNavigationProp<RootStackParamList, 'InputPengeluaran'>;
+export type StackAddNote = {
+  route: RouteProp<RootStackParamList, 'AddNote'>;
+  navigation: StackNavigationProp<RootStackParamList, 'AddNote'>;
 }
 export type StackDetail = {
   route: RouteProp<RootStackParamList, 'Detail'>;

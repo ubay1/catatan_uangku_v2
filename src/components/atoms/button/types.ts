@@ -7,6 +7,8 @@ export interface IPropsButton {
   theme?: object,
   action?: any;
   textColor?: string;
+  marginX?: number;
+  marginY?: number;
 }
 export interface IPropsButtonWithIcon {
   title: string;
@@ -28,4 +30,5 @@ export interface IPropsButtonText {
   textColor?: string;
   uppercase?: boolean;
   rounded?: number;
+  action?: any;
 }

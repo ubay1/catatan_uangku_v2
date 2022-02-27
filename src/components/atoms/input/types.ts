@@ -5,4 +5,9 @@ export interface IPropsTextInput {
   onChangeText: any;
   keyboardType?: any;
   placeholderTextColor?: string;
+  marginX?: number;
+  marginY?: number;
+  height?: number;
+  numberOfLines?: number;
+  multiLine?: boolean;
 }

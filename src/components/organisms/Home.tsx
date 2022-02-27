@@ -1,14 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable radix */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { getAllKategori, getAllCatatan, getSepuluhCatatanTerakhir } from '../../../db/database';
+import {ScrollView, View} from 'react-native';
+import { useDispatch } from 'react-redux';
+import {
+  getAllKategori,
+  getAllCatatan,
+  getSepuluhCatatanTerakhir,
+} from '../../../db/database';
+import { AppDispatch } from '../../store';
+import { setPage } from '../../store/whatsPage';
 import Greeting from '../molecules/home/Greeting';
 import ListHistoryCatatan from '../molecules/home/ListHistoryCatatan';
 import ListSaldo from '../molecules/home/ListSaldo';
-import { IPropsHomeScreen } from '../molecules/home/types';
+import {IPropsHomeScreen} from '../molecules/home/types';
 
-const HomeOrganims = ({name}: IPropsHomeScreen) => {
+const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
+  const dispatch: AppDispatch = useDispatch();
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -30,6 +40,14 @@ const HomeOrganims = ({name}: IPropsHomeScreen) => {
   React.useEffect(() => {
     loadAll();
   }, []);
+
+  React.useEffect(() => {
+    console.log(pageActive);
+    if (pageActive === 'updateBeranda') {
+      loadAll();
+      dispatch(setPage({page: 'Beranda'}));
+    }
+  }, [pageActive]);
 
   // cek data allCatatan
   React.useEffect(() => {
@@ -73,15 +91,17 @@ const HomeOrganims = ({name}: IPropsHomeScreen) => {
       totalPemasukanDompet = pemasukan_dompet.reduce((a, b) => a + b, 0);
       totalPengeluaranAtm = pengeluaran_atm.reduce((a, b) => a + b, 0);
       totalPengeluaranDompet = pengeluaran_dompet.reduce((a, b) => a + b, 0);
-    }
-    else {
+    } else {
       totalPemasukanAtm = 0;
       totalPemasukanDompet = 0;
       totalPengeluaranAtm = 0;
       totalPengeluaranDompet = 0;
     }
 
-    totalSaldo = (totalPemasukanAtm + totalPemasukanDompet) - (totalPengeluaranAtm + totalPengeluaranDompet);
+    totalSaldo =
+      totalPemasukanAtm +
+      totalPemasukanDompet -
+      (totalPengeluaranAtm + totalPengeluaranDompet);
     totalSaldoAtm = totalPemasukanAtm - totalPengeluaranAtm;
     totalSaldoDompet = totalPemasukanDompet - totalPengeluaranDompet;
 
@@ -95,6 +115,12 @@ const HomeOrganims = ({name}: IPropsHomeScreen) => {
       saldoDompet: totalSaldoDompet,
     });
   }, [allCatatan]);
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     loadAll();
+  //   }, [])
+  // );
   /* -------------------------------------------------------------------------- */
   /*                                   handle form                              */
   /* -------------------------------------------------------------------------- */
@@ -104,7 +130,10 @@ const HomeOrganims = ({name}: IPropsHomeScreen) => {
   const loadAll = async () => {
     setLoading(true);
     try {
-      const values: any = await Promise.all([getAllKategori(), getSepuluhCatatanTerakhir()]);
+      const values: any = await Promise.all([
+        getAllKategori(),
+        getSepuluhCatatanTerakhir(),
+      ]);
       const responseGetListKategori = values[0].map((item: any) => item);
       setAllKategori(responseGetListKategori);
 
@@ -114,7 +143,7 @@ const HomeOrganims = ({name}: IPropsHomeScreen) => {
       console.log(responseGetListKategori, responseGetListCatatan);
     } catch (error) {
       console.log('error load all');
-    } finally  {
+    } finally {
       setLoading(false);
       console.log('sukses load all');
     }
@@ -124,9 +153,16 @@ const HomeOrganims = ({name}: IPropsHomeScreen) => {
   /* -------------------------------------------------------------------------- */
   return (
     <React.Fragment>
-      <Greeting name={name}/>
-      <ListSaldo loading={loading} allBalanceData={allBalanceData}/>
-      <ListHistoryCatatan loading={loading} allCatatan={allCatatan}/>
+      <Greeting name={name} />
+      <ListSaldo loading={loading} allBalanceData={allBalanceData} />
+      <ListHistoryCatatan
+        loading={loading}
+        allKategori={allKategori}
+        allCatatan={allCatatan}
+        saldoAtm={allBalanceData.saldoAtm}
+        saldoDompet={allBalanceData.saldoDompet}
+        navigation={navigation}
+      />
     </React.Fragment>
   );
 };

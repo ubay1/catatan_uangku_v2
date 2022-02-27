@@ -24,7 +24,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <HomeOrganims name={user.name}/>
+      <HomeOrganims name={user.name} pageActive={whatspage.page} navigation={navigation}/>
     </SafeAreaView>
   );
 };

@@ -63,9 +63,9 @@ const dbOptions = {
 //     return 'sukses menambah data'
 // };
 
-export const createCatatan =  (data: any) => new Promise<void>((resolve, reject) => {
+export const createCatatan =  (data: any) => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
-    realm.write(() => {
+    const createCatatan: any = realm.write(() => {
       realm.create(SALDO_SCHEMA, {
         id: data.id,
         tipe: data.tipe,
@@ -76,8 +76,8 @@ export const createCatatan =  (data: any) => new Promise<void>((resolve, reject)
         keterangan: data.keterangan,
         kategori: data.kategori,
       });
-      resolve();
     });
+    resolve(createCatatan);
   }).catch((error) => reject(error));
 });
 

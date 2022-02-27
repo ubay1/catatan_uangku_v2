@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { Button } from 'react-native-paper';
@@ -5,7 +6,7 @@ import { IPropsButton } from './types';
 import styles from '../../../assets/styles/global';
 import TextAtom from '../text/TextAtom';
 
-const ButtonAtom = ({title, mode = 'contained', uppercase, color, disabled, theme, action, textColor = '#fff'}: IPropsButton) => {
+const ButtonAtom = ({title, mode = 'contained', uppercase, color, disabled, theme, action, textColor = '#fff', marginX = 20, marginY = 0}: IPropsButton) => {
 
   return (
     <Button
@@ -18,7 +19,7 @@ const ButtonAtom = ({title, mode = 'contained', uppercase, color, disabled, them
       contentStyle={{
         paddingVertical: 5,
       }}
-      style={styles.button}
+      style={{...styles.button, marginHorizontal: marginX}}
     >
       <TextAtom
         color={textColor}
