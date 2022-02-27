@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Intro from '../../components/organisms/intro/Intro';
+import IntroOrganism from '../../components/organisms/Intro';
 
 const AppIntroScreen = () => {
   return (
-    <Intro />
+    <IntroOrganism />
   );
 };
 

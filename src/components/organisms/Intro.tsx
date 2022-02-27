@@ -3,14 +3,16 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { Image, Dimensions, ScrollView, Alert, Text, Keyboard, StyleSheet } from 'react-native';
 import { Colors } from 'react-native-paper';
-import { AuthContext } from '../../../../context/AuthContext';
-import styles, { COLOR_ACTIVE, COLOR_BLACK, COLOR_DISABLED, COLOR_ERROR, COLOR_WHITE } from '../../../assets/styles/global';
-import ButtonAtom from '../../atoms/button/ButtonAtom';
-import TextInputAtom from '../../atoms/input/TextInputAtom';
+import { AuthContext } from '../../../context/AuthContext';
+import styles, { COLOR_ACTIVE, COLOR_ACTIVE_SOFT, COLOR_BLACK, COLOR_DISABLED, COLOR_ERROR, COLOR_WHITE } from '../../assets/styles/global';
+import ButtonAtom from '../atoms/button/ButtonAtom';
+import TextInputAtom from '../atoms/input/TextInputAtom';
 
-const SnackbarAtom = lazy(()=> import('../../atoms/alert/SnackbarAtom'));
+import SnackbarAtom from '../atoms/alert/SnackbarAtom';
+// const SnackbarAtom = lazy(()=> import('../atoms/alert/SnackbarAtom'));
+const Logo = require('../../assets/logo/logo2.png');
 
-const Intro = () => {
+const IntroOrganism = () => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -23,16 +25,9 @@ const Intro = () => {
     msg: '',
   });
 
-  const [orientationScreen, setorientationScreen] = useState('');
-
   const { signIn } = React.useContext<any>(AuthContext);
 
   useEffect(() => {
-    getOrientation();
-    Dimensions.addEventListener('change', () => {
-      getOrientation();
-    });
-
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
@@ -56,14 +51,6 @@ const Intro = () => {
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
-  const getOrientation = () => {
-    if (Dimensions.get('window').width < Dimensions.get('window').height) {
-      setorientationScreen('portrait');
-    }
-    else {
-      setorientationScreen('landscape');
-    }
-  };
 
   const submitData = () => {
     if (name === '') {
@@ -79,7 +66,7 @@ const Intro = () => {
         setVisibleSnackbar({
           isOpen: true,
           type: 'success',
-          msg: 'Nama telah disimpan',
+          msg: 'Nama berhasil disimpan',
         });
       }, 2000);
 
@@ -89,6 +76,7 @@ const Intro = () => {
       }, 2500);
     }
   };
+
   const closeSnackbar = () => {
     setVisibleSnackbar({
       isOpen: false,
@@ -103,7 +91,7 @@ const Intro = () => {
 
   return (
     <ScrollView contentContainerStyle={{flex: isKeyboardVisible ? 0 : 1, justifyContent: 'center'}} style={{backgroundColor: '#fff'}}>
-      <Image source={require('../../../assets/logo/logo2.png')} style={styles.logo} />
+      <Image source={Logo} style={styles.logo} />
       <TextInputAtom
         mode={'outlined'}
         label="Masukan nama anda"
@@ -111,15 +99,15 @@ const Intro = () => {
         theme={{ colors: { primary: COLOR_ACTIVE}}}
       />
       <ButtonAtom
-        title={loading ? 'menyimpan data' : 'simpan'}
+        title={loading ? 'Menyimpan Data' : 'Simpan'}
         uppercase={true}
-        color={Colors.blue400}
+        color={COLOR_ACTIVE}
         mode="contained"
         action={submitData}
         disabled={loading}
-        theme={{ colors: { disabled: COLOR_DISABLED } }}
+        theme={{ colors: { disabled: COLOR_ACTIVE_SOFT } }}
       />
-      <Suspense fallback={<Text />}>
+      {/* <Suspense fallback={<Text> loading.. </Text>}> */}
         <SnackbarAtom
           title={visibleSnackbar.msg}
           isOpen={visibleSnackbar.isOpen}
@@ -127,9 +115,9 @@ const Intro = () => {
           bgColor={visibleSnackbar.type === 'error' ? COLOR_ERROR : visibleSnackbar.type === 'success' ? COLOR_ACTIVE : COLOR_WHITE}
           color={visibleSnackbar.type === 'error' ? COLOR_WHITE : COLOR_WHITE}
         />
-      </Suspense>
+      {/* </Suspense> */}
     </ScrollView>
   );
 };
 
-export default Intro;
+export default IntroOrganism;

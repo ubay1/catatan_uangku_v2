@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { Dimensions } from 'react-native';
 
 export const getOrientations = () => {
@@ -8,4 +7,4 @@ export const getOrientations = () => {
   else {
     return 'landscape';
   }
-}
+};

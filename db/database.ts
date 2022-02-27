@@ -63,9 +63,9 @@ const dbOptions = {
 //     return 'sukses menambah data'
 // };
 
-export const createCatatan =  (data: any) => new Promise<void>((resolve, reject) => {
+export const createCatatan =  (data: any) => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
-    realm.write(() => {
+    const createCatatan: any = realm.write(() => {
       realm.create(SALDO_SCHEMA, {
         id: data.id,
         tipe: data.tipe,
@@ -76,8 +76,8 @@ export const createCatatan =  (data: any) => new Promise<void>((resolve, reject)
         keterangan: data.keterangan,
         kategori: data.kategori,
       });
-      resolve();
     });
+    resolve(createCatatan);
   }).catch((error) => reject(error));
 });
 
@@ -88,8 +88,18 @@ export const createCatatan =  (data: any) => new Promise<void>((resolve, reject)
 
 export const getAllCatatan = () => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
-      let allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
+      const allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
       resolve(allCatatan);
+  }).catch((error) => {
+      reject(error);
+  });
+});
+
+export const getSepuluhCatatanTerakhir = () => new Promise((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
+      const allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
+      const sliceCatatan = allCatatan.slice(0, 10);
+      resolve(sliceCatatan);
   }).catch((error) => {
       reject(error);
   });
@@ -248,7 +258,7 @@ export const updateKategori =  (data: any) => new Promise<void>((resolve, reject
     realm.write(() => {
       let kategori: any = realm.objectForPrimaryKey(KATEGORI_SCHEMA, data.id);
       kategori.nama_kategori = data.nama_kategori;
-      resolve();
+      resolve(kategori);
     });
   }).catch((error) => reject(error));
 });

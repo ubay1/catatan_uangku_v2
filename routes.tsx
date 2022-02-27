@@ -25,11 +25,14 @@ import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { setPage } from './src/store/whatsPage';
 import DetailScreen from './src/screens/DetailCatatan';
-import InputPemasukanScreen from './src/screens/Input/pemasukan';
-import InputPengeluaranScreen from './src/screens/Input/pengeluaran';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import SetelanScreen from './src/screens/Setelan';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from 'react-native-paper';
+import { COLOR_ACTIVE } from './src/assets/styles/global';
+import { StackCatatan } from './interfaceRoutes';
+import AddNote from './src/screens/Catatan/AddNote';
+import TextAtom from './src/components/atoms/text/TextAtom';
 
 const horizontalAnimation = {
   cardStyleInterpolator: ({ current, layouts }: any) => {
@@ -111,7 +114,7 @@ const MyTransition = {
 
 
 // ini jika ingin pake top tabs navigator
-const Tab = createMaterialTopTabNavigator();
+const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 
@@ -129,8 +132,22 @@ const HomeNavigator = () => {
       <Stack.Screen name="Beranda" component={HomeScreen} />
       <Stack.Screen name="Info" component={InfoScreen} />
       <Stack.Screen name="Detail" component={DetailScreen} />
-      <Stack.Screen name="InputPemasukan" component={InputPemasukanScreen} />
-      <Stack.Screen name="InputPengeluaran" component={InputPengeluaranScreen} />
+      <Stack.Screen name="AddNote" component={AddNote} />
+    </Stack.Navigator>
+  );
+};
+
+const CatatanNavigator = ({ route, navigation }: StackCatatan) => {
+  const navigationredux = useSelector((state: RootState) => state.navigationredux);
+  return (
+    <Stack.Navigator
+      initialRouteName={'Catatan'}
+      mode={'modal'}
+      screenOptions={{
+        headerShown: !navigationredux.showTab,
+      }}
+    >
+      <Stack.Screen name="AddNote" component={AddNote}/>
     </Stack.Navigator>
   );
 };
@@ -178,15 +195,15 @@ function MyTabBar({ state, descriptors, navigation }: any) {
       justifyContent:'center',
       alignItems:'center',
       backgroundColor:  '#fff',
-      height:70,
-      elevation: 10,
+      height:60,
+      // elevation: 10,
+      borderTopColor: '#eee',
+      borderTopWidth: 1,
       display: navigationredux.showTab === true ? 'flex' : 'none',
       }}
     >
       {state.routes.map((route: any, index: any) => {
         const { options } = descriptors[route.key];
-        // state
-        // {"history": [{"key": "Laporan-B9U2FwL7XKOiovPZfSwiB", "type": "route"}, {"key": "Input-IT2dVpWWDEepUKYs0klvr", "type": "route"}, {"key": "Beranda-iMRyvBKhp0oDJplai4eVv", "type": "route"}], "index": 0, "key": "tab-bCK3gqLY6JiGa964lx7IX", "routeNames": ["Beranda", "Input", "Laporan"], "routes": [{"key": "Beranda-iMRyvBKhp0oDJplai4eVv", "name": "Beranda", "params": undefined}, {"key": "Input-IT2dVpWWDEepUKYs0klvr", "name": "Input", "params": undefined}, {"key": "Laporan-B9U2FwL7XKOiovPZfSwiB", "name": "Laporan", "params": undefined}], "stale": false, "type": "tab"}
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
@@ -198,8 +215,10 @@ function MyTabBar({ state, descriptors, navigation }: any) {
 
             if (route.name === 'Beranda') {
               iconName = 'home';
-            } else if (route.name === 'Laporan') {
-              iconName = 'history';
+            } else if (route.name === 'Catatan') {
+              iconName = 'note';
+            } else if (route.name === 'Kategori') {
+              iconName = 'plus-box-multiple';
             } else {
               iconName = 'plus';
             }
@@ -243,34 +262,20 @@ function MyTabBar({ state, descriptors, navigation }: any) {
           >
             <View style={{
               position: 'relative',
-              bottom: iconName === 'plus' ? 20 : 0,
-              backgroundColor: iconName === 'plus' ? '#D0D9F9' : 'transaprent',
-              borderRadius: iconName === 'plus' ? 100 : 0,
-              elevation: iconName === 'plus' ? 2 : 0,
+              bottom: 0,
+              backgroundColor: 'transaprent',
+              borderRadius: 0,
+              elevation: 0,
               alignItems: 'center',
             }}>
               {
-                iconName === 'plus' ?
-                <LinearGradient
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  colors={['#4E54C8', '#8F94FB']}
-                  style={{ borderRadius: 100, padding: 10, elevation: 5 }}
-                >
-                  <IconMCI
-                    name={iconName}
-                    size={iconName === 'plus' ? 40 : 30}
-                    color="#fff"
-                  />
-                </LinearGradient>
-                :
                 <>
                 <IconMCI
                   name={iconName}
-                  size={iconName === 'plus' ? 40 : 30}
-                  color={isFocused ? '#4E54C8' : iconName === 'plus' ? '#859CF1' : '#C4C4C4'}
+                  size={25}
+                  color={isFocused ? COLOR_ACTIVE : '#ddd'}
                 />
-                <Text style={{color: isFocused ? '#4E54C8' : '#c4c4c4', fontSize: 12, textTransform: 'uppercase', fontWeight: 'bold'}}>{label}</Text>
+                <TextAtom color={isFocused ? COLOR_ACTIVE : '#ddd'} value={label} textTransform={'uppercase'} size={12} fontWeight="bold" />
                 </>
               }
             </View>
@@ -406,62 +411,49 @@ const Routes = () => {
             </Stack.Navigator>
               :
                 <Tab.Navigator
-                  // tabBar={props => <MyTabBar {...props} />}
+                  tabBar={props => <MyTabBar {...props} />}
+                  /* ------------------------- material top navigator ------------------------- */
                   // tabBarPosition={'bottom'}
-                  screenOptions={({ route }) => ({
-                    tabBarIcon: ({ focused, color, size }: any) => {
-                      let iconName: any;
+                  // swipeEnabled={false}
+                  // tabBarOptions={{
+                  //   tabStyle: {alignItems: 'center', justifyContent: 'center', padding: 10},
+                  //   showLabel: true,
+                  //   indicatorStyle: {
+                  //     backgroundColor: Colors.blue400,
+                  //     height: 3,
+                  //   },
+                  //   activeTintColor: Colors.blue400,
+                  //   inactiveTintColor: Colors.grey400,
+                  //   labelStyle: { fontWeight: 'bold', textTransform: 'uppercase' },
+                  //   style: {
+                  //     paddingBottom: 0,
+                  //     backgroundColor:  '#fff',
+                  //     borderTopColor: '#f2f2f2',
+                  //     borderTopWidth: 0,
+                  //     borderBottomColor: '#fff',
+                  //     borderBottomWidth: 0,
+                  //     overflow: 'hidden',
+                  //     display: navigationredux.showTab === true ? 'flex' : 'none',
+                  //   },
+                  // }}
+                  // screenOptions={({ route }) => ({
+                  //   tabBarIcon: ({ focused, color, size }: any) => {
+                  //     let iconName: any;
 
-                      if (route.name === 'Beranda') {
-                        iconName = focused ? 'home' : 'home';
-                      } else if (route.name === 'Laporan') {
-                        iconName = focused ? 'history' : 'history';
-                      }
+                  //     if (route.name === 'Beranda') {
+                  //       iconName = 'home';
+                  //     } else if (route.name === 'Catatan') {
+                  //       iconName = 'history';
+                  //     } else {
+                  //       iconName = 'history';
+                  //     }
+                  //       return <IconMCI name={iconName} size={30} color={color} />;
 
-                      // if (route.name === 'Input') {
-                      //   return (
-                      //     <TouchableOpacity style={{}}>
-                      //       <IconMCI name="plus" size={30} color={color} />
-                      //     </TouchableOpacity>
-                      //   )
-                      // } else {
-                        return <IconMCI name={iconName} size={30} color={color} />;
-                      // }
-
-                    },
-                  })}
-                  swipeEnabled={true}
-                  tabBarOptions={{
-                    tabStyle: {alignItems: 'center', justifyContent: 'center', padding: 10},
-                    showLabel: true,
-                    // showIcon: true,
-                    indicatorStyle: {
-                      // borderRadius: 10,
-                      backgroundColor: Colors.blue400,
-                      height: 3,
-                      // width: '25%',
-                      // marginLeft: 11,
-                      // marginRight: 10,
-                      // marginBottom: 6,
-                    },
-                    activeTintColor: Colors.blue400,
-                    inactiveTintColor: Colors.grey400,
-                    labelStyle: { fontWeight: 'bold', textTransform: 'uppercase' },
-                    style: {
-                      // height: 70,
-                      paddingBottom: 0,
-                      backgroundColor:  '#fff',
-                      borderTopColor: '#f2f2f2',
-                      borderTopWidth: 0,
-                      borderBottomColor: '#fff',
-                      borderBottomWidth: 0,
-                      overflow: 'hidden',
-                      display: navigationredux.showTab === true ? 'flex' : 'none',
-                    },
-                  }}
+                  //   },
+                  // })}
                 >
                   <Tab.Screen name="Beranda" component={HomeNavigator} />
-                  <Tab.Screen name="Laporan" component={LaporanNavigator} />
+                  <Tab.Screen name="Catatan" component={LaporanNavigator} />
                   <Tab.Screen name="Kategori" component={SetelanNavigator}/>
                 </Tab.Navigator>
         }
@@ -469,49 +461,5 @@ const Routes = () => {
     </AuthContext.Provider>
   );
 };
-
-//  <Stack.Navigator
-//           mode="card"
-//           initialRouteName={"Home"}
-//         >
-//           {state.isLoading ? (
-//             // We haven't finished checking for the token yet
-//             <Stack.Screen  name="Splash" component={SplashScreenss} />
-//           ) :
-//           state.gotek !== null ? (
-//             <Stack.Screen
-//               name="Home"
-//               component={Tabs}
-//               options={({ route, navigation }) => ({
-//                 headerTitle: getFocusedRouteNameFromRoute(route),
-//                 headerRight: () => (
-//                   <View style={{ marginRight: 10 }}>
-//                     <Button danger
-//                       onPress={handleSignOut}
-//                       style={{ padding: 10 }}>
-//                       <Text style={{ color: '#fff' }}>Sign Out</Text>
-//                     </Button>
-//                   </View>
-//                 ),
-//               })}
-//             />
-//           ) :
-//           (
-//             <>
-//               <Stack.Screen name="SignIn">
-//                 {(props) => {
-//                   return(
-//                     // jika {...props} tidak dimasukan, maka tidak dapat navigate
-//                     <SignInScreen {...props} onSignIn={handleSignIn} />
-//                   )
-//                 }}
-//               </Stack.Screen>
-//               <Stack.Screen name="SignUp">
-//                 {(props) => <SignUpScreen {...props} onSignUp={handleSignUp} />}
-//               </Stack.Screen>
-//               <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-//             </>
-//           )}
-//         </Stack.Navigator>
 
 export default Routes;
