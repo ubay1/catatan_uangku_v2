@@ -113,6 +113,11 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         const result = await createCatatan(data);
       } catch (error) {
         console.error('error = ',error);
+        setVisibleSnackbar({
+          isOpen: true,
+          type: 'error',
+          msg: 'Terjadi kesalahan dari server',
+        });
       } finally {
         setTimeout(() => {
           setVisibleSnackbar({
@@ -126,7 +131,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           setloading(false);
           dispatch(setPage({page: 'UpdateBeranda'}));
           navigation.navigate('Beranda');
-        }, 1000);
+        }, 700);
       }
     }
   };

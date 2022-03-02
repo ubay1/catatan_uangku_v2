@@ -1,5 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable radix */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {useFocusEffect} from '@react-navigation/native';
 import React from 'react';

@@ -145,12 +145,17 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         const result = await updateCatatan(data);
       } catch (error) {
         console.log('error = ', error);
+        setVisibleSnackbar({
+          isOpen: true,
+          type: 'error',
+          msg: 'Terjadi kesalahan dari server',
+        });
       } finally {
         setTimeout(() => {
           setVisibleSnackbar({
             isOpen: true,
             type: 'success',
-            msg: 'Catatan berhasil disimpan',
+            msg: 'Catatan berhasil diperbaharui',
           });
         }, 500);
 
@@ -158,7 +163,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           setLoadingUpdateData(false);
           dispatch(setPage({page: 'UpdateBeranda'}));
           navigation.navigate('Beranda');
-        }, 1000);
+        }, 700);
       }
     }
   };
