@@ -54,7 +54,6 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
 
   const [keterangan, setketerangan] = useState('');
 
-  const [name, setName] = React.useState('');
   const [loading, setloading] = React.useState(false);
   const [loadingDelete, setloadingDelete] = React.useState(false);
 
@@ -218,27 +217,6 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
 
     setlistKategori(filterItem);
   }
-
-  // useEffect(() => {
-  //   // dispatch(setHideTab())
-    // console.log('params = ',params.nominal)
-    // _filterKategori(params.tipe)
-    // setidCatatan(params.id)
-    // settipeCatatan(params.tipe)
-    // setDate(new Date(params.tanggal))
-    // setselectAkun(params.akun)
-    // setselectTujuan(params.tujuan)
-    // setnominal(params.nominal.toString())
-    // setketerangan(params.keterangan)
-    // setselectKategori(params.kategori)
-
-
-  //   navigation.addListener("beforeRemove", (param) => {
-  //     console.log('back to home')
-  //     dispatch(setPage({ page: 'Beranda' }))
-  //     dispatch(setShowTab())
-  //   })
-  // }, [navigation])
 
   useEffect(() => {
     if (whatspage.page === 'Edit') {

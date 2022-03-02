@@ -41,7 +41,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   const [loading, setloading] = React.useState(false);
 
   // state date
-  const [date, setDate] = React.useState<Date>(new Date());
+  const [date, setDate] = React.useState<any>(new Date());
   const [mode, setMode] = React.useState<any>('date');
   const [show, setShow] = React.useState(false);
 
@@ -74,7 +74,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   const [keterangan, setketerangan] = React.useState('');
 
   React.useEffect(() => {
-    console.log(route.params);
+    // console.log(route.params);
     setKategoriList(dataProps);
   }, []);
   // const [data, setData] = React.useState(null);
@@ -99,6 +99,8 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
       keterangan: keterangan,
     };
 
+    console.log(data);
+
     if (selectAkun === '' || selectKategori === '' || nominal === '' || keterangan === '') {
       setVisibleSnackbar({
         isOpen: true,
@@ -110,7 +112,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
       try {
         const result = await createCatatan(data);
       } catch (error) {
-        console.log('error = ',error);
+        console.error('error = ',error);
       } finally {
         setTimeout(() => {
           setVisibleSnackbar({
@@ -122,7 +124,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
 
         setTimeout(() => {
           setloading(false);
-          dispatch(setPage({page: 'updateBeranda'}));
+          dispatch(setPage({page: 'UpdateBeranda'}));
           navigation.navigate('Beranda');
         }, 1000);
       }
@@ -136,12 +138,6 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
 
   const showDatepicker = () => {
     showMode('date');
-  };
-
-  const onChange = (selectedDate: any) => {
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
-    setShow(false);
   };
 
   const closeSnackbar = () => {
@@ -178,7 +174,11 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
               mode={mode}
               is24Hour={true}
               display="default"
-              onChange={onChange}
+              onChange={(event: any, selectedDate: any) => {
+                const currentDate = selectedDate || date;
+                setDate(currentDate);
+                setShow(false);
+              }}
             />
           )}
         </View>

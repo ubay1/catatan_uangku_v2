@@ -7,24 +7,23 @@ import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { IPropsHeaderAddNote } from './types';
 import TextAtom from '../../atoms/text/TextAtom';
 
-const Header = ({navigation, title}: IPropsHeaderAddNote) => {
+const HeaderAddNote = ({navigation, title}: IPropsHeaderAddNote) => {
   return (
     <View style={stylesCustom.container}>
-      <FAB
-        style={{
-          ...styles.btnFab,
-          position: 'absolute',
-          top: -12,
-          left: 0,
-          backgroundColor: Colors.pink400,
-        }}
-        icon={() => {
-          return <IconMCI name="arrow-left" color={Colors.white} size={23} />;
-        }}
-        onPress={() => {
-          navigation.pop();
-        }}
-      />
+      <View style={{position: 'absolute', left: 0, height: '100%', justifyContent: 'center'}}>
+        <FAB
+          style={{
+            ...styles.btnFab,
+            backgroundColor: Colors.pink400,
+          }}
+          icon={() => {
+            return <IconMCI name="arrow-left" color={Colors.white} size={23} />;
+          }}
+          onPress={() => {
+            navigation.pop();
+          }}
+        />
+      </View>
       <View>
         <TextAtom size={20} value={title} />
       </View>
@@ -35,10 +34,13 @@ const Header = ({navigation, title}: IPropsHeaderAddNote) => {
 const stylesCustom = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    marginVertical: 30,
+    marginBottom: 30,
+    marginTop: 20,
     alignItems: 'center',
     flexDirection: 'row',
+    position: 'relative',
+    height: 60,
   },
 });
 
-export default Header;
+export default HeaderAddNote;

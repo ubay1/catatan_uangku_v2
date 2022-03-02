@@ -15,8 +15,7 @@ const TextInputAtom = ({
   marginX = 20,
   marginY = 5,
   height = 50,
-  numberOfLines = 0,
-  multiLine = false,
+  value,
 }: IPropsTextInput) => {
   return (
     <TextInput
@@ -25,6 +24,7 @@ const TextInputAtom = ({
         marginHorizontal: marginX,
         marginVertical: marginY,
       }}
+      value={value}
       mode={mode}
       label={label}
       theme={theme}

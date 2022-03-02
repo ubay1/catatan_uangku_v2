@@ -10,7 +10,7 @@ import { AppDispatch } from '../../../store';
 import {setPage} from '../../../store/whatsPage';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { IPropsModal } from './types';
-import styles from "../../../assets/styles/global";
+import styles from '../../../assets/styles/global';
 
 
 const ModalAtom = ({closeModal, visible, children}: IPropsModal) => {

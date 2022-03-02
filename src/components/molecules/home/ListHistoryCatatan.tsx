@@ -10,10 +10,18 @@ import {
   StyleSheet,
   ActivityIndicator,
   Pressable,
+  ScrollView,
 } from 'react-native';
-import {Colors, Divider} from 'react-native-paper';
+import {Button, Colors, Divider} from 'react-native-paper';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
-import {COLOR_ACTIVE, COLOR_BLACK} from '../../../assets/styles/global';
+import {
+  COLOR_ACTIVE,
+  COLOR_ACTIVE_SOFT,
+  COLOR_BLACK,
+  COLOR_ERROR,
+  COLOR_ERROR_SOFT,
+  COLOR_WHITE,
+} from '../../../assets/styles/global';
 import {formatRupiah} from '../../../helper/formatNumber';
 import TextAtom from '../../atoms/text/TextAtom';
 import {IPropsListCatatan} from './types';
@@ -25,7 +33,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '../../../store';
 import {setPage} from '../../../store/whatsPage';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
+import ButtonAtom from '../../atoms/button/ButtonAtom';
+import ButtonIconAtom from '../../atoms/button/ButtonIconAtom';
+import ButtonIconTextAtom from '../../atoms/button/ButtonIconTextAtom';
+import { deleteCatatan } from '../../../../db/database';
 
 const Logo = require('../../../assets/logo/logo2.png');
 
@@ -36,6 +48,7 @@ const ListHistoryCatatan = ({
   saldoAtm,
   saldoDompet,
   navigation,
+  openModalDelete,
 }: IPropsListCatatan) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
@@ -57,42 +70,27 @@ const ListHistoryCatatan = ({
     };
   }, [loading]);
   /* -------------------------------------------------------------------------- */
-  /*                                   handle form                              */
-  /* -------------------------------------------------------------------------- */
-  /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
   const renderItems = ({item, index}: any) => {
     return (
       <View key={`item-${item.id}`}>
-        <TouchableOpacity
+        <View
           style={{
             backgroundColor: '#fff',
             flexDirection: 'row',
             justifyContent: 'space-between',
             height: responsiveHeight(7),
+            marginBottom: 5,
           }}
-          onPress={() => {
-            // dispatch(setPage({ page: 'Edit' }));
-            // showModalDetailNote(item);
-            navigation.navigate('Detail', {
-              data: item,
-              listKategori: allKategori,
-              saldoAtm: saldoAtm,
-              saldoDompet: saldoDompet,
-            });
-          }}>
+        >
           <View style={{flexDirection: 'row'}}>
             <View style={{justifyContent: 'space-between'}}>
               <View style={{justifyContent: 'center', height: '50%'}}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    textTransform: 'capitalize',
-                    color: '#000',
-                  }}>
-                  {item.keterangan}
-                </Text>
+                <TextAtom
+                  fontWeight={'bold'}
+                  value={item.keterangan}
+                />
               </View>
               <View
                 style={{
@@ -101,28 +99,25 @@ const ListHistoryCatatan = ({
                   flexDirection: 'row',
                   height: '50%',
                 }}>
-                <Text
-                  style={{textTransform: 'uppercase', color: Colors.grey400}}>
-                  {item.akun}
-                </Text>
+                <TextAtom
+                  textTransform="uppercase"
+                  color={Colors.grey400}
+                  value={item.akun}
+                />
                 {item.tujuan === 'tarik tunai' ? (
-                  <Text
-                    style={{
-                      backgroundColor:
-                        item.tipe === 'pemasukan'
-                          ? Colors.green50
-                          : Colors.red50,
-                      marginLeft: 10,
-                      fontWeight: 'bold',
-                      textTransform: 'uppercase',
-                      color:
-                        item.tipe === 'pemasukan'
-                          ? Colors.green400
-                          : Colors.red400,
-                      paddingHorizontal: 5,
-                    }}>
-                    Tarik Tunai
-                  </Text>
+                  <TextAtom
+                    textTransform="uppercase"
+                    color={
+                      item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400
+                    }
+                    value="tarik tunai"
+                    bgColor={
+                      item.tipe === 'pemasukan' ? Colors.green50 : Colors.red50
+                    }
+                    pHorizontal={5}
+                    mLeft={10}
+                    fontWeight="bold"
+                  />
                 ) : (
                   <Text />
                 )}
@@ -138,37 +133,81 @@ const ListHistoryCatatan = ({
             }}>
             <View style={{marginLeft: 10, height: '100%'}}>
               <View style={{justifyContent: 'center', height: '50%'}}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    textTransform: 'capitalize',
-                    color:
-                      item.tipe === 'pemasukan'
-                        ? Colors.green400
-                        : Colors.red400,
-                  }}>
-                  {item.tipe === 'pemasukan' ? '+ ' : '- '}
-                  {formatRupiah(item.nominal)}
-                </Text>
+                <TextAtom
+                  textTransform="capitalize"
+                  color={
+                    item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400
+                  }
+                  value={
+                    `${item.tipe === 'pemasukan' ? '+ ' : '- '} ${formatRupiah(item.nominal)}`
+                  }
+                  fontWeight="bold"
+                />
               </View>
               <View style={{justifyContent: 'center', height: '50%'}}>
-                <Text
-                  style={{
-                    textTransform: 'uppercase',
-                    color: Colors.grey400,
-                    textAlign: 'right',
-                  }}>
-                  {moment(item.tanggal).format('L')}
-                </Text>
+                <TextAtom
+                  textTransform="uppercase"
+                  color={Colors.grey400}
+                  textAlign="right"
+                  value={moment(item.tanggal).format('L')}
+                />
               </View>
             </View>
           </View>
-        </TouchableOpacity>
-        {/* <View style={{
-          marginBottom: 5, borderColor: Colors.grey600, borderWidth: 1.5,
-          borderStyle: 'dotted', borderRadius: 1,
-        }}
-        /> */}
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: 15,
+            height: 40,
+            // backgroundColor: 'orange',
+          }}>
+          <View
+            style={{width: '48%', height: '100%', justifyContent: 'center'}}>
+            <ButtonIconTextAtom
+              bgColor={COLOR_WHITE}
+              borderColor={COLOR_ERROR}
+              borderWidth={1}
+              icon="delete"
+              color={COLOR_ERROR}
+              textColor={COLOR_ERROR}
+              title="Hapus"
+              size={20}
+              action={() => {
+                openModalDelete(item.id);
+              }}
+            />
+          </View>
+          <View
+            style={{width: '48%', height: '100%', justifyContent: 'center'}}>
+            <ButtonIconTextAtom
+              bgColor={COLOR_WHITE}
+              borderColor={Colors.blue400}
+              borderWidth={1}
+              icon="pencil"
+              color={COLOR_ACTIVE}
+              textColor={COLOR_ACTIVE}
+              title="Edit"
+              size={20}
+              action={() => {
+                dispatch(setPage({ page: 'DetailNote' }));
+                navigation.navigate('DetailNote', {
+                  // data: item,
+                  // saldoAtm: saldoAtm,
+                  // saldoDompet: saldoDompet,
+                  title: item.tipe === 'pemasukan' ? 'Edit Pemasukan' : 'Edit Pengeluaran',
+                  type: item.tipe,
+                  data: item,
+                  listKategori: filterKategori(item.tipe),
+                  saldoAtm: saldoAtm,
+                  saldoDompet: saldoDompet,
+                });
+              }}
+            />
+          </View>
+        </View>
         <Divider
           style={{
             marginBottom: 5,
@@ -216,7 +255,7 @@ const ListHistoryCatatan = ({
         <LinearGradient
           start={{x: 1, y: 1}}
           end={{x: 0, y: 0}}
-          colors={[Colors.green100, Colors.green50]}
+          colors={[Colors.purple200, Colors.purple100]}
           style={{
             height: responsiveHeight(15),
             position: 'relative',
@@ -237,6 +276,7 @@ const ListHistoryCatatan = ({
               // backgroundColor: 'red'
             }}
             onPress={() => {
+              dispatch(setPage({page: 'AddNote'}));
               navigation.navigate('AddNote', {
                 title: 'Input Pemasukan',
                 type: 'pemasukan',
@@ -248,15 +288,16 @@ const ListHistoryCatatan = ({
             }}>
             <TextAtom
               value="Pemasukan"
-              color={Colors.green400}
+              color={Colors.purple400}
               fontWeight="bold"
+              size={20}
             />
             <Image
               source={require('../../../assets/images/pemasukan.png')}
               resizeMode="stretch"
               style={{
-                width: responsiveHeight(20),
-                height: responsiveHeight(20),
+                width: responsiveHeight(22),
+                height: responsiveHeight(22),
               }}
             />
           </Pressable>
@@ -264,13 +305,14 @@ const ListHistoryCatatan = ({
         <LinearGradient
           start={{x: 1, y: 1}}
           end={{x: 0, y: 0}}
-          colors={[Colors.red100, Colors.red50]}
+          colors={[Colors.red200, Colors.red100]}
           style={{
             height: responsiveHeight(15),
             position: 'relative',
             width: '100%',
             borderRadius: 5,
             marginBottom: 10,
+            marginTop: 20,
           }}>
           <Pressable
             style={{
@@ -285,6 +327,7 @@ const ListHistoryCatatan = ({
               // backgroundColor: 'red'
             }}
             onPress={() => {
+              dispatch(setPage({page: 'AddNote'}));
               navigation.navigate('AddNote', {
                 title: 'Input Pengeluaran',
                 type: 'pengeluaran',
@@ -298,13 +341,14 @@ const ListHistoryCatatan = ({
               value="Pengeluaran"
               color={Colors.red400}
               fontWeight="bold"
+              size={20}
             />
             <Image
               source={require('../../../assets/images/pengeluaran.png')}
               resizeMode="stretch"
               style={{
-                width: responsiveHeight(20),
-                height: responsiveHeight(20),
+                width: responsiveHeight(22),
+                height: responsiveHeight(22),
               }}
             />
           </Pressable>
@@ -324,12 +368,8 @@ const ListHistoryCatatan = ({
   };
   /* ------------------------- Modal Select Input Type ------------------------ */
 
-  /* ---------------------------- Modal Detail Note --------------------------- */
-  const showModalDetailNote = (data: any) => {
-    setVisibleModalDetailNote(true);
-    // setdataItemDetail(data);
-  };
-  /* ---------------------------- Modal Detail Note --------------------------- */
+  /* ---------------------------- Modal Delete --------------------------- */
+  /* ---------------------------- Modal Delete --------------------------- */
 
   /* -------------------------------------------------------------------------- */
   /*                                   show page                                */

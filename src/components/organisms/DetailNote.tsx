@@ -2,21 +2,25 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import {SafeAreaView, ScrollView} from 'react-native';
+import {SafeAreaView, ScrollView, LogBox } from 'react-native';
 import { useDispatch } from 'react-redux';
 import {StackAddNote} from '../../../interfaceRoutes';
 import { AppDispatch } from '../../store';
 import { setHideTab, setShowTab } from '../../store/navigationRedux';
-import FormInput from '../molecules/addNote/FormInput';
+import FormInput from '../molecules/detailNote/FormInput';
 import HeaderAddNote from '../molecules/addNote/Header';
 import { IPropsAddNote } from '../molecules/addNote/types';
 
-const AddNote = ({navigation, route}: IPropsAddNote) => {
-  const {title, data: dataProps, saldoAtm, saldoDompet} = route.params;
+const DetailNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
+  const {title, data: dataProps, listKategori, saldoAtm, saldoDompet} = route.params;
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
   const dispatch: AppDispatch = useDispatch();
+
+  LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+  ]);
 
   React.useEffect(() => {
     navigation.setOptions({
@@ -48,4 +52,4 @@ const AddNote = ({navigation, route}: IPropsAddNote) => {
   );
 };
 
-export default AddNote;
+export default DetailNoteOrganisms;

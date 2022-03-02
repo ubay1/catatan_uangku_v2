@@ -31,8 +31,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from 'react-native-paper';
 import { COLOR_ACTIVE } from './src/assets/styles/global';
 import { StackCatatan } from './interfaceRoutes';
-import AddNote from './src/screens/Catatan/AddNote';
+import AddNote from './src/screens/Note/AddNote';
 import TextAtom from './src/components/atoms/text/TextAtom';
+import DetailNote from './src/screens/Note/DetailNote';
 
 const horizontalAnimation = {
   cardStyleInterpolator: ({ current, layouts }: any) => {
@@ -131,23 +132,8 @@ const HomeNavigator = () => {
     >
       <Stack.Screen name="Beranda" component={HomeScreen} />
       <Stack.Screen name="Info" component={InfoScreen} />
-      <Stack.Screen name="Detail" component={DetailScreen} />
+      <Stack.Screen name="DetailNote" component={DetailNote} />
       <Stack.Screen name="AddNote" component={AddNote} />
-    </Stack.Navigator>
-  );
-};
-
-const CatatanNavigator = ({ route, navigation }: StackCatatan) => {
-  const navigationredux = useSelector((state: RootState) => state.navigationredux);
-  return (
-    <Stack.Navigator
-      initialRouteName={'Catatan'}
-      mode={'modal'}
-      screenOptions={{
-        headerShown: !navigationredux.showTab,
-      }}
-    >
-      <Stack.Screen name="AddNote" component={AddNote}/>
     </Stack.Navigator>
   );
 };

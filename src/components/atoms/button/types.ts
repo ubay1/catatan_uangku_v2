@@ -11,15 +11,29 @@ export interface IPropsButton {
   marginY?: number;
 }
 export interface IPropsButtonWithIcon {
-  title: string;
-  mode: any;
+  icon: string;
+  color?: any;
+  size?: number;
+  borderColor?: string;
+  borderWidth?: number;
+  disabled?: boolean;
+  action?: any;
+  bgColor?: string;
+  rounded?: number;
+}
+export interface IPropsButtonWithIconText {
+  title?: string;
   icon: string;
   uppercase?: boolean;
   color?: any;
   disabled?: boolean;
-  theme?: object,
   action?: any;
   textColor?: string;
+  bgColor?: string;
+  borderColor?: string;
+  borderWidth?: number;
+  rounded?: number;
+  size?: number;
 }
 
 export interface IPropsButtonText {
@@ -31,4 +45,5 @@ export interface IPropsButtonText {
   uppercase?: boolean;
   rounded?: number;
   action?: any;
+  fontWeight?: string;
 }
