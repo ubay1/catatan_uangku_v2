@@ -51,9 +51,9 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   const [idCatatan, setIdCatatan] = React.useState(0);
   const [visibleModalDelete, setVisibleModalDelete] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   loadAll();
-  // }, []);
+  React.useEffect(() => {
+    loadAll();
+  }, []);
 
   // cek data allCatatan
   React.useEffect(() => {
@@ -130,8 +130,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   }, [allCatatan]);
 
   React.useEffect(() => {
-    if (whatspage.page === 'Beranda' || whatspage.page === 'UpdateBeranda') {
-      setLoading(true);
+    if (whatspage.page === 'UpdateBeranda') {
       closeModalDelete();
       loadAll();
     }

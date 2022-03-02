@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { Alert, Dimensions, FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable radix */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from 'react';
+import { Alert, Dimensions, FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { ActivityIndicator, Button, Colors, Divider, Modal, Portal } from 'react-native-paper';
 
 import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions';
-import { StackLaporan } from '../../../interfaceRoutes'
-import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons'
+import { StackLaporan } from '../../../interfaceRoutes';
+import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import moment from 'moment';
@@ -16,7 +20,7 @@ import { getFilterCatatanByDate, getFilterCatatanByMonth } from '../../../db/dat
 const LaporanScreen = ({ route, navigation }: StackLaporan) => {
 
 
-  const dispatch: AppDispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch();
   // const laporan = useSelector((state: RootState) => state.laporan)
 
   const [orientationScreen, setorientationScreen] = useState('');
@@ -28,7 +32,7 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
     else {
       setorientationScreen('landscape');
     }
-  }
+  };
 
   const [loading, setloading] = React.useState(false);
   const [selectJenisFilter, setselectJenisFilter] = useState('');
@@ -36,16 +40,16 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
   const [tampungJenisFilterfromDate, settampungJenisFilterfromDate] = useState<any>('');
   const [tampungJenisFiltertoDate, settampungJenisFiltertoDate] = useState<any>('');
 
-  const [fetchAllCatatan, setfetchAllCatatan] = useState<any>(false)
+  const [fetchAllCatatan, setfetchAllCatatan] = useState<any>(false);
   const [allCatatan, setallCatatan] = useState<any>([]);
 
   const [allTotal, setallTotal] = useState<number>(0);
   const [totalPemasukan, settotalPemasukan] = useState<number>(0);
   const [totalPengeluaran, settotalPengeluaran] = useState<number>(0);
 
-  const [date, setDate] = useState<any>(new Date())
-  const [fromDate, setfromDate] = useState<any>(new Date())
-  const [toDate, settoDate] = useState<any>(new Date())
+  const [date, setDate] = useState<any>(new Date());
+  const [fromDate, setfromDate] = useState<any>(new Date());
+  const [toDate, settoDate] = useState<any>(new Date());
   const [mode1, setMode1] = useState<any>('date');
   const [show1, setShow1] = useState(false);
   const [mode2, setMode2] = useState<any>('date');
@@ -68,8 +72,8 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
   const onChange1 = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || fromDate;
     setfromDate(currentDate);
-    settampungJenisFilterfromDate(currentDate)
-    setShow1(false)
+    settampungJenisFilterfromDate(currentDate);
+    setShow1(false);
   };
 
   const showMode1 = (currentMode: React.SetStateAction<string>) => {
@@ -84,8 +88,8 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
   const onChange2 = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || toDate;
     settoDate(currentDate);
-    settampungJenisFiltertoDate(currentDate)
-    setShow2(false)
+    settampungJenisFiltertoDate(currentDate);
+    setShow2(false);
   };
 
   const showMode2 = (currentMode: React.SetStateAction<string>) => {
@@ -102,7 +106,7 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
   /* -------------------------------------------------------------------------- */
 
   function formatRupiah(value: any) {
-    return new Intl.NumberFormat('id').format(value)
+    return new Intl.NumberFormat('id').format(value);
   }
 
   interface IListCatatan {
@@ -115,138 +119,138 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
       getFilterCatatanByMonth(month)
         .then((respListCatatan: any) => {
           if (respListCatatan.length === 0) {
-            setallTotal(0)
-            settotalPemasukan(0)
-            settotalPengeluaran(0)
+            setallTotal(0);
+            settotalPemasukan(0);
+            settotalPengeluaran(0);
             ToastAndroid.showWithGravity(
-              "Data tidak ditemukan",
+              'Data tidak ditemukan',
               ToastAndroid.LONG,
               ToastAndroid.LONG
             );
-            setallCatatan([])
+            setallCatatan([]);
           } else {
             const all_total: any[] = [];
             const total_pemasukan: any[] = [];
             const total_pengeluaran: any[] = [];
             respListCatatan.map((item: IListCatatan) => {
               if (item.tipe === 'pemasukan') {
-                total_pemasukan.push(parseInt(item.nominal))
-                all_total.push(parseInt(item.nominal))
+                total_pemasukan.push(parseInt(item.nominal));
+                all_total.push(parseInt(item.nominal));
               } else {
-                total_pengeluaran.push(parseInt(item.nominal))
-                all_total.push(parseInt(item.nominal))
+                total_pengeluaran.push(parseInt(item.nominal));
+                all_total.push(parseInt(item.nominal));
               }
-            })
-  
-            const reduce_all_total = all_total.reduce((a, b) => a + b, 0)
-            const reduce_total_pemasukan = total_pemasukan.reduce((a, b) => a + b, 0)
-            const reduce_total_pengeluaran = total_pengeluaran.reduce((a, b) => a + b, 0)
-  
-            setallCatatan([])
+            });
+
+            const reduce_all_total = all_total.reduce((a, b) => a + b, 0);
+            const reduce_total_pemasukan = total_pemasukan.reduce((a, b) => a + b, 0);
+            const reduce_total_pengeluaran = total_pengeluaran.reduce((a, b) => a + b, 0);
+
+            setallCatatan([]);
             setallCatatan(respListCatatan);
-            setallTotal(reduce_all_total)
-            settotalPemasukan(reduce_total_pemasukan)
-            settotalPengeluaran(reduce_total_pengeluaran)
+            setallTotal(reduce_all_total);
+            settotalPemasukan(reduce_total_pemasukan);
+            settotalPengeluaran(reduce_total_pengeluaran);
           }
-  
-          setfetchAllCatatan(false)
+
+          setfetchAllCatatan(false);
         })
         .catch((err) => {
-          console.log('error = ', err)
-          setfetchAllCatatan(false)
-        })
+          console.log('error = ', err);
+          setfetchAllCatatan(false);
+        });
     }, 500);
-    
-  }
+
+  };
 
   const getCatatanByDate = () => {
     setTimeout(() => {
       getFilterCatatanByDate(fromDate, toDate)
         .then((respListCatatan: any) => {
-          console.log('data catatan by date = ', respListCatatan)
-          setVisible(false)
+          console.log('data catatan by date = ', respListCatatan);
+          setVisible(false);
           setfromDate(new Date());
           settoDate(new Date());
-          setloading(false)
+          setloading(false);
           setselectJenisFilter('');
-  
+
           if (respListCatatan.length === 0) {
-            setallTotal(0)
-            settotalPemasukan(0)
-            settotalPengeluaran(0)
+            setallTotal(0);
+            settotalPemasukan(0);
+            settotalPengeluaran(0);
             ToastAndroid.showWithGravity(
-              "Data tidak ditemukan",
+              'Data tidak ditemukan',
               ToastAndroid.LONG,
               ToastAndroid.LONG
             );
-            setallCatatan([])
+            setallCatatan([]);
           } else {
             const all_total: any[] = [];
             const total_pemasukan: any[] = [];
             const total_pengeluaran: any[] = [];
             respListCatatan.map((item: IListCatatan) => {
               if (item.tipe === 'pemasukan') {
-                total_pemasukan.push(parseInt(item.nominal))
-                all_total.push(parseInt(item.nominal))
+                total_pemasukan.push(parseInt(item.nominal));
+                all_total.push(parseInt(item.nominal));
               } else {
-                total_pengeluaran.push(parseInt(item.nominal))
-                all_total.push(parseInt(item.nominal))
+                total_pengeluaran.push(parseInt(item.nominal));
+                all_total.push(parseInt(item.nominal));
               }
-            })
-  
-            const reduce_all_total = all_total.reduce((a, b) => a + b, 0)
-            const reduce_total_pemasukan = total_pemasukan.reduce((a, b) => a + b, 0)
-            const reduce_total_pengeluaran = total_pengeluaran.reduce((a, b) => a + b, 0)
-  
-            setallCatatan([])
+            });
+
+            const reduce_all_total = all_total.reduce((a, b) => a + b, 0);
+            const reduce_total_pemasukan = total_pemasukan.reduce((a, b) => a + b, 0);
+            const reduce_total_pengeluaran = total_pengeluaran.reduce((a, b) => a + b, 0);
+
+            setallCatatan([]);
             setallCatatan(respListCatatan);
-            setallTotal(reduce_all_total)
-            settotalPemasukan(reduce_total_pemasukan)
-            settotalPengeluaran(reduce_total_pengeluaran)
+            setallTotal(reduce_all_total);
+            settotalPemasukan(reduce_total_pemasukan);
+            settotalPengeluaran(reduce_total_pengeluaran);
           }
-  
-          setfetchAllCatatan(false)
-          setloading(false)
+
+          setfetchAllCatatan(false);
+          setloading(false);
         })
         .catch((err) => {
-          console.log('error = ', err)
-          setfetchAllCatatan(false)
-          setloading(false)
-        })
+          console.log('error = ', err);
+          setfetchAllCatatan(false);
+          setloading(false);
+        });
     }, 500);
 
-  }
+  };
 
   useEffect(() => {
     if (selectJenisFilter === 'custom_tanggal') {
-      showModal()
+      showModal();
     } else if (selectJenisFilter === 'bulan_ini') {
-      setfetchAllCatatan(true)
-      getCatatanByMonth(moment().format('M'))
+      setfetchAllCatatan(true);
+      getCatatanByMonth(moment().format('M'));
     } else if (selectJenisFilter === 'bulan_lalu') {
-      setfetchAllCatatan(true)
-      getCatatanByMonth(moment().subtract(1, 'months').format('M'))
+      setfetchAllCatatan(true);
+      getCatatanByMonth(moment().subtract(1, 'months').format('M'));
     }
-  }, [selectJenisFilter])
+  }, [selectJenisFilter]);
 
   React.useEffect(() => {
     navigation.addListener('focus', e => {
-      dispatch(setPage({ page: 'Laporan' }))
+      dispatch(setPage({ page: 'Laporan' }));
     });
   }, [navigation]);
 
   useEffect(() => {
-    getOrientation()
+    getOrientation();
     Dimensions.addEventListener('change', () => {
-      getOrientation()
-    })
-  }, [])
+      getOrientation();
+    });
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={{
-        // backgroundColor: 'red', 
-        height: responsiveHeight(100)
+        // backgroundColor: 'red',
+        height: responsiveHeight(100),
       }}
       >
         <View style={{
@@ -261,22 +265,22 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
           <DropDownPicker
             placeholder="Pilih Tipe Laporan"
             items={[
-              { label: "Pilih Tipe Laporan", value: "", hidden: true },
-              { label: "Bulan Ini", value: "bulan_ini" },
-              { label: "Bulan Lalu", value: "bulan_lalu" },
-              { label: "Atur Tanggal Sendiri", value: "custom_tanggal" },
+              { label: 'Pilih Tipe Laporan', value: '', hidden: true },
+              { label: 'Bulan Ini', value: 'bulan_ini' },
+              { label: 'Bulan Lalu', value: 'bulan_lalu' },
+              { label: 'Atur Tanggal Sendiri', value: 'custom_tanggal' },
             ]}
             defaultValue={selectJenisFilter}
             containerStyle={{ height: responsiveHeight(7) }}
             style={{ backgroundColor: '#fff', borderColor: Colors.grey600 }}
             itemStyle={{
-              justifyContent: 'flex-start'
+              justifyContent: 'flex-start',
             }}
             dropDownStyle={{ backgroundColor: '#fafafa', borderColor: Colors.grey600 }}
             onChangeItem={(item: any) => {
               // console.log(item)
-              setselectJenisFilter(item.value)
-              settampungJenisFilter(item.value)
+              setselectJenisFilter(item.value);
+              settampungJenisFilter(item.value);
             }}
           />
 
@@ -284,12 +288,12 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
             style={{
               // position: 'absolute', zIndex: 0,
               // top: 70, width: '100%'
-              marginTop: 20
+              marginTop: 20,
             }}
           >
             {
               fetchAllCatatan === true ?
-                <ActivityIndicator animating={true} color={Colors.blue400} style={{ marginTop: 20, }} />
+                <ActivityIndicator animating={true} color={Colors.blue400} style={{ marginTop: 20 }} />
                 :
                 <View>
                   <View style={{
@@ -341,17 +345,17 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
 
             <View style={{
               justifyContent: 'center', alignItems: 'center',
-              flexDirection: 'row', marginVertical: 20, marginHorizontal: 0
+              flexDirection: 'row', marginVertical: 20, marginHorizontal: 0,
             }}>
               <View style={{
                 marginTop: 10, borderColor: Colors.grey600, borderWidth: 2,
-                borderStyle: 'dotted', borderRadius: 1, width: '33.3333333333%'
+                borderStyle: 'dotted', borderRadius: 1, width: '33.3333333333%',
               }}
               />
               <Text style={{ width: '33.3333333333%', color: Colors.black, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase' }}>List Catatan</Text>
               <View style={{
                 marginTop: 10, borderColor: Colors.grey600, borderWidth: 2,
-                borderStyle: 'dotted', borderRadius: 1, width: '33.3333333333%'
+                borderStyle: 'dotted', borderRadius: 1, width: '33.3333333333%',
               }}
               />
             </View>
@@ -360,8 +364,8 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
 
           {
             fetchAllCatatan === true ?
-              <ActivityIndicator 
-                animating={true} color={Colors.blue400} style={{ marginTop: 20, }} 
+              <ActivityIndicator
+                animating={true} color={Colors.blue400} style={{ marginTop: 20 }}
               />
             :
             allCatatan.length === 0 ?
@@ -370,7 +374,7 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
               <ScrollView style={{marginHorizontal: 0}}>
                 {
                   allCatatan.map((item: any, index: any) => {
-                    return(
+                    return (
                       <View key={`item-${item.id}`}>
                           <View
                             style={{
@@ -379,8 +383,8 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
                               height: responsiveHeight(7),
                             }}
                           >
-                            <View style={{ flexDirection: 'row', }}>
-                              <View style={{ justifyContent: 'space-between', }}>
+                            <View style={{ flexDirection: 'row' }}>
+                              <View style={{ justifyContent: 'space-between' }}>
                                 <View style={{ justifyContent: 'center', height: '50%' }}>
                                   <Text style={{ fontWeight: 'bold', textTransform: 'capitalize', color: '#000' }}
                                   >
@@ -395,9 +399,9 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
                                   {
                                     item.tujuan === 'tarik tunai' ?
                                       <Text style={{
-                                        backgroundColor: item.tipe === 'pemasukan' ? Colors.green50 : Colors.red50, marginLeft: 10, fontWeight: 'bold', textTransform: 'uppercase', color: item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400, paddingHorizontal: 5
+                                        backgroundColor: item.tipe === 'pemasukan' ? Colors.green50 : Colors.red50, marginLeft: 10, fontWeight: 'bold', textTransform: 'uppercase', color: item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400, paddingHorizontal: 5,
                                       }}>Tarik Tunai</Text>
-                                      : <Text></Text>
+                                      : <Text />
                                   }
                                 </View>
                               </View>
@@ -407,7 +411,7 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
                               <View style={{ marginLeft: 10, height: '100%' }}>
                                 <View style={{ justifyContent: 'center', height: '50%' }}>
                                   <Text style={{
-                                    fontWeight: 'bold', textTransform: 'capitalize', color: item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400
+                                    fontWeight: 'bold', textTransform: 'capitalize', color: item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400,
                                   }}>
                                     {item.tipe === 'pemasukan' ? '+ ' : '- '}
                                     Rp. {formatRupiah(item.nominal)}
@@ -425,13 +429,13 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
                             borderStyle: 'dotted', borderRadius: 1,
                           }}
                           /> */}
-                          <Divider 
+                          <Divider
                             style={{
-                              marginBottom: 5, borderColor: Colors.grey300, borderWidth: .3,
+                              marginBottom: 5, borderColor: Colors.grey300, borderWidth: 0.3,
                             }}
                           />
                         </View>
-                    )
+                    );
                   })
                 }
               </ScrollView>
@@ -482,7 +486,7 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
             flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 55,
           }}>
             <View style={{
-              ...styles.border_text
+              ...styles.border_text,
             }}
             >
               <Text style={{ color: '#000' }}>{moment(toDate).format('YYYY-MM-DD').toString()}</Text>
@@ -517,8 +521,8 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
             color={Colors.blue400}
             mode="contained"
             onPress={() => {
-              setloading(true)
-              getCatatanByDate()
+              setloading(true);
+              getCatatanByDate();
               // setTimeout(() => {
               //   setloading(false)
               // }, 2000);
@@ -542,8 +546,8 @@ const LaporanScreen = ({ route, navigation }: StackLaporan) => {
       </Portal>
 
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   border_text: {
@@ -556,7 +560,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRightWidth: 0,
     borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5
+    borderBottomLeftRadius: 5,
   },
   border_calender: {
     backgroundColor: Colors.white,
@@ -575,8 +579,8 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.grey600, borderTopWidth: 1,
     borderBottomColor: Colors.grey600, borderBottomWidth: 1,
     borderRadius: 5,
-    marginBottom: 5, elevation: 0
-  }
-})
+    marginBottom: 5, elevation: 0,
+  },
+});
 
-export default LaporanScreen
+export default LaporanScreen;
