@@ -221,6 +221,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
                 mode="contained"
                 onPress={() => {
                   closeModalDelete();
+                  dispatch(setPage({page: 'Beranda'}));
                 }}
                 contentStyle={{}}
                 style={{...styles.button, width: '100%', marginHorizontal: 0}}
