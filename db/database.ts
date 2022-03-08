@@ -69,10 +69,6 @@ export const createCatatan =  (data: any) => new Promise((resolve, reject) => {
       realm.create(SALDO_SCHEMA, {
         id: data.id,
         tipe: data.tipe,
-        tanggal: data.tanggal,
-        akun: data.akun,
-        tujuan: data.tujuan,
-        nominal: data.nominal,
         keterangan: data.keterangan,
         kategori: data.kategori,
       });
@@ -107,17 +103,13 @@ export const getSepuluhCatatanTerakhir = () => new Promise((resolve, reject) => 
 
 export const getFilterCatatanByMonth = (value?: any) => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
-      let data: any = realm.objects(SALDO_SCHEMA);
-      const filtered: any[] = [];
-      data.map((item: any) => {
-        if (moment(item.tanggal).format('M') === value) {
-          filtered.push(item);
-        }
-      });
-      resolve(filtered);
-  }).catch((error) => {
-      reject(error);
-  });
+    let data: any = realm.objects(SALDO_SCHEMA);
+    realm.write(() => {
+      let kategori: any = realm.objectForPrimaryKey(KATEGORI_SCHEMA, data.id);
+      kategori.nama_kategori = data.nama_kategori;
+      resolve(kategori);
+    });
+  }).catch((error) => reject(error));
 });
 
 const formatDate = (date: any) => {
