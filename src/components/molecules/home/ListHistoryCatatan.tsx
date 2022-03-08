@@ -62,123 +62,6 @@ const ListHistoryCatatan = ({
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
-  const renderItems = ({item, index}: any) => {
-    return (
-      <View key={`item-${item.id}`}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#fff',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            height: responsiveHeight(7),
-          }}
-          onPress={() => {
-            // dispatch(setPage({ page: 'Edit' }));
-            // showModalDetailNote(item);
-            navigation.navigate('Detail', {
-              data: item,
-              listKategori: allKategori,
-              saldoAtm: saldoAtm,
-              saldoDompet: saldoDompet,
-            });
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <View style={{justifyContent: 'space-between'}}>
-              <View style={{justifyContent: 'center', height: '50%'}}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    textTransform: 'capitalize',
-                    color: '#000',
-                  }}>
-                  {item.keterangan}
-                </Text>
-              </View>
-              <View
-                style={{
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  height: '50%',
-                }}>
-                <Text
-                  style={{textTransform: 'uppercase', color: Colors.grey400}}>
-                  {item.akun}
-                </Text>
-                {item.tujuan === 'tarik tunai' ? (
-                  <Text
-                    style={{
-                      backgroundColor:
-                        item.tipe === 'pemasukan'
-                          ? Colors.green50
-                          : Colors.red50,
-                      marginLeft: 10,
-                      fontWeight: 'bold',
-                      textTransform: 'uppercase',
-                      color:
-                        item.tipe === 'pemasukan'
-                          ? Colors.green400
-                          : Colors.red400,
-                      paddingHorizontal: 5,
-                    }}>
-                    Tarik Tunai
-                  </Text>
-                ) : (
-                  <Text />
-                )}
-              </View>
-            </View>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <View style={{marginLeft: 10, height: '100%'}}>
-              <View style={{justifyContent: 'center', height: '50%'}}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    textTransform: 'capitalize',
-                    color:
-                      item.tipe === 'pemasukan'
-                        ? Colors.green400
-                        : Colors.red400,
-                  }}>
-                  {item.tipe === 'pemasukan' ? '+ ' : '- '}
-                  {formatRupiah(item.nominal)}
-                </Text>
-              </View>
-              <View style={{justifyContent: 'center', height: '50%'}}>
-                <Text
-                  style={{
-                    textTransform: 'uppercase',
-                    color: Colors.grey400,
-                    textAlign: 'right',
-                  }}>
-                  {moment(item.tanggal).format('L')}
-                </Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-        {/* <View style={{
-          marginBottom: 5, borderColor: Colors.grey600, borderWidth: 1.5,
-          borderStyle: 'dotted', borderRadius: 1,
-        }}
-        /> */}
-        <Divider
-          style={{
-            marginBottom: 5,
-            borderColor: Colors.grey300,
-            borderWidth: 0.3,
-          }}
-        />
-      </View>
-    );
-  };
 
   /* ------------------------- Modal Select Input Type ------------------------ */
   const showModalSelectInputType = () => {
@@ -374,7 +257,123 @@ const ListHistoryCatatan = ({
           <TextAtom value="Belum ada catatan ." />
         </View>
       ) : (
-        <List data={allCatatan} renderItem={renderItems} />
+        // <List data={allCatatan} renderItem={renderItems} />
+        allCatatan.map((item: any, index: number) => (
+          <View key={`item-${item.id}`}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#fff',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                height: responsiveHeight(7),
+                marginHorizontal: 10,
+              }}
+              onPress={() => {
+                // dispatch(setPage({ page: 'Edit' }));
+                // showModalDetailNote(item);
+                navigation.navigate('Detail', {
+                  data: item,
+                  listKategori: allKategori,
+                  saldoAtm: saldoAtm,
+                  saldoDompet: saldoDompet,
+                });
+              }}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={{justifyContent: 'space-between'}}>
+                  <View style={{justifyContent: 'center', height: '50%'}}>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        textTransform: 'capitalize',
+                        color: '#000',
+                      }}>
+                      {item.keterangan}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      height: '50%',
+                    }}>
+                    <Text
+                      style={{textTransform: 'uppercase', color: Colors.grey400}}>
+                      {item.akun}
+                    </Text>
+                    {item.tujuan === 'tarik tunai' ? (
+                      <Text
+                        style={{
+                          backgroundColor:
+                            item.tipe === 'pemasukan'
+                              ? Colors.green50
+                              : Colors.red50,
+                          marginLeft: 10,
+                          fontWeight: 'bold',
+                          textTransform: 'uppercase',
+                          color:
+                            item.tipe === 'pemasukan'
+                              ? Colors.green400
+                              : Colors.red400,
+                          paddingHorizontal: 5,
+                        }}>
+                        Tarik Tunai
+                      </Text>
+                    ) : (
+                      <Text />
+                    )}
+                  </View>
+                </View>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View style={{marginLeft: 10, height: '100%'}}>
+                  <View style={{justifyContent: 'center', height: '50%'}}>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        textTransform: 'capitalize',
+                        color:
+                          item.tipe === 'pemasukan'
+                            ? Colors.green400
+                            : Colors.red400,
+                      }}>
+                      {item.tipe === 'pemasukan' ? '+ ' : '- '}
+                      {formatRupiah(item.nominal)}
+                    </Text>
+                  </View>
+                  <View style={{justifyContent: 'center', height: '50%'}}>
+                    <Text
+                      style={{
+                        textTransform: 'uppercase',
+                        color: Colors.grey400,
+                        textAlign: 'right',
+                      }}>
+                      {moment(item.tanggal).format('L')}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </TouchableOpacity>
+            {/* <View style={{
+              marginBottom: 5, borderColor: Colors.grey600, borderWidth: 1.5,
+              borderStyle: 'dotted', borderRadius: 1,
+            }}
+            /> */}
+            <Divider
+              style={{
+                marginBottom: 5,
+                borderColor: Colors.grey300,
+                borderWidth: 0.3,
+              }}
+            />
+          </View>
+        ))
       )}
     </>
   );

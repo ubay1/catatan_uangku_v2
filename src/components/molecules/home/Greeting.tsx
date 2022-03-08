@@ -47,20 +47,6 @@ const Greeting = ({name}: IPropsHomeScreen) => {
           </View>
         </View>
       </View>
-
-      <FAB
-        visible={true}
-        style={styles.btnFab}
-        icon={() => {
-          return (
-            <IconMCI name="folder-image" color={COLOR_ACTIVE} size={23} />
-          );
-        }}
-        onPress={() => {
-          // setselectTipeInput('info');
-          // setModal();
-        }}
-      />
     </View>
   );
 };
