@@ -5,11 +5,6 @@ export interface IPropsText {
   size?: number;
   fontWeight?: any;
   textTransform?: any;
-  bgColor?: string;
-  mLeft?: number;
-  mRight?: number;
   mTop?: number;
   mBottom?: number;
-  pHorizontal?: number;
-  pVertical?: number;
 }

@@ -7,6 +7,7 @@ import styles from '../../../assets/styles/global';
 
 const TextInputAtom = ({
   label,
+  value,
   theme,
   mode = 'flat',
   onChangeText,

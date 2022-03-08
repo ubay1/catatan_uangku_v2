@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {useFocusEffect} from '@react-navigation/native';
@@ -53,6 +54,14 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   React.useEffect(() => {
     loadAll();
   }, []);
+
+  React.useEffect(() => {
+    console.log(pageActive);
+    if (pageActive === 'updateHome') {
+      loadAll();
+      dispatch(setPage({page: 'Home'}));
+    }
+  }, [pageActive]);
 
   // cek data allCatatan
   React.useEffect(() => {

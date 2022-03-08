@@ -98,7 +98,7 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
       updateCatatan(data)
       .then(()=>{
         setloading(false);
-        dispatch(setPage({page: 'UpdateBeranda'}));
+        dispatch(setPage({page: 'updateHome'}));
       })
       .catch((err) => {
         console.log('error = ',err);
@@ -110,7 +110,7 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
       //     console.log('aa = ',respUpdateCatatan)
       //     setloading(false);
 
-      //     dispatch(setPage({page: 'UpdateBeranda'}))
+      //     dispatch(setPage({page: 'updateHome'}))
       //     // navigation.navigate('Beranda')
       //   }, 300);
       // } catch (error) {
@@ -123,7 +123,7 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
   const delCatatan = (id: any) => {
     deleteCatatan(parseInt(id))
     .then(() => {
-      dispatch(setPage({page: 'UpdateBeranda'}));
+      dispatch(setPage({page: 'updateHome'}));
     })
     .catch((err) => {
       console.log('error = ',err);
@@ -217,6 +217,27 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
 
     setlistKategori(filterItem);
   }
+
+  // useEffect(() => {
+  //   // dispatch(setHideTab())
+    // console.log('params = ',params.nominal)
+    // _filterKategori(params.tipe)
+    // setidCatatan(params.id)
+    // settipeCatatan(params.tipe)
+    // setDate(new Date(params.tanggal))
+    // setselectAkun(params.akun)
+    // setselectTujuan(params.tujuan)
+    // setnominal(params.nominal.toString())
+    // setketerangan(params.keterangan)
+    // setselectKategori(params.kategori)
+
+
+  //   navigation.addListener("beforeRemove", (param) => {
+  //     console.log('back to home')
+  //     dispatch(setPage({ page: 'Home' }))
+  //     dispatch(setShowTab())
+  //   })
+  // }, [navigation])
 
   useEffect(() => {
     if (whatspage.page === 'Edit') {

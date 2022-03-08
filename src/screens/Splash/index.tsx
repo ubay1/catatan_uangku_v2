@@ -1,35 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Dimensions, Image, ImageBackground, SafeAreaView, Text, View } from 'react-native'
-import { Colors } from 'react-native-paper'
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
-import { createDefaultKategori } from '../../../db/database'
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Dimensions, Image, ImageBackground, SafeAreaView, Text, View } from 'react-native';
+import { Colors } from 'react-native-paper';
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { createDefaultKategori } from '../../../db/database';
 
 const SplashScreenss = () => {
   const createKategori = () => {
     createDefaultKategori()
     .then((item)=>{
-      console.log('data default kategori = ',item)
+      console.log('data default kategori = ',item);
     })
     .catch((err)=>{
       console.log('error = ', err);
-    })
-  }
+    });
+  };
 
   useEffect(() => {
    createKategori();
-  }, [])
-  
-  return(
+  }, []);
+
+  return (
     <SafeAreaView
       style={{
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:  '#fff'
+        backgroundColor:  '#fff',
       }}
     >
         <View style={{
-          position: 'absolute', 
+          position: 'absolute',
           zIndex: 1,
           // backgroundColor: '#eee',
           // opacity: .5,
@@ -43,6 +45,6 @@ const SplashScreenss = () => {
           {/* <Text style={{color:'#152A3B', fontSize: responsiveFontSize(2)}}>cek data user..</Text> */}
         </View>
     </SafeAreaView>
-  )
-}
-export default SplashScreenss
+  );
+};
+export default SplashScreenss;

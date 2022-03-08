@@ -1,37 +1,47 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {Button, IconButton} from 'react-native-paper';
-import TextAtom from '../text/TextAtom';
-import {IPropsButtonWithIcon} from './types';
+import { Pressable } from 'react-native';
+import { Button } from 'react-native-paper';
+import { IPropsButtonWithIcon } from './types';
+import styles, { COLOR_ACTIVE } from '../../../assets/styles/global';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const ButtonIconAtom = ({
-  icon,
-  size = 22,
-  borderColor = '#000',
-  borderWidth = 0,
-  color,
-  disabled,
-  action,
-  bgColor = '#fff',
-  rounded = 5,
-}: IPropsButtonWithIcon) => (
-  <TouchableOpacity
-    disabled={disabled}
-    onPress={() => action()}
+
+const ButtonIconAtom = ({icon, color, disabled, action, size, iconColor = '#fff'}: IPropsButtonWithIcon) => (
+  <Pressable
     style={{
-      backgroundColor: bgColor,
-      borderColor: borderColor,
-      borderWidth: borderWidth,
-      borderRadius: rounded,
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100%',
-    }}>
-    <IconMCI name={icon} size={size} color={color} />
-  </TouchableOpacity>
+      backgroundColor: color,
+      padding: 5,
+      borderRadius: 5,
+    }}
+    disabled={disabled}
+    onPress={()=> action()}
+  >
+    <IconMCI
+      name={icon}
+      size={size}
+      color={iconColor}
+    />
+  </Pressable>
+
+  // <Button
+  //   icon={icon}
+  //   uppercase={uppercase}
+  //   color={color}
+  //   mode={mode}
+  //   disabled={disabled}
+  //   theme={theme}
+  //   onPress={() => action()}
+  //   // contentStyle
+  //   // style
+  // >
+  //   <TextAtom
+  //     color={textColor}
+  //     value={title}
+  //     textTransform={uppercase ? 'uppercase' : 'none'}
+  //   />
+  // </Button>
 );
 
 export default ButtonIconAtom;

@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {  } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 // import Database from "../../../db/database";
@@ -23,9 +23,9 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
   const whatspage = useSelector((state: RootState) => state.whatsPage);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
       <HomeOrganims name={user.name} pageActive={whatspage.page} navigation={navigation}/>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

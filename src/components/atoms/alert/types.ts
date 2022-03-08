@@ -10,4 +10,5 @@ export interface IPropsModal {
   closeModal: any;
   visible: boolean;
   children: any;
+  setPageActive?: string;
 }

@@ -26,7 +26,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { setPage } from './src/store/whatsPage';
 import DetailScreen from './src/screens/DetailCatatan';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import SetelanScreen from './src/screens/Setelan';
+import CategoryScreen from './src/screens/Category';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from 'react-native-paper';
 import { COLOR_ACTIVE } from './src/assets/styles/global';
@@ -123,14 +123,14 @@ const HomeNavigator = () => {
   const navigationredux = useSelector((state: RootState) => state.navigationredux);
   return (
     <Stack.Navigator
-      initialRouteName={'Beranda'}
+      initialRouteName={'Home'}
       mode={'modal'}
       screenOptions={{
         headerShown: false,
         ...horizontalAnimation,
       }}
     >
-      <Stack.Screen name="Beranda" component={HomeScreen} />
+      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Info" component={InfoScreen} />
       <Stack.Screen name="DetailNote" component={DetailNote} />
       <Stack.Screen name="AddNote" component={AddNote} />
@@ -154,17 +154,17 @@ const LaporanNavigator = () => {
   );
 };
 
-const SetelanNavigator = () => {
+const CategoryNavigator = () => {
   const navigationredux = useSelector((state: RootState) => state.navigationredux);
   return (
     <Stack.Navigator
-      initialRouteName={'Setelan'}
+      initialRouteName={'Category'}
       mode={'modal'}
       screenOptions={{
         headerShown: !navigationredux.showTab,
       }}
     >
-      <Stack.Screen name="Setelan" component={SetelanScreen} />
+      <Stack.Screen name="Category" component={CategoryScreen} />
     </Stack.Navigator>
   );
 };
@@ -199,11 +199,11 @@ function MyTabBar({ state, descriptors, navigation }: any) {
 
             let iconName: any;
 
-            if (route.name === 'Beranda') {
+            if (route.name === 'Home') {
               iconName = 'home';
             } else if (route.name === 'Catatan') {
               iconName = 'note';
-            } else if (route.name === 'Kategori') {
+            } else if (route.name === 'Category') {
               iconName = 'plus-box-multiple';
             } else {
               iconName = 'plus';
@@ -290,9 +290,8 @@ const Routes = () => {
     }));
   };
 
-  const storeToRedux = (profile: any, introFinish: any) => {
-    // console.log(profile, userAuth,auth)
-    dispatches(setUserName(profile));
+  const storeToRedux = (name: string, introFinish: boolean) => {
+    dispatches(setUserName({name: name}));
     dispatches(setIntroFinish({
       introFinish: introFinish,
     }));
@@ -300,21 +299,20 @@ const Routes = () => {
 
   React.useEffect(() => {
     const bootstrapAsync = async () => {
-      dispatches(setPage({page: 'Beranda'}));
-      let username;
+      dispatches(setPage({page: 'Home'}));
+      // let username;
+
       try {
         const valueStorage = await AsyncStorage.getItem('auth');
 
         const parseValueStorage = JSON.parse(valueStorage as any);
 
-        console.log(parseValueStorage.isIntroFinish, parseValueStorage.name);
-
         /**
          * jika app intro = true, maka akan lanjut ke global screen
          * jika tidak maka akan menampilkan screen App intro
          */
-        if (parseValueStorage.isIntroFinish === true || parseValueStorage.isIntroFinish !== null) {
-          console.log('app intro = ',parseValueStorage.isIntroFinish);
+        if (![null, undefined, ''].includes(parseValueStorage.isIntroFinish)) {
+          // console.log('app intro = ',parseValueStorage.isIntroFinish);
           dispatches(setIntroFinish({
             introFinish: true,
           }));
@@ -326,34 +324,24 @@ const Routes = () => {
           }));
         }
 
-        if (parseValueStorage.name === null) {
+        if ([null, undefined, ''].includes(parseValueStorage.name)) {
           emptyRedux();
         } else {
-          const dataProfil = {
-            name: parseValueStorage.name,
-          };
-
-          username = parseValueStorage.name;
-          storeToRedux(dataProfil, true);
+          storeToRedux(parseValueStorage.name, true);
         }
       } catch (e) {
+        emptyRedux();
         console.log('error - ' + e);
         // Restoring token failed
       }
-
-      dispatches(setUserName({name: `${username}`}));
     };
 
     bootstrapAsync();
   }, []);
 
   const authContext = React.useMemo(() => ({
-    signIn: async (name: any, isIntroFinish: any) => {
-      const dataProfil = {
-        name: name,
-      };
-
-      storeToRedux(dataProfil, isIntroFinish);
+    signIn: async (name: string, isIntroFinish: boolean) => {
+      storeToRedux(name, isIntroFinish);
       // AsyncStorage.setItem('name', dataProfil.name)
       AsyncStorage.setItem('auth', JSON.stringify({
         name: name,
@@ -390,9 +378,6 @@ const Routes = () => {
                 headerShown: !navigationredux.showTab,
               }}
             >
-              {/* <Stack.Screen name="AppIntro">
-                {(props) => <AppIntroScreen /> }
-              </Stack.Screen> */}
               <Stack.Screen name="AppIntro" component={AppIntroScreen} />
             </Stack.Navigator>
               :
@@ -426,7 +411,7 @@ const Routes = () => {
                   //   tabBarIcon: ({ focused, color, size }: any) => {
                   //     let iconName: any;
 
-                  //     if (route.name === 'Beranda') {
+                  //     if (route.name === 'Home') {
                   //       iconName = 'home';
                   //     } else if (route.name === 'Catatan') {
                   //       iconName = 'history';
@@ -438,9 +423,9 @@ const Routes = () => {
                   //   },
                   // })}
                 >
-                  <Tab.Screen name="Beranda" component={HomeNavigator} />
+                  <Tab.Screen name="Home" component={HomeNavigator} />
                   <Tab.Screen name="Catatan" component={LaporanNavigator} />
-                  <Tab.Screen name="Kategori" component={SetelanNavigator}/>
+                  <Tab.Screen name="Category" component={CategoryNavigator}/>
                 </Tab.Navigator>
         }
       </NavigationContainer>

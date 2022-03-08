@@ -35,7 +35,7 @@ export type RootStackParamList = {
     fromDate?: any;
     toDate?: any;
   },
-  Setelan: undefined
+  Category: undefined
   Info: undefined
 };
 
@@ -76,9 +76,9 @@ export type StackListLaporan = {
   route: RouteProp<RootStackParamList, 'ListLaporan'>;
   navigation: StackNavigationProp<RootStackParamList, 'ListLaporan'>;
 }
-export type StackSetelan = {
-  route: RouteProp<RootStackParamList, 'Setelan'>;
-  navigation: StackNavigationProp<RootStackParamList, 'Setelan'>;
+export type StackCategory = {
+  route: RouteProp<RootStackParamList, 'Category'>;
+  navigation: StackNavigationProp<RootStackParamList, 'Category'>;
 }
 export type StackInfo = {
   route: RouteProp<RootStackParamList, 'Info'>;
