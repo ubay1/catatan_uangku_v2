@@ -313,7 +313,7 @@ const Routes = () => {
 
   React.useEffect(() => {
     const bootstrapAsync = async () => {
-      dispatches(setPage({page: 'Beranda'}));
+      dispatches(setPage({page: 'Home'}));
       // let username;
 
       try {

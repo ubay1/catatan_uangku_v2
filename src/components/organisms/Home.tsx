@@ -43,9 +43,9 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
 
   React.useEffect(() => {
     console.log(pageActive);
-    if (pageActive === 'updateBeranda') {
+    if (pageActive === 'updateHome') {
       loadAll();
-      dispatch(setPage({page: 'Beranda'}));
+      dispatch(setPage({page: 'Home'}));
     }
   }, [pageActive]);
 

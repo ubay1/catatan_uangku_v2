@@ -85,7 +85,7 @@ const inputPengeluaranScreen = ({route, navigation}: StackInputPengeluaran) => {
     createCatatan(data)
     .then(()=>{
       setloading(false)
-      dispatch(setPage({page: 'UpdateBeranda'}))
+      dispatch(setPage({page: 'updateHome'}))
       navigation.navigate('Beranda')
     })
     .catch((err) => {
@@ -96,7 +96,7 @@ const inputPengeluaranScreen = ({route, navigation}: StackInputPengeluaran) => {
     //   setTimeout(async () => {
     //     const saldo = await createCatatan(data)
     //     setloading(false)
-    //     dispatch(setPage({page: 'UpdateBeranda'}))
+    //     dispatch(setPage({page: 'updateHome'}))
     //     navigation.navigate('Beranda')
     //   }, 300);
     // } catch (error) {

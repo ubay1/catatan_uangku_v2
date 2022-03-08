@@ -99,7 +99,7 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
       updateCatatan(data)
       .then(()=>{
         setloading(false);
-        dispatch(setPage({page: 'UpdateBeranda'}));
+        dispatch(setPage({page: 'updateHome'}));
       })
       .catch((err) => {
         console.log('error = ',err);
@@ -111,7 +111,7 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
       //     console.log('aa = ',respUpdateCatatan)
       //     setloading(false);
 
-      //     dispatch(setPage({page: 'UpdateBeranda'}))
+      //     dispatch(setPage({page: 'updateHome'}))
       //     // navigation.navigate('Beranda')
       //   }, 300);
       // } catch (error) {
@@ -124,7 +124,7 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
   const delCatatan = (id: any) => {
     deleteCatatan(parseInt(id))
     .then(() => {
-      dispatch(setPage({page: 'UpdateBeranda'}));
+      dispatch(setPage({page: 'updateHome'}));
     })
     .catch((err) => {
       console.log('error = ',err);
@@ -235,7 +235,7 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
 
   //   navigation.addListener("beforeRemove", (param) => {
   //     console.log('back to home')
-  //     dispatch(setPage({ page: 'Beranda' }))
+  //     dispatch(setPage({ page: 'Home' }))
   //     dispatch(setShowTab())
   //   })
   // }, [navigation])

@@ -177,7 +177,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
             }}
             onPress={() => {
               closeModalAddCatatan();
-              dispatch(setPage({ page: 'Beranda' }));
+              dispatch(setPage({ page: 'Home' }));
             }}
           />
 
@@ -234,7 +234,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
             }}
             onPress={() => {
               closeModalDetailCatatan();
-              dispatch(setPage({ page: 'Beranda' }));
+              dispatch(setPage({ page: 'Home' }));
             }}
           />
 
@@ -340,7 +340,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
   useEffect(() => {
     dispatch(setShowTab());
     navigation.addListener('focus', () => {
-      dispatch(setPage({ page: 'Beranda' }));
+      dispatch(setPage({ page: 'Home' }));
     });
   }, [navigation]);
 
@@ -431,7 +431,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
 
 
   useEffect(() => {
-    if (whatspage.page === 'Beranda' || whatspage.page === 'UpdateBeranda') {
+    if (whatspage.page === 'Beranda' || whatspage.page === 'updateHome') {
       closeModalDetailCatatan();
       getListCatatan();
       getListKategori();
@@ -729,7 +729,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
         <ModalOpenAddCatatan />
 
         <FAB
-          visible={whatspage.page === 'Beranda' ? true : whatspage.page === 'UpdateBeranda' ? true : false}
+          visible={whatspage.page === 'Beranda' ? true : whatspage.page === 'updateHome' ? true : false}
           style={{
             backgroundColor: Colors.blue400, borderRadius: 100,
             justifyContent: 'center', alignItems: 'center',
