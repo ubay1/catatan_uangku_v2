@@ -4,4 +4,6 @@ export interface IPropsText {
   size?: number;
   fontWeight?: any;
   textTransform?: any;
+  mTop?: number;
+  mBottom?: number;
 }

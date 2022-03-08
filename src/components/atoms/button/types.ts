@@ -1,25 +1,22 @@
 export interface IPropsButton {
   title: string;
-  mode: any;
+  size?: number;
   uppercase?: boolean;
-  color?: any;
+  fontWeight?: string;
+  bgColor?: any;
   disabled?: boolean;
-  theme?: object,
   action?: any;
   textColor?: string;
   marginX?: number;
   marginY?: number;
 }
 export interface IPropsButtonWithIcon {
-  title: string;
-  mode: any;
   icon: string;
-  uppercase?: boolean;
   color?: any;
   disabled?: boolean;
-  theme?: object,
   action?: any;
-  textColor?: string;
+  iconColor?: string;
+  size?: number;
 }
 
 export interface IPropsButtonText {

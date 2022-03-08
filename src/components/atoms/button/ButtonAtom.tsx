@@ -5,28 +5,48 @@ import { Button } from 'react-native-paper';
 import { IPropsButton } from './types';
 import styles from '../../../assets/styles/global';
 import TextAtom from '../text/TextAtom';
+import { Pressable } from 'react-native';
 
-const ButtonAtom = ({title, mode = 'contained', uppercase, color, disabled, theme, action, textColor = '#fff', marginX = 20, marginY = 0}: IPropsButton) => {
+const ButtonAtom = ({title, size, fontWeight, uppercase, bgColor, disabled, action, textColor = '#fff', marginX = 20, marginY = 0}: IPropsButton) => {
 
   return (
-    <Button
-      uppercase={uppercase}
-      color={color}
-      mode={mode}
-      disabled={disabled}
-      theme={theme}
-      onPress={action}
-      contentStyle={{
-        paddingVertical: 5,
+    <Pressable
+      style={{...styles.button,
+        backgroundColor: bgColor,
+        marginHorizontal: marginX,
+        marginVertical: marginY, paddingVertical: 5,
+        width: '100%',
+        alignItems: 'center',
       }}
-      style={{...styles.button, marginHorizontal: marginX}}
+      disabled={disabled}
+      onPress={action}
     >
       <TextAtom
+        size={size}
         color={textColor}
+        fontWeight={fontWeight}
         value={title}
         textTransform={uppercase ? 'uppercase' : 'none'}
       />
-    </Button>
+    </Pressable>
+    // <Button
+    //   uppercase={uppercase}
+    //   color={color}
+    //   mode={mode}
+    //   disabled={disabled}
+    //   theme={theme}
+    //   onPress={action}
+    //   contentStyle={{
+    //     paddingVertical: 5,
+    //   }}
+    //   style={{...styles.button, marginHorizontal: marginX}}
+    // >
+    //   <TextAtom
+    //     color={textColor}
+    //     value={title}
+    //     textTransform={uppercase ? 'uppercase' : 'none'}
+    //   />
+    // </Button>
 );
 };
 
