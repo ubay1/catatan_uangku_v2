@@ -47,7 +47,7 @@ const InfoScreen = () => {
   //   dispatch(setHideTab())
   //   navigation.addListener("beforeRemove", (param) => {
   //     console.log('back to home')
-  //     dispatch(setPage({ page: 'Beranda' }))
+  //     dispatch(setPage({ page: 'Home' }))
   //     dispatch(setShowTab())
   //   })
   // }, [navigation])

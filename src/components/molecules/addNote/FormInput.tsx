@@ -122,8 +122,8 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
 
         setTimeout(() => {
           setloading(false);
-          dispatch(setPage({page: 'updateBeranda'}));
-          navigation.navigate('Beranda');
+          dispatch(setPage({page: 'updateHome'}));
+          navigation.navigate('Home');
         }, 1000);
       }
     }
