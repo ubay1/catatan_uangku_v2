@@ -304,9 +304,8 @@ const Routes = () => {
     }));
   };
 
-  const storeToRedux = (profile: any, introFinish: any) => {
-    // console.log(profile, userAuth,auth)
-    dispatches(setUserName(profile));
+  const storeToRedux = (name: string, introFinish: boolean) => {
+    dispatches(setUserName({name: name}));
     dispatches(setIntroFinish({
       introFinish: introFinish,
     }));
@@ -315,20 +314,19 @@ const Routes = () => {
   React.useEffect(() => {
     const bootstrapAsync = async () => {
       dispatches(setPage({page: 'Beranda'}));
-      let username;
+      // let username;
+
       try {
         const valueStorage = await AsyncStorage.getItem('auth');
 
         const parseValueStorage = JSON.parse(valueStorage as any);
 
-        console.log(parseValueStorage.isIntroFinish, parseValueStorage.name);
-
         /**
          * jika app intro = true, maka akan lanjut ke global screen
          * jika tidak maka akan menampilkan screen App intro
          */
-        if (parseValueStorage.isIntroFinish === true || parseValueStorage.isIntroFinish !== null) {
-          console.log('app intro = ',parseValueStorage.isIntroFinish);
+        if (![null, undefined, ''].includes(parseValueStorage.isIntroFinish)) {
+          // console.log('app intro = ',parseValueStorage.isIntroFinish);
           dispatches(setIntroFinish({
             introFinish: true,
           }));
@@ -340,34 +338,24 @@ const Routes = () => {
           }));
         }
 
-        if (parseValueStorage.name === null) {
+        if ([null, undefined, ''].includes(parseValueStorage.name)) {
           emptyRedux();
         } else {
-          const dataProfil = {
-            name: parseValueStorage.name,
-          };
-
-          username = parseValueStorage.name;
-          storeToRedux(dataProfil, true);
+          storeToRedux(parseValueStorage.name, true);
         }
       } catch (e) {
+        emptyRedux();
         console.log('error - ' + e);
         // Restoring token failed
       }
-
-      dispatches(setUserName({name: `${username}`}));
     };
 
     bootstrapAsync();
   }, []);
 
   const authContext = React.useMemo(() => ({
-    signIn: async (name: any, isIntroFinish: any) => {
-      const dataProfil = {
-        name: name,
-      };
-
-      storeToRedux(dataProfil, isIntroFinish);
+    signIn: async (name: string, isIntroFinish: boolean) => {
+      storeToRedux(name, isIntroFinish);
       // AsyncStorage.setItem('name', dataProfil.name)
       AsyncStorage.setItem('auth', JSON.stringify({
         name: name,
@@ -404,9 +392,6 @@ const Routes = () => {
                 headerShown: !navigationredux.showTab,
               }}
             >
-              {/* <Stack.Screen name="AppIntro">
-                {(props) => <AppIntroScreen /> }
-              </Stack.Screen> */}
               <Stack.Screen name="AppIntro" component={AppIntroScreen} />
             </Stack.Navigator>
               :

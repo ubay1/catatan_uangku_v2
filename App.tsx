@@ -15,6 +15,7 @@
  import { Provider } from 'react-redux';
  import { store } from './src/store';
 import Boot from './src/boot/boot';
+import { COLOR_ACTIVE } from './src/assets/styles/global';
 
 export const adUnitId = 'ca-app-pub-6232514642053563/5051942477';
 
@@ -41,7 +42,7 @@ export const adUnitId = 'ca-app-pub-6232514642053563/5051942477';
     <Provider store={store}>
       <PaperProvider theme={theme}>
         <StatusBar barStyle={'light-content'}
-          backgroundColor={Colors.blue400}
+          backgroundColor={COLOR_ACTIVE}
         />
         <Boot />
       </PaperProvider>
