@@ -13,6 +13,7 @@ import {
   COLOR_ACTIVE,
   COLOR_ACTIVE_SOFT,
   COLOR_DISABLED,
+  COLOR_DISABLED_TEXT,
   COLOR_ERROR,
   COLOR_INPUT_PLACEHOLDER,
   COLOR_WHITE,
@@ -117,17 +118,6 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   const submitEditNote = async () => {
     setLoadingUpdateData(true);
 
-    const data: any = {
-      id: idCatatan,
-      tipe: type,
-      tanggal: moment(date).format('YYYY-MM-DD').toString(),
-      akun: selectAkun,
-      nominal: parseInt(nominal),
-      tujuan: selectTujuan,
-      keterangan: keterangan,
-      kategori: selectKategori,
-    };
-
     if (
       selectAkun === '' ||
       selectKategori === '' ||
@@ -141,8 +131,27 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
       });
       setLoadingUpdateData(false);
     } else {
+      const data: any = {
+        id: idCatatan,
+        tipe: type,
+        tanggal: moment(date).format('YYYY-MM-DD').toString(),
+        akun: selectAkun,
+        nominal: parseInt(nominal),
+        tujuan: selectTujuan,
+        keterangan: keterangan,
+        kategori: selectKategori,
+      };
+
       try {
-        const result = await updateCatatan(data);
+        await updateCatatan(data);
+
+        setTimeout(() => {
+          setVisibleSnackbar({
+            isOpen: true,
+            type: 'success',
+            msg: 'Catatan berhasil diperbaharui',
+          });
+        }, 10);
       } catch (error) {
         console.log('error = ', error);
         setVisibleSnackbar({
@@ -152,32 +161,11 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         });
       } finally {
         setTimeout(() => {
-          setVisibleSnackbar({
-            isOpen: true,
-            type: 'success',
-            msg: 'Catatan berhasil diperbaharui',
-          });
-        }, 500);
-
-        setTimeout(() => {
           setLoadingUpdateData(false);
-          dispatch(setPage({page: 'UpdateBeranda'}));
-          navigation.navigate('Beranda');
-        }, 700);
+          dispatch(setPage({page: 'UpdateHome'}));
+          navigation.navigate('Home');
+        }, 1000);
       }
-    }
-  };
-
-  const submitDeleteNote = async (id: number) => {
-    try {
-      const response = await deleteCatatan(id);
-      dispatch(setPage({page: 'UpdateBeranda'}));
-      navigation.navigate('Beranda');
-    } catch (error) {
-      console.log('error = ', error);
-    } finally {
-      setLoadingDeleteData(false);
-      setLoadingUpdateData(false);
     }
   };
 
@@ -210,108 +198,6 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
     });
   };
 
-  // const showModalDelete = () => {
-  //   setVisibleModalDelete(true);
-  // };
-
-  // const closeModalDelete = () => {
-  //   setVisibleModalDelete(false);
-  // };
-
-  // const ModalOpenDelete = () => {
-    //   return (
-    //     <ModalAtom
-    //       closeModal={closeModalDelete}
-    //       visible={visibleModalDelete}>
-    //       <View
-    //         style={{
-    //           ...stylesCustom.centeredView,
-    //           marginTop: 20,
-    //           marginHorizontal: 10,
-    //         }}>
-    //         <View>
-    //           <TextAtom fontWeight={'bold'} value="Yakin mau hapus ?" size={30} />
-    //           <TextAtom
-    //             fontWeight={'bold'}
-    //             color={Colors.grey400}
-    //             value="data yang telah dihapus"
-    //             size={30}
-    //           />
-    //           <TextAtom
-    //             fontWeight={'bold'}
-    //             color={Colors.grey400}
-    //             value="tidak dapat dikembalikan"
-    //             size={30}
-    //           />
-
-    //           <View style={{marginTop: 20}}>
-    //             {/* <ButtonAtom
-    //               mode={'contained'}
-    //               title="Tidak"
-    //               color={COLOR_ERROR}
-    //               action={setVisibleModalDelete(false)}
-    //               disabled={loading}
-    //               theme={{ colors: { disabled: 'grey' } }}
-    //             />
-
-    //             <ButtonAtom
-    //               mode={'contained'}
-    //               title="Tidak"
-    //               color={COLOR_ERROR}
-    //               action={() => {
-    //                 setVisibleModalDelete(false);
-    //                 setLoading(true);
-    //                 submitDeleteNote(idCatatan);
-    //               }}
-    //               disabled={loading}
-    //               theme={{ colors: { disabled: 'grey' } }}
-    //             /> */}
-    //             <Button
-    //               dark
-    //               uppercase={false}
-    //               color="#2196F3"
-    //               mode="contained"
-    //               onPress={() => {
-    //                 setVisibleModalDelete(false);
-    //                 // setLoading(true)
-    //                 // deleteCatatan(idCatatan)
-    //               }}
-    //               contentStyle={{}}
-    //               style={{...styles.button, width: '100%', marginHorizontal: 0}}
-    //               disabled={loadingDeleteData}
-    //               theme={{colors: {disabled: 'grey'}}}>
-    //               <TextAtom
-    //                 value="Tidak"
-    //                 color="#fff"
-    //                 textTransform={'uppercase'}
-    //               />
-    //             </Button>
-    //             <Button
-    //               dark
-    //               uppercase={false}
-    //               color="#f24b51"
-    //               mode="contained"
-    //               onPress={() => {
-    //                 setVisibleModalDelete(false);
-    //                 setLoadingDeleteData(true);
-    //                 submitDeleteNote(idCatatan);
-    //               }}
-    //               contentStyle={{}}
-    //               style={{...styles.button, width: '100%', marginHorizontal: 0}}
-    //               disabled={loadingDeleteData}
-    //               theme={{colors: {disabled: 'grey'}}}>
-    //               <TextAtom
-    //                 value="Ya, Hapus"
-    //                 color="#fff"
-    //                 textTransform={'uppercase'}
-    //               />
-    //             </Button>
-    //           </View>
-    //         </View>
-    //       </View>
-    //     </ModalAtom>
-    //   );
-  // };
   /* -------------------------------------------------------------------------- */
   /*                                   show page                                */
   /* -------------------------------------------------------------------------- */
@@ -501,11 +387,10 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           <ButtonAtom
             title={loadingUpdateData ? 'Menyimpan Data' : 'Simpan'}
             uppercase={true}
-            color={COLOR_ACTIVE}
-            mode="contained"
+            bgColor={loadingUpdateData ? COLOR_DISABLED : COLOR_ACTIVE}
+            textColor={loadingUpdateData ? COLOR_DISABLED_TEXT : COLOR_WHITE}
             action={submitEditNote}
             disabled={loadingDeleteData ? true : loadingUpdateData}
-            theme={{colors: {disabled: COLOR_ACTIVE_SOFT}}}
             marginX={0}
           />
         </View>

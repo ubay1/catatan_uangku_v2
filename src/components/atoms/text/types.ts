@@ -1,5 +1,6 @@
 export interface IPropsText {
   value: string;
+  bgColor?: string;
   color?: string;
   textAlign?: any;
   size?: number;
@@ -7,4 +8,8 @@ export interface IPropsText {
   textTransform?: any;
   mTop?: number;
   mBottom?: number;
+  mLeft?: number;
+  mRight?: number;
+  pHorizontal?: number;
+  pVertical?: number;
 }

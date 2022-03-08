@@ -11,6 +11,7 @@ export const COLOR_ACTIVE_SOFT =  Colors.blue50;
 export const COLOR_ERROR_SOFT =  Colors.red50;
 export const COLOR_ERROR =  Colors.red400;
 export const COLOR_DISABLED = '#f6f6f6';
+export const COLOR_DISABLED_TEXT = '#ccc';
 export const COLOR_INPUT_PLACEHOLDER = Colors.grey600;
 export const COLOR_WHITE = '#fff';
 export const COLOR_BLACK = '#000';

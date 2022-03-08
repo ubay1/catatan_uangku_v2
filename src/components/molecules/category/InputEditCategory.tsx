@@ -14,6 +14,8 @@ import {
   COLOR_WHITE,
   COLOR_DISABLED,
   COLOR_INPUT_PLACEHOLDER,
+  COLOR_BLACK,
+  COLOR_DISABLED_TEXT,
 } from '../../../assets/styles/global';
 import {AppDispatch} from '../../../store';
 import {setPage} from '../../../store/whatsPage';
@@ -47,7 +49,7 @@ const InputEditCategory = ({closeModalInputKategori, idInputKategori, defaultVal
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
-  const editCategory = () => {
+  const editCategory = async () => {
     setLoading(true);
     if (namaKategori === '' || tipeKategori === '') {
       setVisibleSnackbar({
@@ -61,28 +63,31 @@ const InputEditCategory = ({closeModalInputKategori, idInputKategori, defaultVal
         id: idInputKategori,
         nama_kategori: namaKategori,
       };
-      updateKategori(data)
-      .then(()=>{
-        setNamaKategori('');
-        setTipeKategori('');
-        setLoading(false);
-        closeModalInputKategori();
-      })
-      .catch((err) => {
-        console.log('error = ',err);
-      });
-      // try {
-      //   setTimeout(async () => {
-      //     const respCreateKategori = await createKategori(data)
-      //     setNamaKategori('');
-      //     setTipeKategori('')
-      //     setLoading(false);
-      //     dispatch(setPage({ page: 'Setelan' }))
-      //   }, 300);
-      // } catch (error) {
-      //   console.log(error);
-      //   setLoading(false);
-      // }
+
+      try {
+        await updateKategori(data);
+        setTimeout(() => {
+          setVisibleSnackbar({
+            isOpen: true,
+            type: 'success',
+            msg: 'Kategori berhasil diubah',
+          });
+        }, 10);
+      } catch (error) {
+        console.error('error = ', error);
+        setVisibleSnackbar({
+          isOpen: true,
+          type: 'error',
+          msg: 'Terjadi kesalahan dari server',
+        });
+      } finally {
+        setTimeout(() => {
+          setNamaKategori('');
+          setTipeKategori('');
+          setLoading(false);
+          closeModalInputKategori();
+        }, 1000);
+      }
     }
   };
 
@@ -106,35 +111,8 @@ const InputEditCategory = ({closeModalInputKategori, idInputKategori, defaultVal
           // marginBottom: orientationScreen === 'landscape' ? 20 : 20,
         }}>
         <View style={{marginTop: 20}}>
-          <TextAtom value="Tipe Kategori" />
-          <DropDownPicker
-            placeholder="Pilih Tipe Kategori"
-            items={[
-              {label: 'Pilih Tipe Kategori', value: '', hidden: true},
-              {label: 'Pemasukan', value: 'pemasukan'},
-              {label: 'Pengeluaran', value: 'pengeluaran'},
-            ]}
-            defaultValue={tipeKategori}
-            containerStyle={{height: 50, marginTop: 5}}
-            style={{backgroundColor: COLOR_DISABLED, borderColor: COLOR_INPUT_PLACEHOLDER}}
-            itemStyle={{
-              justifyContent: 'flex-start',
-            }}
-            placeholderStyle={{
-              color: COLOR_INPUT_PLACEHOLDER,
-            }}
-            labelStyle={{fontSize: 15}}
-            dropDownStyle={{
-              backgroundColor: '#fff',
-              borderColor: COLOR_INPUT_PLACEHOLDER,
-            }}
-            onChangeItem={(item: any) => {
-              console.log(item);
-              setTipeKategori(item.value);
-            }}
-          />
-          <View style={{marginTop: 20}}>
-            <TextAtom value="Nama Kategori" />
+          <View style={{marginTop: 0}}>
+            <TextAtom value="Nama Kategori"/>
             <TextInputAtom
               label="Masukan Kategori"
               value={namaKategori}
@@ -153,7 +131,8 @@ const InputEditCategory = ({closeModalInputKategori, idInputKategori, defaultVal
           <ButtonAtom
             title={loading ? 'Menyimpan Data' : 'Simpan'}
             uppercase={true}
-            bgColor={COLOR_ACTIVE}
+            bgColor={loading ? COLOR_DISABLED : COLOR_ACTIVE}
+            textColor={loading ? COLOR_DISABLED_TEXT : COLOR_WHITE}
             action={() => {
               // closeModalInputKategori();
               editCategory();

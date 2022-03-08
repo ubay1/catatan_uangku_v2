@@ -13,6 +13,7 @@ import {
   COLOR_WHITE,
   COLOR_DISABLED,
   COLOR_INPUT_PLACEHOLDER,
+  COLOR_DISABLED_TEXT,
 } from '../../../assets/styles/global';
 import {AppDispatch} from '../../../store';
 import {setPage} from '../../../store/whatsPage';
@@ -40,7 +41,7 @@ const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
-  const addCategory = () => {
+  const addCategory = async () => {
     setLoading(true);
     if (namaKategori === '' || tipeKategori === '') {
       setVisibleSnackbar({
@@ -57,30 +58,30 @@ const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
         tipe_kategori: tipeKategori,
       };
 
-      createKategori(data)
-        .then(() => {
+      try {
+        await createKategori(data);
+        setTimeout(() => {
+          setVisibleSnackbar({
+            isOpen: true,
+            type: 'success',
+            msg: 'Kategori berhasil ditambahkan',
+          });
+        }, 10);
+      } catch (error) {
+        console.error('error = ', error);
+        setVisibleSnackbar({
+          isOpen: true,
+          type: 'error',
+          msg: 'Terjadi kesalahan dari server',
+        });
+      } finally {
+        setTimeout(() => {
           setNamaKategori('');
           setTipeKategori('');
           setLoading(false);
           closeModalInputKategori();
-          // dispatch(setPage({page: 'Category'}));
-        })
-        .catch(err => {
-          console.log('error = ', err);
-        });
-
-      // try {
-      //   setTimeout(async () => {
-      //     const respCreateKategori = await createKategori(data)
-      //     setNamaKategori('');
-      //     setTipeKategori('')
-      //     setLoading(false);
-      //     dispatch(setPage({ page: 'Setelan' }))
-      //   }, 300);
-      // } catch (error) {
-      //   console.log(error);
-      //   setLoading(false);
-      // }
+        }, 1000);
+      }
     }
   };
 
@@ -150,7 +151,8 @@ const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
           <ButtonAtom
             title={loading ? 'Menyimpan Data' : 'Simpan'}
             uppercase={true}
-            bgColor={COLOR_ACTIVE}
+            bgColor={loading ? COLOR_DISABLED : COLOR_ACTIVE}
+            textColor={loading ? COLOR_DISABLED_TEXT : COLOR_WHITE}
             action={() => {
               // closeModalInputKategori();
               addCategory();

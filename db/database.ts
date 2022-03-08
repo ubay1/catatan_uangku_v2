@@ -69,6 +69,10 @@ export const createCatatan =  (data: any) => new Promise((resolve, reject) => {
       realm.create(SALDO_SCHEMA, {
         id: data.id,
         tipe: data.tipe,
+        tanggal: data.tanggal,
+        akun: data.akun,
+        tujuan: data.tujuan,
+        nominal: data.nominal,
         keterangan: data.keterangan,
         kategori: data.kategori,
       });

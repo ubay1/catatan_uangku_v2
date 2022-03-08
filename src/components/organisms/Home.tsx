@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {useFocusEffect} from '@react-navigation/native';
 import React from 'react';
@@ -21,8 +20,10 @@ import Greeting from '../molecules/home/Greeting';
 import ListHistoryCatatan from '../molecules/home/ListHistoryCatatan';
 import ListSaldo from '../molecules/home/ListSaldo';
 import {IPropsHomeScreen} from '../molecules/home/types';
-import styles from '../../assets/styles/global';
+import styles, { COLOR_ACTIVE, COLOR_ERROR, COLOR_WHITE } from '../../assets/styles/global';
 import {RootState} from '../../store/rootReducer';
+import DeleteContent from '../atoms/DeleteContent';
+import SnackbarAtom from '../atoms/alert/SnackbarAtom';
 
 const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   const dispatch: AppDispatch = useDispatch();
@@ -35,6 +36,13 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   const [loading, setLoading] = React.useState(false);
   const [allKategori, setAllKategori] = React.useState([]);
   const [allCatatan, setAllCatatan] = React.useState([]);
+
+  // snackbar
+  const [visibleSnackbar, setVisibleSnackbar] = React.useState({
+    isOpen: false,
+    type: '',
+    msg: '',
+  });
 
   const [allBalanceData, setAllBalanceData] = React.useState({
     pemasukanAtm: 0,
@@ -171,6 +179,13 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
     }
   };
 
+  const closeSnackbar = () => {
+    setVisibleSnackbar({
+      isOpen: false,
+      type: '',
+      msg: '',
+    });
+  };
   /* ------------------------------ modal delete ------------------------------ */
   const showModalDelete = (id: number) => {
     setIdCatatan(id);
@@ -181,85 +196,46 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
     setVisibleModalDelete(false);
   };
 
-  const submitDeleteNote = (id: number) => {
-    setVisibleModalDelete(false);
+  const submitDeleteNote = async (id: number) => {
     setLoading(true);
+    setVisibleModalDelete(false);
     setAllCatatan([]);
     setAllKategori([]);
 
-    deleteCatatan(id)
-      .then(() => {
-        // dispatch(setPage({page: 'UpdateBeranda'}));
-        loadAll();
-      })
-      .catch(err => {
-        console.log('error = ', err);
+    try {
+      await  deleteCatatan(id);
+      setVisibleSnackbar({
+        isOpen: true,
+        type: 'success',
+        msg: 'Catatan berhasil dihapus',
       });
+      loadAll();
+    } catch (error) {
+      console.log('error = ', error);
+      setVisibleSnackbar({
+        isOpen: true,
+        type: 'error',
+        msg: 'Terjadi kesalahan dari server',
+      });
+    }
   };
 
   const ModalOpenDelete = () => {
     return (
-      <ModalAtom closeModal={closeModalDelete} visible={visibleModalDelete}>
-        <View
-          style={{
-            flex: 1,
-            marginTop: 20,
-            marginHorizontal: 10,
-          }}>
-          <View>
-            <TextAtom fontWeight={'bold'} value="Yakin mau hapus ?" size={30} />
-            <TextAtom
-              fontWeight={'bold'}
-              color={Colors.grey400}
-              value="data yang telah dihapus"
-              size={30}
-            />
-            <TextAtom
-              fontWeight={'bold'}
-              color={Colors.grey400}
-              value="tidak dapat dikembalikan"
-              size={30}
-            />
-
-            <View style={{marginTop: 20}}>
-              <Button
-                dark
-                uppercase={false}
-                color="#2196F3"
-                mode="contained"
-                onPress={() => {
-                  closeModalDelete();
-                  dispatch(setPage({page: 'Beranda'}));
-                }}
-                contentStyle={{}}
-                style={{...styles.button, width: '100%', marginHorizontal: 0}}
-                theme={{colors: {disabled: 'grey'}}}>
-                <TextAtom
-                  value="Tidak"
-                  color="#fff"
-                  textTransform={'uppercase'}
-                />
-              </Button>
-              <Button
-                dark
-                uppercase={false}
-                color="#f24b51"
-                mode="contained"
-                onPress={() => {
-                  submitDeleteNote(idCatatan);
-                }}
-                contentStyle={{}}
-                style={{...styles.button, width: '100%', marginHorizontal: 0}}
-                theme={{colors: {disabled: 'grey'}}}>
-                <TextAtom
-                  value="Ya, Hapus"
-                  color="#fff"
-                  textTransform={'uppercase'}
-                />
-              </Button>
-            </View>
-          </View>
-        </View>
+      <ModalAtom
+        closeModal={closeModalDelete}
+        visible={visibleModalDelete}
+        setPageActive="Category"
+      >
+        <DeleteContent
+          loading={loading}
+          cancelDelete={() => {
+            closeModalDelete();
+          }}
+          submitDelete={()=> {
+            submitDeleteNote(idCatatan);
+          }}
+        />
       </ModalAtom>
     );
   };
@@ -282,6 +258,19 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
         openModalDelete={showModalDelete}
       />
       <ModalOpenDelete />
+      <SnackbarAtom
+        title={visibleSnackbar.msg}
+        isOpen={visibleSnackbar.isOpen}
+        action={closeSnackbar}
+        bgColor={
+          visibleSnackbar.type === 'error'
+            ? COLOR_ERROR
+            : visibleSnackbar.type === 'success'
+            ? COLOR_ACTIVE
+            : COLOR_WHITE
+        }
+        color={visibleSnackbar.type === 'error' ? COLOR_WHITE : COLOR_WHITE}
+      />
     </React.Fragment>
   );
 };

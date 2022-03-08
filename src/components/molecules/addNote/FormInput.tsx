@@ -12,6 +12,7 @@ import {
   COLOR_ACTIVE,
   COLOR_ACTIVE_SOFT,
   COLOR_DISABLED,
+  COLOR_DISABLED_TEXT,
   COLOR_ERROR,
   COLOR_INPUT_PLACEHOLDER,
   COLOR_WHITE,
@@ -87,20 +88,6 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   const submitNote = async () => {
     setloading(true);
 
-    const ID = realm.objects(SALDO_SCHEMA).length + 1;
-    const data: any = {
-      id: ID,
-      tipe: type,
-      tanggal: moment(date).format('YYYY-MM-DD').toString(),
-      akun: selectAkun,
-      kategori: selectKategori,
-      tujuan: type === 'pemasukan' ? '' : selectTujuan,
-      nominal: typeof nominal === 'string' ? parseInt(nominal) : '0',
-      keterangan: keterangan,
-    };
-
-    console.log(data);
-
     if (selectAkun === '' || selectKategori === '' || nominal === '' || keterangan === '') {
       setVisibleSnackbar({
         isOpen: true,
@@ -109,8 +96,28 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
       });
       setloading(false);
     } else {
+      const ID = realm.objects(SALDO_SCHEMA).length + 1;
+      const data: any = {
+        id: ID,
+        tipe: type,
+        tanggal: moment(date).format('YYYY-MM-DD').toString(),
+        akun: selectAkun,
+        tujuan: type === 'pemasukan' ? '' : selectTujuan,
+        nominal: typeof nominal === 'string' ? parseInt(nominal) : '0',
+        keterangan: keterangan,
+        kategori: selectKategori,
+      };
+
       try {
-        const result = await createCatatan(data);
+        await createCatatan(data);
+
+        setTimeout(() => {
+          setVisibleSnackbar({
+            isOpen: true,
+            type: 'success',
+            msg: 'Catatan berhasil disimpan',
+          });
+        }, 10);
       } catch (error) {
         console.error('error = ',error);
         setVisibleSnackbar({
@@ -119,14 +126,6 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           msg: 'Terjadi kesalahan dari server',
         });
       } finally {
-        setTimeout(() => {
-          setVisibleSnackbar({
-            isOpen: true,
-            type: 'success',
-            msg: 'Catatan berhasil disimpan',
-          });
-        }, 500);
-
         setTimeout(() => {
           setloading(false);
           dispatch(setPage({page: 'updateHome'}));
@@ -324,8 +323,11 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         <ButtonAtom
           title={loading ? 'Menyimpan Data' : 'Simpan'}
           uppercase={true}
-          bgColor={COLOR_ACTIVE}
-          action={submitNote}
+          bgColor={loading ? COLOR_DISABLED : COLOR_ACTIVE}
+          textColor={loading ? COLOR_DISABLED_TEXT : COLOR_WHITE}
+          action={() => {
+            submitNote();
+          }}
           disabled={loading}
           marginX={0}
         />

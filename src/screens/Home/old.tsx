@@ -431,7 +431,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
 
 
   useEffect(() => {
-    if (whatspage.page === 'Beranda' || whatspage.page === 'updateHome') {
+    if (whatspage.page === 'Beranda' || whatspage.page === 'UpdateBeranda') {
       closeModalDetailCatatan();
       getListCatatan();
       getListKategori();
@@ -729,7 +729,7 @@ const HomeScreen = ({ navigation }: StackBeranda) => {
         <ModalOpenAddCatatan />
 
         <FAB
-          visible={whatspage.page === 'Beranda' ? true : whatspage.page === 'updateHome' ? true : false}
+          visible={whatspage.page === 'Beranda' ? true : whatspage.page === 'UpdateBeranda' ? true : false}
           style={{
             backgroundColor: Colors.blue400, borderRadius: 100,
             justifyContent: 'center', alignItems: 'center',
