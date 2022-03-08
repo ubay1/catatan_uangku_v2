@@ -5,3 +5,15 @@ export interface IPropsListCategory {
   openModalDelete?: any;
   setidListKategori?: number;
 }
+
+export interface IPropsBtnAddCategory {
+  isPageCategory?: boolean;
+  openModalInputKategori?: any;
+}
+
+export interface IPropsInputCategory {
+  closeModalInputKategori?: any;
+  idInputKategori?: number;
+  defaultValueTipeCategory?: string;
+  defaultValueNameCategory?: string;
+}

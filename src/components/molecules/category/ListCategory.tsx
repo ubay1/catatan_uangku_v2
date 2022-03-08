@@ -120,8 +120,8 @@ const ListCategory = ({
                               color={COLOR_ACTIVE}
                               size={18}
                               action={() => {
-                                dispatch(setPage({page: 'Input'}));
-                                openModalInputKategori(true, index);
+                                // dispatch(setPage({page: 'Input'}));
+                                openModalInputKategori(true, item.id, item.tipe_kategori, item.nama_kategori);
                               }}
                             />
                           </View>

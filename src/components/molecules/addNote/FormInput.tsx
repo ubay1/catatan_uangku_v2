@@ -319,11 +319,9 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         <ButtonAtom
           title={loading ? 'Menyimpan Data' : 'Simpan'}
           uppercase={true}
-          color={COLOR_ACTIVE}
-          mode="contained"
+          bgColor={COLOR_ACTIVE}
           action={submitNote}
           disabled={loading}
-          theme={{ colors: { disabled: COLOR_ACTIVE_SOFT } }}
           marginX={0}
         />
       </View>

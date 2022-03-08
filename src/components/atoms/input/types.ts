@@ -1,5 +1,6 @@
 export interface IPropsTextInput {
   label: string;
+  value?: any;
   theme: object;
   mode?: any;
   onChangeText: any;
