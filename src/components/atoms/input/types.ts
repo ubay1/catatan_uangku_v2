@@ -11,4 +11,5 @@ export interface IPropsTextInput {
   height?: number;
   numberOfLines?: number;
   multiLine?: boolean;
+  value?: string;
 }

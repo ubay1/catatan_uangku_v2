@@ -14,6 +14,14 @@ export type RootStackParamList = {
     saldoAtm?: number,
     saldoDompet?: number,
   },
+  DetailNote: {
+    title?: string;
+    type?: string;
+    data?: any;
+    listKategori?: any;
+    saldoAtm?: number,
+    saldoDompet?: number,
+  },
   Detail: {
     data: any;
     listKategori?: any;
@@ -51,6 +59,10 @@ export type StackCatatan = {
 export type StackAddNote = {
   route: RouteProp<RootStackParamList, 'AddNote'>;
   navigation: StackNavigationProp<RootStackParamList, 'AddNote'>;
+}
+export type StackDetailNote = {
+  route: RouteProp<RootStackParamList, 'DetailNote'>;
+  navigation: StackNavigationProp<RootStackParamList, 'DetailNote'>;
 }
 export type StackDetail = {
   route: RouteProp<RootStackParamList, 'Detail'>;

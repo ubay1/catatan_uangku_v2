@@ -25,13 +25,13 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
     <>
       <View style={{
         ...stylesCustom.cardSaldo,
-        backgroundColor: Colors.red50,
+        backgroundColor: Colors.orange50,
       }}
       >
         <View style={stylesCustom.betweenCenterRow}>
           <View style={{
             ...stylesCustom.spaceBackgroundColor,
-            backgroundColor: Colors.red400,
+            backgroundColor: Colors.orange400,
           }}>
             <IconFh name="dollar-sign" color="#fff" size={30} />
           </View>
@@ -90,6 +90,30 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
                 <ActivityIndicator animating={true} color={Colors.blue500} />
                 :
                 <TextAtom value={formatRupiah(allBalanceData.saldoDompet)} fontWeight={'bold'}/>
+            }
+          </View>
+        </View>
+      </View>
+
+      <View style={{
+        ...stylesCustom.cardSaldo,
+        backgroundColor: Colors.red50,
+      }}
+      >
+        <View style={stylesCustom.betweenCenterRow}>
+          <View style={{
+            ...stylesCustom.spaceBackgroundColor,
+            backgroundColor: Colors.red400,
+          }}>
+            <IconMCI name="currency-usd-off" color="#fff" size={30} />
+          </View>
+          <View style={{alignItems: 'flex-start'}}>
+            <TextAtom value="Total Pengeluaran" />
+            {
+              loadings ?
+                <ActivityIndicator animating={true} color={Colors.blue500} />
+                :
+                <TextAtom value={formatRupiah(allBalanceData.totalPengeluaran)} fontWeight={'bold'}/>
             }
           </View>
         </View>

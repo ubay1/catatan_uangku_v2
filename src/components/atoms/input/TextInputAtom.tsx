@@ -7,7 +7,6 @@ import styles from '../../../assets/styles/global';
 
 const TextInputAtom = ({
   label,
-  value,
   theme,
   mode = 'flat',
   onChangeText,
@@ -16,8 +15,7 @@ const TextInputAtom = ({
   marginX = 20,
   marginY = 5,
   height = 50,
-  numberOfLines = 0,
-  multiLine = false,
+  value,
 }: IPropsTextInput) => {
   return (
     <TextInput

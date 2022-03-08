@@ -18,6 +18,7 @@ const TextareaInputAtom = ({
   height = 50,
   numberOfLines = 0,
   multiLine = false,
+  value,
 }: IPropsTextInput) => {
   return (
     <TextInput
@@ -39,6 +40,7 @@ const TextareaInputAtom = ({
       placeholderTextColor={placeholderTextColor}
       numberOfLines={numberOfLines}
       multiline={multiLine}
+      value={value}
     />
   );
 };

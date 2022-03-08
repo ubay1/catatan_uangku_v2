@@ -3,7 +3,6 @@
 import React from 'react';
 import { Pressable } from 'react-native';
 import { Button } from 'react-native-paper';
-import TextAtom from '../text/TextAtom';
 import { IPropsButtonWithIcon } from './types';
 import styles, { COLOR_ACTIVE } from '../../../assets/styles/global';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';

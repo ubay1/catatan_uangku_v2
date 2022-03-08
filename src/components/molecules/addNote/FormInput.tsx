@@ -12,6 +12,7 @@ import {
   COLOR_ACTIVE,
   COLOR_ACTIVE_SOFT,
   COLOR_DISABLED,
+  COLOR_DISABLED_TEXT,
   COLOR_ERROR,
   COLOR_INPUT_PLACEHOLDER,
   COLOR_WHITE,
@@ -41,7 +42,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   const [loading, setloading] = React.useState(false);
 
   // state date
-  const [date, setDate] = React.useState<Date>(new Date());
+  const [date, setDate] = React.useState<any>(new Date());
   const [mode, setMode] = React.useState<any>('date');
   const [show, setShow] = React.useState(false);
 
@@ -74,7 +75,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   const [keterangan, setketerangan] = React.useState('');
 
   React.useEffect(() => {
-    console.log(route.params);
+    // console.log(route.params);
     setKategoriList(dataProps);
   }, []);
   // const [data, setData] = React.useState(null);
@@ -87,18 +88,6 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   const submitNote = async () => {
     setloading(true);
 
-    const ID = realm.objects(SALDO_SCHEMA).length + 1;
-    const data: any = {
-      id: ID,
-      tipe: type,
-      tanggal: moment(date).format('YYYY-MM-DD').toString(),
-      akun: selectAkun,
-      kategori: selectKategori,
-      tujuan: type === 'pemasukan' ? '' : selectTujuan,
-      nominal: typeof nominal === 'string' ? parseInt(nominal) : '0',
-      keterangan: keterangan,
-    };
-
     if (selectAkun === '' || selectKategori === '' || nominal === '' || keterangan === '') {
       setVisibleSnackbar({
         isOpen: true,
@@ -107,19 +96,36 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
       });
       setloading(false);
     } else {
+      const ID = realm.objects(SALDO_SCHEMA).length + 1;
+      const data: any = {
+        id: ID,
+        tipe: type,
+        tanggal: moment(date).format('YYYY-MM-DD').toString(),
+        akun: selectAkun,
+        tujuan: type === 'pemasukan' ? '' : selectTujuan,
+        nominal: typeof nominal === 'string' ? parseInt(nominal) : '0',
+        keterangan: keterangan,
+        kategori: selectKategori,
+      };
+
       try {
-        const result = await createCatatan(data);
-      } catch (error) {
-        console.log('error = ',error);
-      } finally {
+        await createCatatan(data);
+
         setTimeout(() => {
           setVisibleSnackbar({
             isOpen: true,
             type: 'success',
             msg: 'Catatan berhasil disimpan',
           });
-        }, 500);
-
+        }, 10);
+      } catch (error) {
+        console.error('error = ',error);
+        setVisibleSnackbar({
+          isOpen: true,
+          type: 'error',
+          msg: 'Terjadi kesalahan dari server',
+        });
+      } finally {
         setTimeout(() => {
           setloading(false);
           dispatch(setPage({page: 'updateHome'}));
@@ -136,12 +142,6 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
 
   const showDatepicker = () => {
     showMode('date');
-  };
-
-  const onChange = (selectedDate: any) => {
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
-    setShow(false);
   };
 
   const closeSnackbar = () => {
@@ -178,7 +178,11 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
               mode={mode}
               is24Hour={true}
               display="default"
-              onChange={onChange}
+              onChange={(event: any, selectedDate: any) => {
+                const currentDate = selectedDate || date;
+                setDate(currentDate);
+                setShow(false);
+              }}
             />
           )}
         </View>
@@ -319,8 +323,11 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         <ButtonAtom
           title={loading ? 'Menyimpan Data' : 'Simpan'}
           uppercase={true}
-          bgColor={COLOR_ACTIVE}
-          action={submitNote}
+          bgColor={loading ? COLOR_DISABLED : COLOR_ACTIVE}
+          textColor={loading ? COLOR_DISABLED_TEXT : COLOR_WHITE}
+          action={() => {
+            submitNote();
+          }}
           disabled={loading}
           marginX={0}
         />

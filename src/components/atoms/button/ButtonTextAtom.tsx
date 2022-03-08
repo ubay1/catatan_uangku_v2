@@ -6,7 +6,7 @@ import styles, { COLOR_ACTIVE_SOFT } from '../../../assets/styles/global';
 import TextAtom from '../text/TextAtom';
 import { TouchableOpacity } from 'react-native';
 
-const ButtonTextAtom = ({title, uppercase, textColor = '#fff', bgColor = COLOR_ACTIVE_SOFT, paddingX = 0, paddingY = 0, rounded = 0, action}: IPropsButtonText) => {
+const ButtonTextAtom = ({title, uppercase, textColor = '#fff', fontWeight = 'normal', bgColor = COLOR_ACTIVE_SOFT, paddingX = 0, paddingY = 0, rounded = 0, action}: IPropsButtonText) => {
 
   return (
     <TouchableOpacity style={{
@@ -20,6 +20,7 @@ const ButtonTextAtom = ({title, uppercase, textColor = '#fff', bgColor = COLOR_A
       <TextAtom
         color={textColor}
         value={title}
+        fontWeight={fontWeight}
         textTransform={uppercase ? 'uppercase' : 'none'}
       />
     </TouchableOpacity>

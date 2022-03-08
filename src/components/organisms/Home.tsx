@@ -1,24 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable radix */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import React from 'react';
-import {ScrollView, View} from 'react-native';
-import { useDispatch } from 'react-redux';
+import {Image, ScrollView, View} from 'react-native';
+import {Button, Colors} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import realm from 'realm';
 import {
   getAllKategori,
   getAllCatatan,
   getSepuluhCatatanTerakhir,
+  deleteCatatan,
 } from '../../../db/database';
-import { AppDispatch } from '../../store';
-import { setPage } from '../../store/whatsPage';
+import {AppDispatch} from '../../store';
+import {setPage} from '../../store/whatsPage';
+import ModalAtom from '../atoms/alert/ModalAtom';
+import TextAtom from '../atoms/text/TextAtom';
 import Greeting from '../molecules/home/Greeting';
 import ListHistoryCatatan from '../molecules/home/ListHistoryCatatan';
 import ListSaldo from '../molecules/home/ListSaldo';
 import {IPropsHomeScreen} from '../molecules/home/types';
+import styles, { COLOR_ACTIVE, COLOR_ERROR, COLOR_WHITE } from '../../assets/styles/global';
+import {RootState} from '../../store/rootReducer';
+import DeleteContent from '../atoms/DeleteContent';
+import SnackbarAtom from '../atoms/alert/SnackbarAtom';
 
 const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   const dispatch: AppDispatch = useDispatch();
+  const whatspage = useSelector((state: RootState) => state.whatsPage);
+
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -27,15 +37,27 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   const [allKategori, setAllKategori] = React.useState([]);
   const [allCatatan, setAllCatatan] = React.useState([]);
 
+  // snackbar
+  const [visibleSnackbar, setVisibleSnackbar] = React.useState({
+    isOpen: false,
+    type: '',
+    msg: '',
+  });
+
   const [allBalanceData, setAllBalanceData] = React.useState({
     pemasukanAtm: 0,
     pemasukanDompet: 0,
     pengeluaranAtm: 0,
     pengeluaranDompet: 0,
     totalSaldo: 0,
+    totalPengeluaran: 0,
     saldoAtm: 0,
     saldoDompet: 0,
   });
+
+  // modal delete
+  const [idCatatan, setIdCatatan] = React.useState(0);
+  const [visibleModalDelete, setVisibleModalDelete] = React.useState(false);
 
   React.useEffect(() => {
     loadAll();
@@ -63,26 +85,28 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
     let totalSaldo: number = 0;
     let totalSaldoAtm: number = 0;
     let totalSaldoDompet: number = 0;
+    let totalPengeluaranSemuaSaldo: number = 0;
 
     if (allCatatan.length !== 0) {
       allCatatan.forEach((item: any) => {
         // jika akun ATM
         if (item.akun === 'atm') {
           if (item.tipe === 'pemasukan') {
-            pemasukan_atm.push(parseInt(item.nominal));
+            pemasukan_atm.push(item.nominal);
           } else {
-            if (item.tujuan === 'tarik tunai') {
-              pemasukan_dompet.push(parseInt(item.nominal));
-              pengeluaran_atm.push(parseInt(item.nominal));
-            } else {
-              pengeluaran_atm.push(parseInt(item.nominal));
-            }
+            // if (item.tujuan === 'tarik tunai') {
+            //   pemasukan_dompet.push(item.nominal);
+            //   pengeluaran_atm.push(item.nominal);
+            // } else {
+            //   pengeluaran_atm.push(item.nominal);
+            // }
+            pengeluaran_atm.push(item.nominal);
           }
         } else {
           if (item.tipe === 'pemasukan') {
-            pemasukan_dompet.push(parseInt(item.nominal));
+            pemasukan_dompet.push(item.nominal);
           } else {
-            pengeluaran_dompet.push(parseInt(item.nominal));
+            pengeluaran_dompet.push(item.nominal);
           }
         }
       });
@@ -99,11 +123,15 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
     }
 
     totalSaldo =
-      totalPemasukanAtm +
-      totalPemasukanDompet -
+      (totalPemasukanAtm + totalPemasukanDompet) -
       (totalPengeluaranAtm + totalPengeluaranDompet);
     totalSaldoAtm = totalPemasukanAtm - totalPengeluaranAtm;
     totalSaldoDompet = totalPemasukanDompet - totalPengeluaranDompet;
+    totalPengeluaranSemuaSaldo = totalPengeluaranAtm + totalPengeluaranDompet;
+
+    console.log(
+      totalPengeluaranSemuaSaldo
+    );
 
     setAllBalanceData({
       pemasukanAtm: totalPemasukanAtm,
@@ -111,16 +139,18 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       pemasukanDompet: totalPemasukanDompet,
       pengeluaranDompet: totalPengeluaranDompet,
       totalSaldo: totalSaldo,
+      totalPengeluaran: totalPengeluaranSemuaSaldo,
       saldoAtm: totalSaldoAtm,
       saldoDompet: totalSaldoDompet,
     });
   }, [allCatatan]);
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     loadAll();
-  //   }, [])
-  // );
+  React.useEffect(() => {
+    if (whatspage.page === 'UpdateBeranda') {
+      closeModalDelete();
+      loadAll();
+    }
+  }, [whatspage]);
   /* -------------------------------------------------------------------------- */
   /*                                   handle form                              */
   /* -------------------------------------------------------------------------- */
@@ -148,6 +178,69 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       console.log('sukses load all');
     }
   };
+
+  const closeSnackbar = () => {
+    setVisibleSnackbar({
+      isOpen: false,
+      type: '',
+      msg: '',
+    });
+  };
+  /* ------------------------------ modal delete ------------------------------ */
+  const showModalDelete = (id: number) => {
+    setIdCatatan(id);
+    setVisibleModalDelete(true);
+  };
+
+  const closeModalDelete = () => {
+    setVisibleModalDelete(false);
+  };
+
+  const submitDeleteNote = async (id: number) => {
+    setLoading(true);
+    setVisibleModalDelete(false);
+    setAllCatatan([]);
+    setAllKategori([]);
+
+    try {
+      await  deleteCatatan(id);
+      setVisibleSnackbar({
+        isOpen: true,
+        type: 'success',
+        msg: 'Catatan berhasil dihapus',
+      });
+      loadAll();
+    } catch (error) {
+      console.log('error = ', error);
+      setVisibleSnackbar({
+        isOpen: true,
+        type: 'error',
+        msg: 'Terjadi kesalahan dari server',
+      });
+    }
+  };
+
+  const ModalOpenDelete = () => {
+    return (
+      <ModalAtom
+        closeModal={closeModalDelete}
+        visible={visibleModalDelete}
+        setPageActive="Category"
+      >
+        <DeleteContent
+          loading={loading}
+          cancelDelete={() => {
+            closeModalDelete();
+          }}
+          submitDelete={()=> {
+            submitDeleteNote(idCatatan);
+          }}
+        />
+      </ModalAtom>
+    );
+  };
+  /* ------------------------------ modal delete ------------------------------ */
+
   /* -------------------------------------------------------------------------- */
   /*                                   show page                                */
   /* -------------------------------------------------------------------------- */
@@ -162,6 +255,21 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
         saldoAtm={allBalanceData.saldoAtm}
         saldoDompet={allBalanceData.saldoDompet}
         navigation={navigation}
+        openModalDelete={showModalDelete}
+      />
+      <ModalOpenDelete />
+      <SnackbarAtom
+        title={visibleSnackbar.msg}
+        isOpen={visibleSnackbar.isOpen}
+        action={closeSnackbar}
+        bgColor={
+          visibleSnackbar.type === 'error'
+            ? COLOR_ERROR
+            : visibleSnackbar.type === 'success'
+            ? COLOR_ACTIVE
+            : COLOR_WHITE
+        }
+        color={visibleSnackbar.type === 'error' ? COLOR_WHITE : COLOR_WHITE}
       />
     </React.Fragment>
   );

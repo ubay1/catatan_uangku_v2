@@ -28,4 +28,5 @@ export interface IPropsButtonText {
   uppercase?: boolean;
   rounded?: number;
   action?: any;
+  fontWeight?: string;
 }

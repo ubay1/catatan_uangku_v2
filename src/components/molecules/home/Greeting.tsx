@@ -56,7 +56,8 @@ const stylesCustom = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: 10,
     marginHorizontal: 10,
   },
   greeting: {

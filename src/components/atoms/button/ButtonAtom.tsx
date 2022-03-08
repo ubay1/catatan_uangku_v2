@@ -29,24 +29,6 @@ const ButtonAtom = ({title, size, fontWeight, uppercase, bgColor, disabled, acti
         textTransform={uppercase ? 'uppercase' : 'none'}
       />
     </Pressable>
-    // <Button
-    //   uppercase={uppercase}
-    //   color={color}
-    //   mode={mode}
-    //   disabled={disabled}
-    //   theme={theme}
-    //   onPress={action}
-    //   contentStyle={{
-    //     paddingVertical: 5,
-    //   }}
-    //   style={{...styles.button, marginHorizontal: marginX}}
-    // >
-    //   <TextAtom
-    //     color={textColor}
-    //     value={title}
-    //     textTransform={uppercase ? 'uppercase' : 'none'}
-    //   />
-    // </Button>
 );
 };
 

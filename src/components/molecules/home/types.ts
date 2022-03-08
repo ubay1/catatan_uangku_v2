@@ -18,4 +18,5 @@ export interface IPropsListCatatan {
   saldoDompet: number;
   navigation?: any;
   route?: any;
+  openModalDelete?: any;
 }

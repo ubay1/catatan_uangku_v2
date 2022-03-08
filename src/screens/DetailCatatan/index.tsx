@@ -54,7 +54,6 @@ const DetailScreen = (props: {data:any, listKategori:any, saldoAtm:any, saldoDom
 
   const [keterangan, setketerangan] = useState('');
 
-  const [name, setName] = React.useState('');
   const [loading, setloading] = React.useState(false);
   const [loadingDelete, setloadingDelete] = React.useState(false);
 

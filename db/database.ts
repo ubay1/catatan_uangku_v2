@@ -69,6 +69,10 @@ export const createCatatan =  (data: any) => new Promise((resolve, reject) => {
       realm.create(SALDO_SCHEMA, {
         id: data.id,
         tipe: data.tipe,
+        tanggal: data.tanggal,
+        akun: data.akun,
+        tujuan: data.tujuan,
+        nominal: data.nominal,
         keterangan: data.keterangan,
         kategori: data.kategori,
       });
@@ -141,24 +145,6 @@ new Promise((resolve, reject) => {
   });
 });
 
-
-// export const updateCatatan =  (data: any) => {
-//   realm.write(() => {
-//     const kategori: any = realm.create(SALDO_SCHEMA, {
-//         id: data.id,
-//         tipe: data.tipe,
-//         tanggal: data.tanggal,
-//         akun: data.akun,
-//         tujuan: data.tujuan,
-//         nominal: data.nominal,
-//         keterangan: data.keterangan,
-//         kategori: data.kategori,
-//       }, true);
-//   });
-
-//   return 'data catatan telah diperbarui';
-// };
-
 export const updateCatatan = (data: any) => new Promise<void>((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
       realm.write(() => {
@@ -178,8 +164,10 @@ export const updateCatatan = (data: any) => new Promise<void>((resolve, reject) 
 export const deleteCatatan = (id: any) => new Promise<void>((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
       realm.write(() => {
-        let deletingTodoList = realm.objectForPrimaryKey(SALDO_SCHEMA, id);
-        realm.delete(deletingTodoList);
+        let deletingCatatan = realm.objectForPrimaryKey(SALDO_SCHEMA, id);
+        realm.delete(deletingCatatan);
+        // const allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
+        // const sliceCatatan = allCatatan.slice(0, 10);
         resolve();
       });
   }).catch((error) => reject(error));
