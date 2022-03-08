@@ -26,7 +26,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { setPage } from './src/store/whatsPage';
 import DetailScreen from './src/screens/DetailCatatan';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import SetelanScreen from './src/screens/Setelan';
+import CategoryScreen from './src/screens/Category';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from 'react-native-paper';
 import { COLOR_ACTIVE } from './src/assets/styles/global';
@@ -122,14 +122,14 @@ const HomeNavigator = () => {
   const navigationredux = useSelector((state: RootState) => state.navigationredux);
   return (
     <Stack.Navigator
-      initialRouteName={'Beranda'}
+      initialRouteName={'Home'}
       mode={'modal'}
       screenOptions={{
         headerShown: false,
         ...horizontalAnimation,
       }}
     >
-      <Stack.Screen name="Beranda" component={HomeScreen} />
+      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Info" component={InfoScreen} />
       <Stack.Screen name="Detail" component={DetailScreen} />
       <Stack.Screen name="AddNote" component={AddNote} />
@@ -168,17 +168,17 @@ const LaporanNavigator = () => {
   );
 };
 
-const SetelanNavigator = () => {
+const CategoryNavigator = () => {
   const navigationredux = useSelector((state: RootState) => state.navigationredux);
   return (
     <Stack.Navigator
-      initialRouteName={'Setelan'}
+      initialRouteName={'Category'}
       mode={'modal'}
       screenOptions={{
         headerShown: !navigationredux.showTab,
       }}
     >
-      <Stack.Screen name="Setelan" component={SetelanScreen} />
+      <Stack.Screen name="Category" component={CategoryScreen} />
     </Stack.Navigator>
   );
 };
@@ -213,11 +213,11 @@ function MyTabBar({ state, descriptors, navigation }: any) {
 
             let iconName: any;
 
-            if (route.name === 'Beranda') {
+            if (route.name === 'Home') {
               iconName = 'home';
             } else if (route.name === 'Catatan') {
               iconName = 'note';
-            } else if (route.name === 'Kategori') {
+            } else if (route.name === 'Category') {
               iconName = 'plus-box-multiple';
             } else {
               iconName = 'plus';
@@ -425,7 +425,7 @@ const Routes = () => {
                   //   tabBarIcon: ({ focused, color, size }: any) => {
                   //     let iconName: any;
 
-                  //     if (route.name === 'Beranda') {
+                  //     if (route.name === 'Home') {
                   //       iconName = 'home';
                   //     } else if (route.name === 'Catatan') {
                   //       iconName = 'history';
@@ -437,9 +437,9 @@ const Routes = () => {
                   //   },
                   // })}
                 >
-                  <Tab.Screen name="Beranda" component={HomeNavigator} />
+                  <Tab.Screen name="Home" component={HomeNavigator} />
                   <Tab.Screen name="Catatan" component={LaporanNavigator} />
-                  <Tab.Screen name="Kategori" component={SetelanNavigator}/>
+                  <Tab.Screen name="Category" component={CategoryNavigator}/>
                 </Tab.Navigator>
         }
       </NavigationContainer>

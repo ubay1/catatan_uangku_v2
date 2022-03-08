@@ -13,7 +13,7 @@ import { IPropsModal } from './types';
 import styles from '../../../assets/styles/global';
 
 
-const ModalAtom = ({closeModal, visible, children}: IPropsModal) => {
+const ModalAtom = ({closeModal, visible, setPageActive = 'Beranda', children}: IPropsModal) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -44,7 +44,7 @@ const ModalAtom = ({closeModal, visible, children}: IPropsModal) => {
           }}
           onPress={() => {
             closeModal();
-            dispatch(setPage({page: 'Beranda'}));
+            dispatch(setPage({page: setPageActive}));
           }}
         />
 

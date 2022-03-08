@@ -200,7 +200,9 @@ const ListHistoryCatatan = ({
     return (
       <ModalAtom
         closeModal={closeModalSelectInputType}
-        visible={visibleModalInputType}>
+        visible={visibleModalInputType}
+        setPageActive="Beranda"
+      >
         <SelectTypeNote />
       </ModalAtom>
     );
