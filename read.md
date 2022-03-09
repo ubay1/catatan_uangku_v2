@@ -103,3 +103,28 @@ MD5: 43:D3:AA:48:92:19:C9:E1:A2:78:7E:8E:F6:D8:52:DD
 SHA1: E5:D2:0E:D8:8B:FF:7C:6B:B5:45:89:D2:E9:ED:41:A3:F4:DC:A5:B6
 SHA-256: C8:E6:1B:E3:B7:2F:0C:34:FD:F2:80:A2:53:2D:FF:4B:F7:71:20:8C:3E:A5:1A:54:E0:50:1E:2D:D1:E8:E0:7C
 Valid until: Saturday, January 14, 2051
+
+# Membuat keystore baru petunjuk dari google        
+PS E:\CODE\react native\catatan_uangku_v2\android> keytool -genkeypair -alias upload -keyalg RSA -keysize 2048 -validity 9125 -keystore catatanuangku2021.jks
+Enter keystore password:  
+Re-enter new password: 
+What is your first and last name?
+  [Unknown]:  ubay dillah
+What is the name of your organizational unit?
+  [Unknown]:  bababay
+What is the name of your organization?
+  [Unknown]:  bababay
+What is the name of your City or Locality?
+  [Unknown]:  jakarta
+What is the name of your State or Province?
+  [Unknown]:  DKI jakarta
+What is the two-letter country code for this unit?
+  [Unknown]:  ID
+Is CN=ubay dillah, OU=bababay, O=bababay, L=jakarta, ST=DKI jakarta, C=ID correct?
+  [no]:  yes
+
+Enter key password for <upload>
+        (RETURN if same as keystore password):
+
+# export ke PEM
+PS E:\CODE\react native\catatan_uangku_v2\android> keytool -export -rfc -alias upload -file upload_certificate.pem -keystore catatanuangku2021.jks
