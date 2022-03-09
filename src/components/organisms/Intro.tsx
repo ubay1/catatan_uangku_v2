@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState, lazy, Suspense } from 'react';
-import { Image, Dimensions, ScrollView, Alert, Text, Keyboard, StyleSheet } from 'react-native';
+import { Image, Dimensions, ScrollView, Alert, Text, Keyboard, StyleSheet, View } from 'react-native';
 import { Colors } from 'react-native-paper';
 import { AuthContext } from '../../../context/AuthContext';
-import styles, { COLOR_ACTIVE, COLOR_ACTIVE_SOFT, COLOR_BLACK, COLOR_DISABLED, COLOR_ERROR, COLOR_WHITE } from '../../assets/styles/global';
+import styles, { COLOR_ACTIVE, COLOR_ACTIVE_SOFT, COLOR_BLACK, COLOR_DISABLED, COLOR_DISABLED_TEXT, COLOR_ERROR, COLOR_WHITE } from '../../assets/styles/global';
 import ButtonAtom from '../atoms/button/ButtonAtom';
 import TextInputAtom from '../atoms/input/TextInputAtom';
 
@@ -98,15 +98,17 @@ const IntroOrganism = () => {
         onChangeText={(e: any) => setName(e)}
         theme={{ colors: { primary: COLOR_ACTIVE}}}
       />
-      <ButtonAtom
-        title={loading ? 'Menyimpan Data' : 'Simpan'}
-        uppercase={true}
-        color={COLOR_ACTIVE}
-        mode="contained"
-        action={submitData}
-        disabled={loading}
-        theme={{ colors: { disabled: COLOR_ACTIVE_SOFT } }}
-      />
+      <View style={{marginHorizontal: 20, marginTop: 10}}>
+        <ButtonAtom
+          title={loading ? 'Menyimpan Data' : 'Simpan'}
+          uppercase={true}
+          marginX={0}
+          bgColor={loading ? COLOR_DISABLED : COLOR_ACTIVE}
+          textColor={loading ? COLOR_DISABLED_TEXT : COLOR_WHITE}
+          action={submitData}
+          disabled={loading}
+        />
+      </View>
       {/* <Suspense fallback={<Text> loading.. </Text>}> */}
         <SnackbarAtom
           title={visibleSnackbar.msg}

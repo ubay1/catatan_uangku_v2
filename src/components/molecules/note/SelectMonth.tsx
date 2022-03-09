@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {useEffect, useState} from 'react';
@@ -12,6 +11,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import TextAtom from '../../atoms/text/TextAtom';
 import styles, {
+  COLOR_ACTIVE,
   COLOR_DISABLED,
   COLOR_INPUT_PLACEHOLDER,
 } from '../../../assets/styles/global';
@@ -22,6 +22,8 @@ import {
   getFilterCatatanByMonth,
 } from '../../../../db/database';
 import {IPropsSelectMonth} from './types';
+import ModalAtom from '../../atoms/alert/ModalAtom';
+import ButtonAtom from '../../atoms/button/ButtonAtom';
 
 const SelectMonth = ({
   loading,
@@ -43,6 +45,7 @@ const SelectMonth = ({
   showDatepickerFromDate,
   onChangeToDate,
   showDatepickerToDate,
+  onSubmitCustomDate,
 }: IPropsSelectMonth) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
@@ -84,130 +87,6 @@ const SelectMonth = ({
           // settampungJenisFilter(item.value);
         }}
       />
-
-      <Portal>
-        <Modal
-          visible={visibleCustomDate}
-          onDismiss={eventCloseModalCustom}
-          contentContainerStyle={{
-            backgroundColor: 'white',
-            padding: 20,
-            borderRadius: 5,
-          }}
-          style={{marginHorizontal: 20}}>
-          <Text style={{marginBottom: 5, color: '#000'}}>Dari Tanggal</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              height: 55,
-            }}>
-            <View
-              style={{
-                ...stylesCustom.border_text,
-              }}>
-              <Text style={{color: '#000'}}>
-                {moment(fromDate).format('YYYY-MM-DD').toString()}
-              </Text>
-            </View>
-            <View
-              style={{
-                height: '100%',
-                width: '20%',
-              }}>
-              <Button
-                onPress={showDatepickerFromDate}
-                style={{
-                  ...stylesCustom.border_calender,
-                }}>
-                <IconMCI name="calendar" size={25} color={Colors.black} />
-              </Button>
-            </View>
-            {showFromDate && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={fromDate}
-                maximumDate={new Date()}
-                mode={modeFromDate}
-                is24Hour={true}
-                display="default"
-                onChange={onChangeFromDate}
-              />
-            )}
-          </View>
-
-          <Text style={{marginBottom: 5, marginTop: 10, color: '#000'}}>
-            Sampai Tanggal
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              height: 55,
-            }}>
-            <View
-              style={{
-                ...stylesCustom.border_text,
-              }}>
-              <Text style={{color: '#000'}}>
-                {moment(toDate).format('YYYY-MM-DD').toString()}
-              </Text>
-            </View>
-            <View
-              style={{
-                height: '100%',
-                width: '20%',
-              }}>
-              <Button
-                onPress={showDatepickerToDate}
-                style={{
-                  ...stylesCustom.border_calender,
-                }}>
-                <IconMCI name="calendar" size={25} color={Colors.black} />
-              </Button>
-            </View>
-            {showToDate && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={toDate}
-                maximumDate={new Date()}
-                mode={modeToDate}
-                is24Hour={true}
-                display="default"
-                onChange={onChangeToDate}
-              />
-            )}
-          </View>
-          <Button
-            dark
-            uppercase={false}
-            color={Colors.blue400}
-            mode="contained"
-            onPress={() => {
-              // setloading(true);
-              // getCatatanByDate();
-              // setTimeout(() => {
-              //   setloading(false)
-              // }, 2000);
-            }}
-            contentStyle={{paddingVertical: 5}}
-            style={{borderRadius: 5, marginTop: 10}}
-            disabled={loading ? true : false}
-            theme={{colors: {disabled: 'grey'}}}>
-            {loading ? (
-              <Text style={{fontSize: responsiveFontSize(2), color: 'grey'}}>
-                Mengirim data ..
-              </Text>
-            ) : (
-              <Text style={{fontSize: responsiveFontSize(2), color: '#fff'}}>
-                Kirim
-              </Text>
-            )}
-          </Button>
-        </Modal>
-      </Portal>
     </View>
   );
 };
@@ -218,7 +97,8 @@ const stylesCustom = StyleSheet.create({
     position: 'absolute',
     top: 10,
     width: '100%',
-    height: 150,
+    // backgroundColor: 'red',
+    height: 200,
   },
   border_text: {
     backgroundColor: Colors.white,

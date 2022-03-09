@@ -13,7 +13,7 @@ import { IPropsModal } from './types';
 import styles from '../../../assets/styles/global';
 
 
-const ModalAtom = ({closeModal, visible, setPageActive = 'Beranda', children}: IPropsModal) => {
+const ModalAtom = ({closeModal, visible, setPageActive = 'Home', children}: IPropsModal) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -54,4 +54,4 @@ const ModalAtom = ({closeModal, visible, setPageActive = 'Beranda', children}: I
   );
 };
 
-export default ModalAtom;
+export default React.memo(ModalAtom);

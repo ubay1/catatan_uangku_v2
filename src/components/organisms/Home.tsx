@@ -64,12 +64,21 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   }, []);
 
   React.useEffect(() => {
-    console.log(pageActive);
     if (pageActive === 'updateHome') {
       loadAll();
       dispatch(setPage({page: 'Home'}));
+    } else if (pageActive === 'updateCategory') {
+      loadAll();
+      dispatch(setPage({page: 'Category'}));
     }
   }, [pageActive]);
+
+  // React.useEffect(() => {
+  //   if (whatspage.page === 'updateHome') {
+  //     closeModalDelete();
+  //     loadAll();
+  //   }
+  // }, [whatspage]);
 
   // cek data allCatatan
   React.useEffect(() => {
@@ -144,13 +153,6 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       saldoDompet: totalSaldoDompet,
     });
   }, [allCatatan]);
-
-  React.useEffect(() => {
-    if (whatspage.page === 'UpdateBeranda') {
-      closeModalDelete();
-      loadAll();
-    }
-  }, [whatspage]);
   /* -------------------------------------------------------------------------- */
   /*                                   handle form                              */
   /* -------------------------------------------------------------------------- */

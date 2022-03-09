@@ -7,6 +7,8 @@ import UserReducer from './user';
 import AuthReducer from './auth';
 import whatsPageReduce from './whatsPage';
 import laporanReduce from './laporan';
+import listNoteReducer from './listNote';
+import categoryReducer from './category';
 // import GlobalScreenActiveReducer from "./global_screen_active";
 // import MapsReducer from "./maps";
 
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
   user: UserReducer,
   auth: AuthReducer,
   whatsPage: whatsPageReduce,
+  listNote: listNoteReducer,
+  // category: categoryReducer,
   // laporan: laporanReduce,
   // globalScreenActive: GlobalScreenActiveReducer,
   // maps: MapsReducer

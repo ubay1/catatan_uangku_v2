@@ -8,7 +8,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Colors, Button} from 'react-native-paper';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
-import {
+import styles, {
   COLOR_ACTIVE,
   COLOR_ACTIVE_SOFT,
   COLOR_DISABLED,
@@ -101,6 +101,9 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         id: ID,
         tipe: type,
         tanggal: moment(date).format('YYYY-MM-DD').toString(),
+        tanggal_int: Number(moment(date).format('DD')),
+        bulan: Number(moment(date).format('MM')),
+        tahun: Number(moment(date).format('YYYY')),
         akun: selectAkun,
         tujuan: type === 'pemasukan' ? '' : selectTujuan,
         nominal: typeof nominal === 'string' ? parseInt(nominal) : '0',
@@ -159,14 +162,14 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
       {/* date */}
       <View>
         <TextAtom value="Tanggal" />
-        <View style={stylesCustom.containerDate}>
-          <View style={stylesCustom.inputDate}>
+        <View style={styles.containerDate}>
+          <View style={styles.inputDate}>
             <TextAtom value={moment(date).format('L').toString()} />
           </View>
           <View style={{height: '100%', width: '20%'}}>
             <Button
               onPress={showDatepicker}
-              style={stylesCustom.btnShowDatepicker}>
+              style={styles.btnShowDatepicker}>
               <IconMCI name="calendar" size={23} color={Colors.black} />
             </Button>
           </View>
@@ -346,42 +349,9 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
 };
 
 const stylesCustom = StyleSheet.create({
-  containerDate: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 50,
-    marginTop: 5,
-  },
   containerSaldo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  inputDate: {
-    backgroundColor: COLOR_DISABLED,
-    height: '100%',
-    width: '80%',
-    justifyContent: 'center',
-    paddingLeft: 10,
-    borderColor: COLOR_INPUT_PLACEHOLDER,
-    borderWidth: 1,
-    borderRightWidth: 0,
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
-  },
-  btnShowDatepicker: {
-    backgroundColor: COLOR_DISABLED,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
-    borderColor: COLOR_INPUT_PLACEHOLDER,
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopRightRadius: 5,
-    borderBottomRightRadius: 5,
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
   },
 });
 

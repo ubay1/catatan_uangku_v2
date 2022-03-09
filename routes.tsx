@@ -13,7 +13,8 @@ import AppIntroScreen from './src/screens/Intro';
 import HomeScreen from './src/screens/Home';
 import InfoScreen from './src/screens/Info';
 import LaporanScreen from './src/screens/Laporan';
-import ListLaporanScreen from './src/screens/ListLaporan';
+import NoteScreen from './src/screens/Note/Note';
+import FilterNote from './src/screens/Note/FilterNote';
 import { RootState } from './src/store/rootReducer';
 import { AppDispatch } from './src/store';
 import { setUserName } from './src/store/user';
@@ -24,7 +25,6 @@ import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import LinearGradient from 'react-native-linear-gradient';
 import { setPage } from './src/store/whatsPage';
-import DetailScreen from './src/screens/DetailCatatan';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import CategoryScreen from './src/screens/Category';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -138,18 +138,18 @@ const HomeNavigator = () => {
   );
 };
 
-const LaporanNavigator = () => {
+const NoteNavigator = () => {
   const navigationredux = useSelector((state: RootState) => state.navigationredux);
   return (
     <Stack.Navigator
-      initialRouteName={'Laporan'}
+      initialRouteName={'Note'}
       mode={'modal'}
       screenOptions={{
         headerShown: !navigationredux.showTab,
       }}
     >
-      <Stack.Screen name="Laporan" component={LaporanScreen}/>
-      <Stack.Screen name="ListLaporan" component={ListLaporanScreen} />
+      <Stack.Screen name="Note" component={NoteScreen}/>
+      <Stack.Screen name="FilterNote" component={FilterNote}/>
     </Stack.Navigator>
   );
 };
@@ -174,7 +174,6 @@ function MyTabBar({ state, descriptors, navigation }: any) {
   const dispatch: AppDispatch = useDispatch();
   const navigationredux = useSelector((state: RootState) => state.navigationredux);
 
-
   return (
     <View style={{
       flexDirection: 'row',
@@ -195,14 +194,16 @@ function MyTabBar({ state, descriptors, navigation }: any) {
             ? options.tabBarLabel
             : options.title !== undefined
             ? options.title
-            : route.name;
+            : route.name === 'Home' ? 'Beranda'
+              : route.name === 'Note' ? 'Catatan'
+                : 'Kategori';
 
             let iconName: any;
 
             if (route.name === 'Home') {
               iconName = 'home';
-            } else if (route.name === 'Catatan') {
-              iconName = 'note';
+            } else if (route.name === 'Note') {
+              iconName = 'notebook';
             } else if (route.name === 'Category') {
               iconName = 'plus-box-multiple';
             } else {
@@ -424,7 +425,7 @@ const Routes = () => {
                   // })}
                 >
                   <Tab.Screen name="Home" component={HomeNavigator} />
-                  <Tab.Screen name="Catatan" component={LaporanNavigator} />
+                  <Tab.Screen name="Note" component={NoteNavigator} />
                   <Tab.Screen name="Category" component={CategoryNavigator}/>
                 </Tab.Navigator>
         }

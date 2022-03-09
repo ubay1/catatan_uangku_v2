@@ -7,6 +7,7 @@ export type RootStackParamList = {
   Intro: undefined;
   Beranda: undefined;
   Catatan: undefined;
+  FilterNote: undefined;
   AddNote: {
     title: string;
     type: string;
@@ -55,6 +56,10 @@ export type StackBeranda = {
 export type StackCatatan = {
   route: RouteProp<RootStackParamList, 'Catatan'>;
   navigation: StackNavigationProp<RootStackParamList, 'Catatan'>;
+}
+export type StackFilterNote = {
+  route: RouteProp<RootStackParamList, 'FilterNote'>;
+  navigation: StackNavigationProp<RootStackParamList, 'FilterNote'>;
 }
 export type StackAddNote = {
   route: RouteProp<RootStackParamList, 'AddNote'>;

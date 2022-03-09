@@ -86,6 +86,7 @@ const InputEditCategory = ({closeModalInputKategori, idInputKategori, defaultVal
           setTipeKategori('');
           setLoading(false);
           closeModalInputKategori();
+          dispatch(setPage({page: 'updateCategory'}));
         }, 1000);
       }
     }
