@@ -13,6 +13,9 @@ export const SaldoSchema = {
     id: 'int?',
     tipe: 'string',
     tanggal: 'date',
+    tanggal_int: 'int',
+    bulan: 'int',
+    tahun: 'int',
     akun: 'string',
     tujuan: 'string',
     nominal: 'int',
@@ -70,6 +73,9 @@ export const createCatatan =  (data: any) => new Promise((resolve, reject) => {
         id: data.id,
         tipe: data.tipe,
         tanggal: data.tanggal,
+        tanggal_int: data.tanggal_int,
+        bulan: data.bulan,
+        tahun: data.tahun,
         akun: data.akun,
         tujuan: data.tujuan,
         nominal: data.nominal,
@@ -97,7 +103,7 @@ export const getAllCatatan = () => new Promise((resolve, reject) => {
 
 export const getSepuluhCatatanTerakhir = () => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
-      const allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
+      const allCatatan = realm.objects(SALDO_SCHEMA).sorted('tanggal', true);
       const sliceCatatan = allCatatan.slice(0, 10);
       resolve(sliceCatatan);
   }).catch((error) => {
@@ -106,14 +112,17 @@ export const getSepuluhCatatanTerakhir = () => new Promise((resolve, reject) => 
 });
 
 export const getFilterCatatanByMonth = (value?: any) => new Promise((resolve, reject) => {
+  // const isoDate = formatDate(value);
+  console.log(value);
   Realm.open(dbOptions).then(realm => {
-    let data: any = realm.objects(SALDO_SCHEMA);
-    realm.write(() => {
-      let kategori: any = realm.objectForPrimaryKey(KATEGORI_SCHEMA, data.id);
-      kategori.nama_kategori = data.nama_kategori;
-      resolve(kategori);
-    });
-  }).catch((error) => reject(error));
+    let data: any = realm.objects(SALDO_SCHEMA).filtered(`bulan == ${value}`);
+
+    data = JSON.parse(JSON.stringify(data));
+
+    resolve(data);
+  }).catch((error) => {
+      reject(error);
+  });
 });
 
 const formatDate = (date: any) => {
@@ -128,16 +137,14 @@ const formatDate = (date: any) => {
   return new_date;
 };
 
-export const getFilterCatatanByDate = (start_date?: any, end_date?: any) =>
-new Promise((resolve, reject) => {
-
+export const getFilterCatatanByDate = (start_date?: any, end_date?: any) => new Promise((resolve, reject) => {
   const toIsoFromDate = formatDate(start_date);
   const toIsoToDate = formatDate(end_date);
 
-  console.log(toIsoFromDate, '-', toIsoToDate);
-
   Realm.open(dbOptions).then(realm => {
       let data: any = realm.objects(SALDO_SCHEMA).filtered('tanggal >= $0 && tanggal <= $1', toIsoFromDate, toIsoToDate);
+
+      data = JSON.parse(JSON.stringify(data));
 
       resolve(data);
   }).catch((error) => {
@@ -151,6 +158,9 @@ export const updateCatatan = (data: any) => new Promise<void>((resolve, reject) 
           let catatan: any = realm.objectForPrimaryKey(SALDO_SCHEMA, data.id);
           catatan.tipe = data.tipe;
           catatan.tanggal = data.tanggal;
+          catatan.tanggal_int = data.tanggal_int,
+          catatan.bulan = data.bulan,
+          catatan.tahun = data.tahun,
           catatan.akun = data.akun;
           catatan.tujuan = data.tujuan;
           catatan.nominal = data.nominal;

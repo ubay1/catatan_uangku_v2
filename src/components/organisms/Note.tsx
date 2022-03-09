@@ -1,32 +1,36 @@
 /* eslint-disable radix */
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import moment from 'moment';
 import React, { useState } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
-import { getFilterCatatanByDate } from '../../../db/database';
+import { Colors, Button } from 'react-native-paper';
+import { getFilterCatatanByDate, getFilterCatatanByMonth } from '../../../db/database';
+import { COLOR_ACTIVE } from '../../assets/styles/global';
+import ModalAtom from '../atoms/alert/ModalAtom';
+import ButtonAtom from '../atoms/button/ButtonAtom';
+import TextAtom from '../atoms/text/TextAtom';
 import ListCatatan from '../molecules/note/ListCatatan';
 import ListSaldo from '../molecules/note/ListSaldo';
 import SelectMonth from '../molecules/note/SelectMonth';
+import styles from '../../assets/styles/global';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import FilterNote from '../../screens/Note/FilterNote';
+import { StackCatatan } from '../../../interfaceRoutes';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/rootReducer';
+import { AppDispatch } from '../../store';
+import { setListNote, setTotalSaldo, setTotalSaldoPemasukan, setTotalSaldoPengeluaran } from '../../store/listNote';
 
-const NoteOrganisms = () => {
+
+const NoteOrganisms = ({route, navigation}: StackCatatan) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
+  const dispatch: AppDispatch = useDispatch();
   const [loading, setloading] = useState(false);
   const [selectJenisFilter, setselectJenisFilter] = useState('');
-  const [allCatatan, setallCatatan] = useState([]);
-  const [allTotal, setallTotal] = useState(0);
-  const [totalPemasukan, settotalPemasukan] = useState(0);
-  const [totalPengeluaran, settotalPengeluaran] = useState(0);
-
-  /* ------------------------------- custom date ------------------------------ */
-  const [visibleCustomDate, setVisibleCustomDate] = React.useState(false);
-  const [date, setDate] = useState(new Date());
-  const [fromDate, setfromDate] = useState(new Date());
-  const [toDate, settoDate] = useState(new Date());
-  const [modeFromDate, setModeFromDate] = useState('date');
-  const [showFromDate, setShowFromDate] = useState(false);
-  const [modeToDate, setModeToDate] = useState('date');
-  const [showToDate, setShowToDate] = useState(false);
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
@@ -34,118 +38,59 @@ const NoteOrganisms = () => {
   /* ------------------------------ select month ------------------------------ */
   const eventSelectTypeNote = (type: string) => {
     if (type === 'customTanggal') {
-      showModalCustomDate();
+      // showModalCustomDate();
+      setselectJenisFilter('');
+      navigation.navigate('FilterNote');
     } else if (type === 'bulanIni') {
       // setfetchAllCatatan(true);
-      // getCatatanByMonth(moment().format('M'));
+      getCatatanByMonth(moment().format('M'));
     } else if (type === 'bulanLalu') {
       // setfetchAllCatatan(true);
-      // getCatatanByMonth(moment().subtract(1, 'months').format('M'));
+      getCatatanByMonth(moment().subtract(1, 'months').format('M'));
     }
   };
 
-  const showModalCustomDate = () => setVisibleCustomDate(true);
-  const eventCloseModalCustom = () => {
-    setVisibleCustomDate(false);
-    setselectJenisFilter('');
-    setfromDate(new Date());
-    settoDate(new Date());
-  };
-
-  const getCatatanByDate = () => {
-    getFilterCatatanByDate(fromDate, toDate)
-      .then((respListCatatan: any) => {
-        console.log('data catatan by date = ', respListCatatan);
-        setVisibleCustomDate(false);
-        setfromDate(new Date());
-        settoDate(new Date());
-        setloading(false);
-        setselectJenisFilter('');
-
-        if (respListCatatan.length === 0) {
-          setallTotal(0);
-          settotalPemasukan(0);
-          settotalPengeluaran(0);
-          ToastAndroid.showWithGravity(
-            'Data tidak ditemukan',
-            ToastAndroid.LONG,
-            ToastAndroid.LONG
-          );
-          setallCatatan([]);
-        } else {
-          const all_total: any[] = [];
-          const total_pemasukan: any[] = [];
-          const total_pengeluaran: any[] = [];
-          respListCatatan.forEach((item: any) => {
-            if (item.tipe === 'pemasukan') {
-              total_pemasukan.push(parseInt(item.nominal));
-              all_total.push(parseInt(item.nominal));
-            } else {
-              total_pengeluaran.push(parseInt(item.nominal));
-              all_total.push(parseInt(item.nominal));
-            }
-          });
-
-          const reduce_all_total = all_total.reduce((a, b) => a + b, 0);
-          const reduce_total_pemasukan = total_pemasukan.reduce((a, b) => a + b, 0);
-          const reduce_total_pengeluaran = total_pengeluaran.reduce((a, b) => a + b, 0);
-
-          setallCatatan([]);
-          setallCatatan(respListCatatan);
-          setallTotal(reduce_all_total);
-          settotalPemasukan(reduce_total_pemasukan);
-          settotalPengeluaran(reduce_total_pengeluaran);
-        }
-
-        setloading(false);
-      })
-      .catch((err) => {
-        console.log('error = ', err);
-        setloading(false);
-        ToastAndroid.showWithGravity(
-          'Terjadi kesalahan dari server',
-          ToastAndroid.LONG,
-          ToastAndroid.LONG
-        );
-      })
-      .finally(() => {
-        setloading(false);
-      });
-  };
-
-  const onChangeFromDate = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate || fromDate;
-    setfromDate(currentDate);
-    // settampungJenisFilterfromDate(currentDate);
-    setShowFromDate(false);
-  };
-
-  const showModeFromDate = (currentMode: React.SetStateAction<string>) => {
-    setShowFromDate(true);
-    setModeFromDate(currentMode);
-  };
-
-  const showDatepickerFromDate = () => {
-    showModeFromDate('date');
-  };
-
-  const onChangeToDate = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate || toDate;
-    settoDate(currentDate);
-    // settampungJenisFiltertoDate(currentDate);
-    setShowToDate(false);
-  };
-
-  const showModeToDate = (currentMode: React.SetStateAction<string>) => {
-    setShowToDate(true);
-    setModeToDate(currentMode);
-  };
-
-  const showDatepickerToDate = () => {
-    showModeToDate('date');
-  };
-
   /* ------------------------------ select month ------------------------------ */
+
+  const getCatatanByMonth = async (month: any) => {
+    try {
+      const result: any = await getFilterCatatanByMonth(month);
+
+      dispatch(setListNote({data: result}));
+
+      if (result.length === 0) {
+        dispatch(setTotalSaldo({totalSaldo: 0}));
+        dispatch(setTotalSaldoPemasukan({totalSaldoPemasukan: 0}));
+        dispatch(setTotalSaldoPengeluaran({totalSaldoPengeluaran: 0}));
+      } else {
+        console.log(result);
+        const all_total: any[] = [];
+        const total_pemasukan: any[] = [];
+        const total_pengeluaran: any[] = [];
+
+        result.forEach((item: any) => {
+          if (item.tipe === 'pemasukan') {
+            total_pemasukan.push(parseInt(item.nominal));
+            all_total.push(parseInt(item.nominal));
+          } else {
+            total_pengeluaran.push(parseInt(item.nominal));
+            all_total.push(parseInt(item.nominal));
+          }
+        });
+
+        const reduce_all_total = all_total.reduce((a, b) => a + b, 0);
+        const reduce_total_pemasukan = total_pemasukan.reduce((a, b) => a + b, 0);
+        const reduce_total_pengeluaran = total_pengeluaran.reduce((a, b) => a + b, 0);
+
+        dispatch(setTotalSaldo({totalSaldo: reduce_all_total}));
+        dispatch(setTotalSaldoPemasukan({totalSaldoPemasukan: reduce_total_pemasukan}));
+        dispatch(setTotalSaldoPengeluaran({totalSaldoPengeluaran: reduce_total_pengeluaran}));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
 
   /* -------------------------------------------------------------------------- */
   /*                                   show page                                */
@@ -153,26 +98,19 @@ const NoteOrganisms = () => {
   return (
     <View style={stylesCustom.container}>
       <SelectMonth
-        loading={loading}
-        fromDate={fromDate}
-        toDate={toDate}
         selectJenisFilter={selectJenisFilter}
-        showFromDate={showFromDate}
-        showToDate={showToDate}
-        modeFromDate={modeFromDate}
-        modeToDate={modeToDate}
         eventSelectTypeNote={eventSelectTypeNote}
-        visibleCustomDate={visibleCustomDate}
-        isShowFromDateCustom={showFromDate}
-        isShowToDateCustom={showToDate}
-        eventCloseModalCustom={eventCloseModalCustom}
-        onChangeFromDate={onChangeFromDate}
-        showDatepickerFromDate={showDatepickerFromDate}
-        onChangeToDate={onChangeToDate}
-        showDatepickerToDate={showDatepickerToDate}
       />
       <ListSaldo />
       <ListCatatan />
+
+      {/* <ModalAtom
+        closeModal={eventCloseModalCustom}
+        visible={visibleCustomDate}
+        setPageActive="Note"
+      >
+        <FilterNote />
+      </ModalAtom> */}
     </View>
   );
 };

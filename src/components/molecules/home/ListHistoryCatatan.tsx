@@ -414,7 +414,7 @@ const ListHistoryCatatan = ({
       ) : allCatatan.length === 0 ? (
         <View style={stylesCustom.spaceIfNoteNotFound}>
           <Image source={Logo} style={styles.logo} />
-          <TextAtom value="Belum ada catatan ." mBottom={20}/>
+          <TextAtom value="Belum ada catatan." mBottom={20}/>
         </View>
       ) :
           allCatatan.map((item: any) => {

@@ -9,7 +9,7 @@ import {Colors, Button} from 'react-native-paper';
 import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-import {
+import styles, {
   COLOR_ACTIVE,
   COLOR_ACTIVE_SOFT,
   COLOR_DISABLED,
@@ -36,7 +36,6 @@ import {setPage} from '../../../store/whatsPage';
 import SnackbarAtom from '../../atoms/alert/SnackbarAtom';
 import {IPropsFormInputAddNote} from '../addNote/types';
 import ModalAtom from '../../atoms/alert/ModalAtom';
-import styles from '../../../assets/styles/global';
 
 const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   const {
@@ -135,6 +134,9 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         id: idCatatan,
         tipe: type,
         tanggal: moment(date).format('YYYY-MM-DD').toString(),
+        tanggal_int: Number(moment(date).format('DD')),
+        bulan: Number(moment(date).format('MM')),
+        tahun: Number(moment(date).format('YYYY')),
         akun: selectAkun,
         nominal: parseInt(nominal),
         tujuan: selectTujuan,
@@ -162,7 +164,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
       } finally {
         setTimeout(() => {
           setLoadingUpdateData(false);
-          dispatch(setPage({page: 'UpdateHome'}));
+          dispatch(setPage({page: 'updateHome'}));
           navigation.navigate('Home');
         }, 1000);
       }
@@ -207,14 +209,14 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         {/* date */}
         <View>
           <TextAtom value="Tanggal" />
-          <View style={stylesCustom.containerDate}>
-            <View style={stylesCustom.inputDate}>
+          <View style={styles.containerDate}>
+            <View style={styles.inputDate}>
               <TextAtom value={moment(date).format('L').toString()} />
             </View>
             <View style={{height: '100%', width: '20%'}}>
               <Button
                 onPress={showDatepicker}
-                style={stylesCustom.btnShowDatepicker}>
+                style={styles.btnShowDatepicker}>
                 <IconMCI name="calendar" size={23} color={Colors.black} />
               </Button>
             </View>
@@ -395,20 +397,6 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           />
         </View>
 
-        {/* button delete data */}
-        {/* <View style={{marginTop: 5, marginBottom: 20}}>
-          <ButtonAtom
-            title={loadingDeleteData ? 'Menghapus Data' : 'Hapus'}
-            uppercase={true}
-            color={COLOR_ERROR}
-            mode="contained"
-            action={showModalDelete}
-            disabled={loadingUpdateData ? true : loadingDeleteData}
-            theme={{colors: {disabled: COLOR_ACTIVE_SOFT}}}
-            marginX={0}
-          />
-        </View> */}
-
         {/* snackbar success / not*/}
         <SnackbarAtom
           title={visibleSnackbar.msg}
@@ -430,88 +418,9 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
 };
 
 const stylesCustom = StyleSheet.create({
-  containerDate: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 50,
-    marginTop: 5,
-  },
   containerSaldo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  inputDate: {
-    backgroundColor: COLOR_DISABLED,
-    height: '100%',
-    width: '80%',
-    justifyContent: 'center',
-    paddingLeft: 10,
-    borderColor: COLOR_INPUT_PLACEHOLDER,
-    borderWidth: 1,
-    borderRightWidth: 0,
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
-  },
-  btnShowDatepicker: {
-    backgroundColor: COLOR_DISABLED,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
-    borderColor: COLOR_INPUT_PLACEHOLDER,
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopRightRadius: 5,
-    borderBottomRightRadius: 5,
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
-  },
-  centeredView: {
-    flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'flex-start',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 5,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 5,
-    textAlign: 'center',
-    fontSize: responsiveFontSize(1.7),
-  },
-  modalText2: {
-    textAlign: 'center',
-    color: 'grey',
   },
 });
 

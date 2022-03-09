@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
@@ -38,6 +39,15 @@ const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
     type: '',
     msg: '',
   });
+
+  // React.useEffect(() => {
+  //   let show = true;
+  //   dispatch(setPage({page: 'Category'}));
+
+  //   return () => {
+  //     show = false;
+  //   };
+  // }, []);
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
@@ -80,6 +90,7 @@ const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
           setTipeKategori('');
           setLoading(false);
           closeModalInputKategori();
+          dispatch(setPage({page: 'updateCategory'}));
         }, 1000);
       }
     }

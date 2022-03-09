@@ -45,8 +45,8 @@ const CategoryOrganisms = ({route, navigation}: StackCategory) => {
   const [idListKategori, setidListKategori] = useState(0);
   const [visibleModalInputKategori, setvisibleModalInputKategori] = React.useState(false);
 
-  const openModalInputKategori = React.useCallback((isedit?: any, id?: any, tipeKategori?: any, namaKategori?: any) => {
-      console.log('teeee ', id);
+  const openModalInputKategori = (isedit?: any, id?: any, tipeKategori?: any, namaKategori?: any) => {
+      // console.log('teeee ', id);
       if (id !== null) {
         setidListKategori(id);
         setTipeKategori(tipeKategori);
@@ -55,9 +55,7 @@ const CategoryOrganisms = ({route, navigation}: StackCategory) => {
 
       setisEdit(isedit);
       setvisibleModalInputKategori(true);
-    },
-    [visibleModalInputKategori],
-  );
+    };
 
   const closeModalInputKategori = React.useCallback(() => {
     setvisibleModalInputKategori(false);
@@ -174,7 +172,7 @@ const CategoryOrganisms = ({route, navigation}: StackCategory) => {
       />
 
       <AddCategory
-        isPageCategory={whatspage.page === 'Category' ? true : false}
+        isPageCategory={whatspage.page === 'Category' || whatspage.page === 'updateCategory' ? true : false}
         openModalInputKategori={openModalInputKategori}
       />
 

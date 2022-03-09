@@ -20,4 +20,5 @@ export interface IPropsSelectMonth {
   showDatepickerFromDate?: any;
   onChangeToDate?: any;
   showDatepickerToDate?: any;
+  onSubmitCustomDate?: any;
 }
