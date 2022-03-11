@@ -389,10 +389,32 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           <ButtonAtom
             title={loadingUpdateData ? 'Menyimpan Data' : 'Simpan'}
             uppercase={true}
-            bgColor={loadingUpdateData ? COLOR_DISABLED : COLOR_ACTIVE}
-            textColor={loadingUpdateData ? COLOR_DISABLED_TEXT : COLOR_WHITE}
+            bgColor={
+              loadingUpdateData ||
+              (type === 'pengeluaran' && selectAkun === 'atm' && saldoAtm === 0) ||
+              (type === 'pengeluaran' && selectAkun === 'dompet' && saldoDompet === 0) ||
+              (type === 'pengeluaran' && selectAkun === 'atm' && nominal > saldoAtm) ||
+              (type === 'pengeluaran' && selectAkun === 'dompet' && nominal > saldoDompet)
+                ? COLOR_DISABLED
+                : COLOR_ACTIVE
+            }
+            textColor={
+              loadingUpdateData ||
+              (type === 'pengeluaran' && selectAkun === 'atm' && saldoAtm === 0) ||
+              (type === 'pengeluaran' && selectAkun === 'dompet' && saldoDompet === 0) ||
+              (type === 'pengeluaran' && selectAkun === 'atm' && nominal > saldoAtm) ||
+              (type === 'pengeluaran' && selectAkun === 'dompet' && nominal > saldoDompet)
+                ? COLOR_DISABLED_TEXT
+                : COLOR_WHITE
+            }
             action={submitEditNote}
-            disabled={loadingDeleteData ? true : loadingUpdateData}
+            disabled={
+              loadingUpdateData ||
+              (type === 'pengeluaran' && selectAkun === 'atm' && saldoAtm === 0) ||
+              (type === 'pengeluaran' && selectAkun === 'dompet' && saldoDompet === 0) ||
+              (type === 'pengeluaran' && selectAkun === 'atm' && nominal > saldoAtm) ||
+              (type === 'pengeluaran' && selectAkun === 'dompet' && nominal > saldoDompet)
+            }
             marginX={0}
           />
         </View>

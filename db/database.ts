@@ -2,6 +2,7 @@
 /* eslint-disable no-shadow */
 import moment from 'moment';
 import Realm from 'realm';
+import { v4 as uuidv4 } from 'uuid';
 
 // Declare Schema
 
@@ -49,28 +50,30 @@ const dbOptions = {
 /* -------------------------------------------------------------------------- */
 /*                                crud catatan                                */
 /* -------------------------------------------------------------------------- */
-// export const createCatatan =  (data: any) => {
-//     realm.write(() => {
-//       const saldo = realm.create(SALDO_SCHEMA, {
-//         id: data.id,
-//         tipe: data.tipe,
-//         tanggal: data.tanggal,
-//         akun: data.akun,
-//         tujuan: data.tujuan,
-//         nominal: data.nominal,
-//         keterangan: data.keterangan,
-//         kategori: data.kategori,
-//       });
-//     });
+export const getPrimaryKeyId = (model: string) => {
+  if (realm.objects(model).max('id')) {
+    return Number(realm.objects(model).max('id')) + 1;
+  }
+  return 1;
+};
 
-//     return 'sukses menambah data'
-// };
+const formatDate = (date: any) => {
+  let new_date = new Date(date);
+  new_date.setDate(new_date.getDate() + 1);
+  new_date.setHours(0);
+  new_date.setMinutes(0);
+  new_date.setSeconds(0);
+  new_date.setMilliseconds(0);
+  new_date.setUTCHours(0);
+
+  return new_date;
+};
 
 export const createCatatan =  (data: any) => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
     const createCatatan: any = realm.write(() => {
       realm.create(SALDO_SCHEMA, {
-        id: data.id,
+        id: getPrimaryKeyId(SALDO_SCHEMA),
         tipe: data.tipe,
         tanggal: data.tanggal,
         tanggal_int: data.tanggal_int,
@@ -87,11 +90,6 @@ export const createCatatan =  (data: any) => new Promise((resolve, reject) => {
   }).catch((error) => reject(error));
 });
 
-// export const getAllCatatan = () => {
-//   let allSaldo = realm.objects(SALDO_SCHEMA).sorted("id", true);
-//   return allSaldo;
-// };
-
 export const getAllCatatan = () => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
       const allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
@@ -103,7 +101,7 @@ export const getAllCatatan = () => new Promise((resolve, reject) => {
 
 export const getSepuluhCatatanTerakhir = () => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
-      const allCatatan = realm.objects(SALDO_SCHEMA).sorted('tanggal', true);
+      const allCatatan = realm.objects(SALDO_SCHEMA).sorted('id', true);
       const sliceCatatan = allCatatan.slice(0, 10);
       resolve(sliceCatatan);
   }).catch((error) => {
@@ -124,18 +122,6 @@ export const getFilterCatatanByMonth = (value?: any) => new Promise((resolve, re
       reject(error);
   });
 });
-
-const formatDate = (date: any) => {
-  let new_date = new Date(date);
-  new_date.setDate(new_date.getDate() + 1);
-  new_date.setHours(0);
-  new_date.setMinutes(0);
-  new_date.setSeconds(0);
-  new_date.setMilliseconds(0);
-  new_date.setUTCHours(0);
-
-  return new_date;
-};
 
 export const getFilterCatatanByDate = (start_date?: any, end_date?: any) => new Promise((resolve, reject) => {
   const toIsoFromDate = formatDate(start_date);
@@ -158,9 +144,9 @@ export const updateCatatan = (data: any) => new Promise<void>((resolve, reject) 
           let catatan: any = realm.objectForPrimaryKey(SALDO_SCHEMA, data.id);
           catatan.tipe = data.tipe;
           catatan.tanggal = data.tanggal;
-          catatan.tanggal_int = data.tanggal_int,
-          catatan.bulan = data.bulan,
-          catatan.tahun = data.tahun,
+          catatan.tanggal_int = data.tanggal_int;
+          catatan.bulan = data.bulan;
+          catatan.tahun = data.tahun;
           catatan.akun = data.akun;
           catatan.tujuan = data.tujuan;
           catatan.nominal = data.nominal;
@@ -183,13 +169,6 @@ export const deleteCatatan = (id: any) => new Promise<void>((resolve, reject) =>
   }).catch((error) => reject(error));
 });
 
-// export const deleteAllCatatan =  () => {
-//   realm.write(()=>{
-//     let all = realm.delete(realm.objects(SALDO_SCHEMA));
-//     return all;
-//   })
-// };
-
 export const deleteAllCatatan = () => new Promise<void>((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
       realm.write(() => {
@@ -207,8 +186,8 @@ export const createDefaultKategori =  () => new Promise((resolve, reject) => {
       if (length < 1) {
         realm.write(() => {
           realm.create(KATEGORI_SCHEMA, {
-            id: ID,
-            nama_kategori: 'gajian',
+            id: getPrimaryKeyId(KATEGORI_SCHEMA),
+            nama_kategori: 'saldo awal',
             tipe_kategori: 'pemasukan',
           });
 
@@ -224,7 +203,7 @@ export const createKategori =  (data: any) => new Promise<void>((resolve, reject
   Realm.open(dbOptions).then(realm => {
     realm.write(() => {
       realm.create(KATEGORI_SCHEMA, {
-        id: data.id,
+        id: getPrimaryKeyId(KATEGORI_SCHEMA),
         nama_kategori: data.nama_kategori,
         tipe_kategori: data.tipe_kategori,
       });

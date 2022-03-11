@@ -1,24 +1,39 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, Image, ImageBackground, SafeAreaView, Text, View } from 'react-native';
-import { Colors } from 'react-native-paper';
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import { createDefaultKategori } from '../../../db/database';
+import React, {useEffect, useState} from 'react';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  Text,
+  View,
+} from 'react-native';
+import {Colors} from 'react-native-paper';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
+import {useDispatch} from 'react-redux';
+import realm, {createDefaultKategori, SALDO_SCHEMA} from '../../../db/database';
+import {AppDispatch} from '../../store';
+import {setCategory} from '../../store/category';
 
 const SplashScreenss = () => {
   const createKategori = () => {
     createDefaultKategori()
-    .then((item)=>{
-      console.log('data default kategori = ',item);
-    })
-    .catch((err)=>{
-      console.log('error = ', err);
-    });
+      .then(item => {
+        console.log('data default kategori = ', item);
+      })
+      .catch(err => {
+        console.log('error = ', err);
+      });
   };
 
   useEffect(() => {
-   createKategori();
+    createKategori();
   }, []);
 
   return (
@@ -27,10 +42,10 @@ const SplashScreenss = () => {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:  '#fff',
-      }}
-    >
-        <View style={{
+        backgroundColor: '#fff',
+      }}>
+      <View
+        style={{
           position: 'absolute',
           zIndex: 1,
           // backgroundColor: '#eee',
@@ -41,9 +56,9 @@ const SplashScreenss = () => {
           alignItems: 'center',
           flexDirection: 'column',
         }}>
-          <ActivityIndicator size="large" color={Colors.blue400} />
-          {/* <Text style={{color:'#152A3B', fontSize: responsiveFontSize(2)}}>cek data user..</Text> */}
-        </View>
+        <ActivityIndicator size="large" color={Colors.blue400} />
+        {/* <Text style={{color:'#152A3B', fontSize: responsiveFontSize(2)}}>cek data user..</Text> */}
+      </View>
     </SafeAreaView>
   );
 };

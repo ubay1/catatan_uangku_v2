@@ -95,7 +95,7 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
         </View>
       </View>
 
-      <View style={{
+      {/* <View style={{
         ...stylesCustom.cardSaldo,
         backgroundColor: Colors.red50,
       }}
@@ -117,7 +117,7 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
             }
           </View>
         </View>
-      </View>
+      </View> */}
     </>
   );
 };

@@ -6,8 +6,8 @@ import {SafeAreaView, ScrollView, Text, TextInput, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Colors, Button} from 'react-native-paper';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
-import {useDispatch} from 'react-redux';
-import realm, {createKategori} from '../../../../db/database';
+import {useDispatch, useSelector} from 'react-redux';
+import realm, {createKategori, KATEGORI_SCHEMA} from '../../../../db/database';
 import {
   COLOR_ERROR,
   COLOR_ACTIVE,
@@ -17,18 +17,22 @@ import {
   COLOR_DISABLED_TEXT,
 } from '../../../assets/styles/global';
 import {AppDispatch} from '../../../store';
+import { RootState } from '../../../store/rootReducer';
 import {setPage} from '../../../store/whatsPage';
 import SnackbarAtom from '../../atoms/alert/SnackbarAtom';
 import ButtonAtom from '../../atoms/button/ButtonAtom';
 import TextInputAtom from '../../atoms/input/TextInputAtom';
 import TextAtom from '../../atoms/text/TextAtom';
 import { IPropsInputCategory } from './types';
+import { v4 as uuidv4 } from 'uuid';
 
 const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
   const dispatch: AppDispatch = useDispatch();
+  const listCategory = useSelector((state: RootState) => state.category);
+
   const [tipeKategori, setTipeKategori] = useState('');
   const [namaKategori, setNamaKategori] = useState('');
   const [loading, setLoading] = React.useState(false);
@@ -40,14 +44,18 @@ const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
     msg: '',
   });
 
-  // React.useEffect(() => {
-  //   let show = true;
-  //   dispatch(setPage({page: 'Category'}));
-
-  //   return () => {
-  //     show = false;
-  //   };
-  // }, []);
+  React.useEffect(() => {
+    // listCategory.data.forEach((item) => {
+    //   console.log(item);
+    // });
+    // const data: any = {
+    //   id: Math.random(),
+    //   nama_kategori: namaKategori,
+    //   tipe_kategori: tipeKategori,
+    // };
+    // const newDataCategory = [...listCategory.data, data];
+    // console.log(newDataCategory);
+  }, []);
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
@@ -61,9 +69,7 @@ const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
       });
       setLoading(false);
     } else {
-      const ID = realm.objects('kategori').length + 1;
       const data: any = {
-        id: ID,
         nama_kategori: namaKategori,
         tipe_kategori: tipeKategori,
       };

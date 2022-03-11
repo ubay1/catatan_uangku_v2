@@ -24,6 +24,7 @@ import styles, { COLOR_ACTIVE, COLOR_ERROR, COLOR_WHITE } from '../../assets/sty
 import {RootState} from '../../store/rootReducer';
 import DeleteContent from '../atoms/DeleteContent';
 import SnackbarAtom from '../atoms/alert/SnackbarAtom';
+import { setCategory } from '../../store/category';
 
 const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   const dispatch: AppDispatch = useDispatch();
@@ -166,13 +167,22 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
         getAllKategori(),
         getSepuluhCatatanTerakhir(),
       ]);
-      const responseGetListKategori = values[0].map((item: any) => item);
-      setAllKategori(responseGetListKategori);
+      const newListKategori: any = [];
+      values[0].forEach((item: any) => {
+        newListKategori.push({
+          id: item.id,
+          nama_kategori: item.nama_kategori,
+          tipe_kategori: item.tipe_kategori,
+        });
+      });
+      setAllKategori(newListKategori);
+
+      // dispatch(setCategory({data: newListKategori}));
 
       const responseGetListCatatan = values[1].map((item: any) => item);
       setAllCatatan(responseGetListCatatan);
 
-      console.log(responseGetListKategori, responseGetListCatatan);
+      console.log(newListKategori, responseGetListCatatan);
     } catch (error) {
       console.log('error load all');
     } finally {

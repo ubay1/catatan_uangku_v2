@@ -11,6 +11,7 @@ import {responsiveHeight} from 'react-native-responsive-dimensions';
 import styles, {
   COLOR_ACTIVE,
   COLOR_ACTIVE_SOFT,
+  COLOR_BLACK,
   COLOR_DISABLED,
   COLOR_DISABLED_TEXT,
   COLOR_ERROR,
@@ -26,19 +27,32 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {formatRupiah} from '../../../helper/formatNumber';
 import {IPropsFormInputAddNote} from './types';
-import realm, { createCatatan, getAllKategori, SALDO_SCHEMA } from '../../../../db/database';
+import realm, {
+  createCatatan,
+  getAllKategori,
+  SALDO_SCHEMA,
+} from '../../../../db/database';
 import TextareaInputAtom from '../../atoms/input/TextareaInputAtom';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../store';
-import { setPage } from '../../../store/whatsPage';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch} from '../../../store';
+import {setPage} from '../../../store/whatsPage';
 import SnackbarAtom from '../../atoms/alert/SnackbarAtom';
+import ButtonTextAtom from '../../atoms/button/ButtonTextAtom';
+import {setShowTab} from '../../../store/navigationRedux';
+import {RootState} from '../../../store/rootReducer';
 
-const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
-  const {title, type, data: dataProps, saldoAtm, saldoDompet} = route.params;
-  const dispatch: AppDispatch = useDispatch();
+const FormInput = ({
+  navigation,
+  route,
+  listKategori,
+}: IPropsFormInputAddNote) => {
+  const {title, type, saldoAtm, saldoDompet} = route.params;
+
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
+  const dispatch: AppDispatch = useDispatch();
+
   const [loading, setloading] = React.useState(false);
 
   // state date
@@ -75,20 +89,48 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   const [keterangan, setketerangan] = React.useState('');
 
   React.useEffect(() => {
-    // console.log(route.params);
-    setKategoriList(dataProps);
-  }, []);
-  // const [data, setData] = React.useState(null);
-  /* -------------------------------------------------------------------------- */
-  /*                                   handle form                              */
-  /* -------------------------------------------------------------------------- */
+    if (listKategori.length !== 0) {
+      filterKategori(type);
+    }
+  }, [listKategori]);
+
+  React.useEffect(() => {
+    navigation.addListener('focus', (e: any) => {
+      console.log('focus form input', type);
+    });
+  }, [navigation]);
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
+  const filterKategori = (type: string) => {
+    const filterItem: any[] = [];
+    listKategori.forEach((item: any) => {
+      if (item.tipe_kategori === type) {
+        const list: any = {
+          label: item.nama_kategori,
+          value: item.nama_kategori,
+        };
+        filterItem.push(list);
+      }
+    });
+    setKategoriList(filterItem);
+  };
+
+  const gotoCategory = () => {
+    dispatch(setShowTab());
+    dispatch(setPage({page: 'Category'}));
+    navigation.navigate('Category');
+  };
+
   const submitNote = async () => {
     setloading(true);
 
-    if (selectAkun === '' || selectKategori === '' || nominal === '' || keterangan === '') {
+    if (
+      selectAkun === '' ||
+      selectKategori === '' ||
+      nominal === '' ||
+      keterangan === ''
+    ) {
       setVisibleSnackbar({
         isOpen: true,
         type: 'error',
@@ -96,9 +138,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
       });
       setloading(false);
     } else {
-      const ID = realm.objects(SALDO_SCHEMA).length + 1;
       const data: any = {
-        id: ID,
         tipe: type,
         tanggal: moment(date).format('YYYY-MM-DD').toString(),
         tanggal_int: Number(moment(date).format('DD')),
@@ -122,7 +162,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           });
         }, 10);
       } catch (error) {
-        console.error('error = ',error);
+        console.error('error = ', error);
         setVisibleSnackbar({
           isOpen: true,
           type: 'error',
@@ -167,9 +207,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
             <TextAtom value={moment(date).format('L').toString()} />
           </View>
           <View style={{height: '100%', width: '20%'}}>
-            <Button
-              onPress={showDatepicker}
-              style={styles.btnShowDatepicker}>
+            <Button onPress={showDatepicker} style={styles.btnShowDatepicker}>
               <IconMCI name="calendar" size={23} color={Colors.black} />
             </Button>
           </View>
@@ -216,7 +254,10 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           ]}
           defaultValue={selectAkun}
           containerStyle={{height: 50, marginTop: 5}}
-          style={{backgroundColor: COLOR_DISABLED, borderColor: COLOR_INPUT_PLACEHOLDER}}
+          style={{
+            backgroundColor: COLOR_DISABLED,
+            borderColor: COLOR_INPUT_PLACEHOLDER,
+          }}
           itemStyle={{
             justifyContent: 'flex-start',
           }}
@@ -236,21 +277,35 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
 
       {/* kategori */}
       <View style={{marginTop: 20}}>
-        <TextAtom value="Kategori" />
+        <View style={stylesCustom.containerKategori}>
+          <TextAtom value="Kategori" />
+          <ButtonTextAtom
+            title="Tambah kategori"
+            bgColor="transparent"
+            textColor={COLOR_ACTIVE}
+            action={gotoCategory}
+          />
+        </View>
         <DropDownPicker
           placeholder="Pilih Kategori"
           items={kategoriList}
           defaultValue={selectKategori}
-          containerStyle={{ height: 50, marginTop: 5}}
-          style={{ backgroundColor: COLOR_DISABLED, borderColor: COLOR_INPUT_PLACEHOLDER }}
+          containerStyle={{height: 50, marginTop: 5}}
+          style={{
+            backgroundColor: COLOR_DISABLED,
+            borderColor: COLOR_INPUT_PLACEHOLDER,
+          }}
           itemStyle={{
             justifyContent: 'flex-start',
           }}
-          labelStyle={{textTransform: 'capitalize', fontSize: 15 }}
+          labelStyle={{textTransform: 'capitalize', fontSize: 15}}
           placeholderStyle={{
             color: COLOR_INPUT_PLACEHOLDER,
           }}
-          dropDownStyle={{ backgroundColor: '#fff', borderColor: COLOR_INPUT_PLACEHOLDER }}
+          dropDownStyle={{
+            backgroundColor: '#fff',
+            borderColor: COLOR_INPUT_PLACEHOLDER,
+          }}
           onChangeItem={(item: any) => {
             setSelectKategori(item.value);
           }}
@@ -258,35 +313,40 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
       </View>
 
       {/* tujuan, only show in pengeluaran saldo */}
-      {
-        type === 'pengeluaran' && selectAkun === 'atm' ?
+      {type === 'pengeluaran' && selectAkun === 'atm' ? (
         <View style={{marginTop: 20}}>
           <TextAtom value="Tujuan" />
           <DropDownPicker
             placeholder="Pilih Tujuan"
             items={[
-              { label: 'Tarik Tunai', value: 'tarik tunai' },
-              { label: 'Transfer', value: 'transfer' },
+              {label: 'Tarik Tunai', value: 'tarik tunai'},
+              {label: 'Transfer', value: 'transfer'},
             ]}
             defaultValue={selectTujuan}
-            containerStyle={{ height: 50, marginTop: 5}}
-            style={{ backgroundColor: COLOR_DISABLED, borderColor: COLOR_INPUT_PLACEHOLDER }}
+            containerStyle={{height: 50, marginTop: 5}}
+            style={{
+              backgroundColor: COLOR_DISABLED,
+              borderColor: COLOR_INPUT_PLACEHOLDER,
+            }}
             itemStyle={{
               justifyContent: 'flex-start',
             }}
-            labelStyle={{textTransform: 'capitalize', fontSize: 15 }}
+            labelStyle={{textTransform: 'capitalize', fontSize: 15}}
             placeholderStyle={{
               color: COLOR_INPUT_PLACEHOLDER,
             }}
-            dropDownStyle={{ backgroundColor: '#fff', borderColor: COLOR_INPUT_PLACEHOLDER }}
+            dropDownStyle={{
+              backgroundColor: '#fff',
+              borderColor: COLOR_INPUT_PLACEHOLDER,
+            }}
             onChangeItem={(item: any) => {
               setSelectTujuan(item.value);
             }}
           />
         </View>
-        :
-          <View />
-      }
+      ) : (
+        <View />
+      )}
 
       {/* nominal */}
       <View style={{marginTop: 20}}>
@@ -297,12 +357,12 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           placeholderTextColor={COLOR_INPUT_PLACEHOLDER}
           onChangeText={handleInputnominal}
           mode={'outlined'}
-          theme={{ colors: { primary: COLOR_ACTIVE}}}
+          theme={{colors: {primary: COLOR_ACTIVE}}}
           marginX={0}
           marginY={0}
         />
       </View>
-      <TextAtom value={formatRupiah(nominal)} fontWeight={'bold'}/>
+      <TextAtom value={formatRupiah(nominal)} fontWeight={'bold'} />
 
       {/* keterangan */}
       <View style={{marginTop: 20}}>
@@ -312,7 +372,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           placeholderTextColor={COLOR_INPUT_PLACEHOLDER}
           onChangeText={setketerangan}
           mode={'outlined'}
-          theme={{ colors: { primary: COLOR_ACTIVE}}}
+          theme={{colors: {primary: COLOR_ACTIVE}}}
           marginX={0}
           marginY={0}
           height={100}
@@ -326,12 +386,34 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         <ButtonAtom
           title={loading ? 'Menyimpan Data' : 'Simpan'}
           uppercase={true}
-          bgColor={loading ? COLOR_DISABLED : COLOR_ACTIVE}
-          textColor={loading ? COLOR_DISABLED_TEXT : COLOR_WHITE}
+          bgColor={
+            loading ||
+            (type === 'pengeluaran' && selectAkun === 'atm' && saldoAtm === 0) ||
+            (type === 'pengeluaran' && selectAkun === 'dompet' && saldoDompet === 0) ||
+            (type === 'pengeluaran' && selectAkun === 'atm' && nominal > saldoAtm) ||
+            (type === 'pengeluaran' && selectAkun === 'dompet' && nominal > saldoDompet)
+              ? COLOR_DISABLED
+              : COLOR_ACTIVE
+          }
+          textColor={
+            loading ||
+            (type === 'pengeluaran' && selectAkun === 'atm' && saldoAtm === 0) ||
+            (type === 'pengeluaran' && selectAkun === 'dompet' && saldoDompet === 0) ||
+            (type === 'pengeluaran' && selectAkun === 'atm' && nominal > saldoAtm) ||
+            (type === 'pengeluaran' && selectAkun === 'dompet' && nominal > saldoDompet)
+              ? COLOR_DISABLED_TEXT
+              : COLOR_WHITE
+          }
           action={() => {
             submitNote();
           }}
-          disabled={loading}
+          disabled={
+            loading ||
+            (type === 'pengeluaran' && selectAkun === 'atm' && saldoAtm === 0) ||
+            (type === 'pengeluaran' && selectAkun === 'dompet' && saldoDompet === 0) ||
+            (type === 'pengeluaran' && selectAkun === 'atm' && nominal > saldoAtm) ||
+            (type === 'pengeluaran' && selectAkun === 'dompet' && nominal > saldoDompet)
+          }
           marginX={0}
         />
       </View>
@@ -341,7 +423,13 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         title={visibleSnackbar.msg}
         isOpen={visibleSnackbar.isOpen}
         action={closeSnackbar}
-        bgColor={visibleSnackbar.type === 'error' ? COLOR_ERROR : visibleSnackbar.type === 'success' ? COLOR_ACTIVE : COLOR_WHITE}
+        bgColor={
+          visibleSnackbar.type === 'error'
+            ? COLOR_ERROR
+            : visibleSnackbar.type === 'success'
+            ? COLOR_ACTIVE
+            : COLOR_WHITE
+        }
         color={visibleSnackbar.type === 'error' ? COLOR_WHITE : COLOR_WHITE}
       />
     </View>
@@ -350,6 +438,10 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
 
 const stylesCustom = StyleSheet.create({
   containerSaldo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  containerKategori: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

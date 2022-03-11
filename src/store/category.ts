@@ -6,7 +6,7 @@ const initialState = {
 
 // Slice
 const categorySlice = createSlice({
-  name: 'laporanTransaksi',
+  name: 'category',
   initialState,
   reducers: {
     setCategory(state, action: PayloadAction<{data: any}>) {

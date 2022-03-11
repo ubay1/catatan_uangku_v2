@@ -11,4 +11,5 @@ export interface IPropsHeaderAddNote {
 export interface IPropsFormInputAddNote {
   navigation?: any;
   route?: any;
+  listKategori?: any;
 }

@@ -11,7 +11,6 @@ export type RootStackParamList = {
   AddNote: {
     title: string;
     type: string;
-    data?: any;
     saldoAtm?: number,
     saldoDompet?: number,
   },
