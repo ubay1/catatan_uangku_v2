@@ -2,13 +2,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
-  isLoading?: boolean, isSignout?: boolean, gotek?: string
+  isLoading?: boolean, isSignout?: boolean, token?: string
 }
 
 const initialState: AuthState = {
   isLoading: true,
   isSignout: false,
-  gotek: 'null',
+  token: '',
 };
 
 // Slice
@@ -16,17 +16,17 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    RESTORE_TOKEN(state, action: PayloadAction<{isLoading?: any, gotek?: any}>) {
-      state.gotek = action.payload.gotek;
+    RESTORE_TOKEN(state, action: PayloadAction<{isLoading?: any, token?: any}>) {
+      state.token = action.payload.token;
       state.isLoading = false;
     },
-    SIGN_IN(state, action: PayloadAction<{isSignOut?: any, gotek?: any}>) {
+    SIGN_IN(state, action: PayloadAction<{isSignOut?: any, token?: any}>) {
       state.isSignout = false;
-      state.gotek = action.payload.gotek;
+      state.token = action.payload.token;
     },
-    SIGN_OUT(state, action: PayloadAction<{isSignOut?: any, gotek?: any}>) {
+    SIGN_OUT(state, action: PayloadAction<{isSignOut?: any, token?: any}>) {
       state.isSignout = true;
-      state.gotek = 'null';
+      state.token = 'null';
     },
   },
 });

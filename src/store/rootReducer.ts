@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   auth: AuthReducer,
   whatsPage: whatsPageReduce,
   listNote: listNoteReducer,
-  // category: categoryReducer,
+  category: categoryReducer,
   // laporan: laporanReduce,
   // globalScreenActive: GlobalScreenActiveReducer,
   // maps: MapsReducer

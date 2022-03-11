@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppIntroScreen from './src/screens/Intro';
 import HomeScreen from './src/screens/Home';
 import InfoScreen from './src/screens/Info';
-import LaporanScreen from './src/screens/Laporan';
 import NoteScreen from './src/screens/Note/Note';
 import FilterNote from './src/screens/Note/FilterNote';
 import { RootState } from './src/store/rootReducer';

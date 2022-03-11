@@ -15,6 +15,7 @@ import DeleteContent from '../../components/atoms/DeleteContent';
 import AddCategory from '../../components/molecules/category/AddCategory';
 import InputAddCategory from '../../components/molecules/category/InputAddCategory';
 import InputEditCategory from '../../components/molecules/category/InputEditCategory';
+import { setHideTab, setShowTab } from '../../store/navigationRedux';
 
 const CategoryOrganisms = ({route, navigation}: StackCategory) => {
   /* -------------------------------------------------------------------------- */
@@ -79,11 +80,22 @@ const CategoryOrganisms = ({route, navigation}: StackCategory) => {
     }
   }, [whatspage]);
 
-  React.useEffect(() => {
-    navigation.addListener('focus', e => {
-      dispatch(setPage({page: 'Category'}));
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+    dispatch(setShowTab());
+    navigation.addListener('beforeRemove', () => {
+      console.log('back to admin');
+      dispatch(setShowTab());
     });
   }, [navigation]);
+
+  // useEffect(() => {
+  //   navigation.addListener('focus', e => {
+  //     dispatch(setPage({page: 'Category'}));
+  //   });
+  // }, [navigation]);
   /* -------------------------------------------------------------------------- */
   /*                                   handle form                              */
   /* -------------------------------------------------------------------------- */
@@ -148,15 +160,10 @@ const CategoryOrganisms = ({route, navigation}: StackCategory) => {
       .catch(err => {
         console.log('error = ', err);
         setloadingDelete(false);
+      })
+      .finally(() => {
+        dispatch(setPage({page: 'updateCategory'}));
       });
-
-    // try {
-    //   const respListKategori: any = deleteKategori(id);
-    //   setloadingDelete(false)
-    // } catch (error) {
-    //   console.log('error kategori = ',error)
-    //   setloadingDelete(false)
-    // }
   };
   /* -------------------------------------------------------------------------- */
   /*                                   show page                                */

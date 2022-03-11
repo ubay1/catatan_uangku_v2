@@ -282,7 +282,6 @@ const ListHistoryCatatan = ({
               navigation.navigate('AddNote', {
                 title: 'Input Pemasukan',
                 type: 'pemasukan',
-                data: filterKategori('pemasukan'),
                 saldoAtm: saldoAtm,
                 saldoDompet: saldoDompet,
               });
@@ -333,7 +332,6 @@ const ListHistoryCatatan = ({
               navigation.navigate('AddNote', {
                 title: 'Input Pengeluaran',
                 type: 'pengeluaran',
-                data: filterKategori('pengeluaran'),
                 saldoAtm: saldoAtm,
                 saldoDompet: saldoDompet,
               });
