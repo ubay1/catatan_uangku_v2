@@ -221,8 +221,8 @@ const FormInput = ({
               display="default"
               onChange={(event: any, selectedDate: any) => {
                 const currentDate = selectedDate || date;
-                setDate(currentDate);
                 setShow(false);
+                setDate(currentDate);
               }}
             />
           )}

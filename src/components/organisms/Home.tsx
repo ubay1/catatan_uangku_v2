@@ -104,13 +104,13 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
           if (item.tipe === 'pemasukan') {
             pemasukan_atm.push(item.nominal);
           } else {
-            // if (item.tujuan === 'tarik tunai') {
-            //   pemasukan_dompet.push(item.nominal);
-            //   pengeluaran_atm.push(item.nominal);
-            // } else {
-            //   pengeluaran_atm.push(item.nominal);
-            // }
-            pengeluaran_atm.push(item.nominal);
+            if (item.tujuan === 'tarik tunai') {
+              pemasukan_dompet.push(item.nominal);
+              pengeluaran_atm.push(item.nominal);
+            } else {
+              pengeluaran_atm.push(item.nominal);
+            }
+            // pengeluaran_atm.push(item.nominal);
           }
         } else {
           if (item.tipe === 'pemasukan') {
@@ -139,9 +139,9 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
     totalSaldoDompet = totalPemasukanDompet - totalPengeluaranDompet;
     totalPengeluaranSemuaSaldo = totalPengeluaranAtm + totalPengeluaranDompet;
 
-    console.log(
-      totalPengeluaranSemuaSaldo
-    );
+    // console.log(
+    //   totalPengeluaranSemuaSaldo
+    // );
 
     setAllBalanceData({
       pemasukanAtm: totalPemasukanAtm,
