@@ -51,9 +51,9 @@ const FilterNote = ({navigation}: StackFilterNote) => {
   /* -------------------------------------------------------------------------- */
   const onChangeFromDate = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || fromDate;
-    console.log('from date = ',moment(currentDate).format('L'));
-    setfromDate(currentDate);
+    // console.log('from date = ',moment(currentDate).format('L'));
     setShowFromDate(false);
+    setfromDate(currentDate);
     // settampungJenisFilterfromDate(currentDate);
   };
 
@@ -68,10 +68,10 @@ const FilterNote = ({navigation}: StackFilterNote) => {
 
   const onChangeToDate = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || toDate;
-    console.log('to date = ',moment(currentDate).format('L'), event);
+    // console.log('to date = ',moment(currentDate).format('L'), event);
+    setShowToDate(false);
     settoDate(currentDate);
     // settampungJenisFiltertoDate(currentDate);
-    setShowToDate(false);
   };
 
   const showModeToDate = (currentMode: React.SetStateAction<string>) => {
