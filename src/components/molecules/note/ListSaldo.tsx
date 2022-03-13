@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
@@ -33,7 +34,7 @@ const ListSaldo = () => {
   return (
     <View style={{marginTop: 80, zIndex: 0}}>
       <View>
-        <View
+        {/* <View
           style={{
             borderLeftColor: Colors.blue300,
             ...stylesCustom.styleTotal,
@@ -43,7 +44,7 @@ const ListSaldo = () => {
             <TextAtom value="Total Seluruh Saldo" />
             <TextAtom value={formatRupiah(totalSaldo)} fontWeight="bold" />
           </View>
-        </View>
+        </View> */}
         <View
           style={{
             borderLeftColor: Colors.green300,

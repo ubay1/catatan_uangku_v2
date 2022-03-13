@@ -385,7 +385,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
         </View>
 
         {/* button update data */}
-        <View style={{marginTop: 10, marginBottom: 0}}>
+        <View style={{marginTop: 10, marginBottom: 20}}>
           <ButtonAtom
             title={loadingUpdateData ? 'Menyimpan Data' : 'Simpan'}
             uppercase={true}
