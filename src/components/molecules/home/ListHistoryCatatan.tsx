@@ -45,6 +45,7 @@ const ListHistoryCatatan = ({
   loading,
   allCatatan,
   allKategori,
+  allAtm,
   saldoAtm,
   saldoDompet,
   navigation,
@@ -242,6 +243,30 @@ const ListHistoryCatatan = ({
       }
     });
     return filterItem;
+  };
+
+  const filterNamaAtm = () => {
+    const filterItem: any[] = [];
+    allAtm.forEach((item: any) => {
+        const list: any = {
+          label: item.nama_atm,
+          value: item.nama_atm,
+        };
+        filterItem.push(list);
+    });
+    return filterItem;
+  };
+
+  const filterAkun = (data: any) => {
+    return data.akun === 'atm'
+    ? `${data.akun} (${data.nama_atm})`
+    : data.akun === 'emoney'
+    ? `${data.akun} (${data.nama_emoney})`
+    : data.akun;
+  };
+
+  const filterType = (data: any) => {
+    return `${data.tipe === 'pemasukan' ? '+ ' : '- '} ${formatRupiah(data.nominal)}`;
   };
 
   const SelectTypeNote = () => {
@@ -446,7 +471,7 @@ const ListHistoryCatatan = ({
                         <TextAtom
                           textTransform="uppercase"
                           color={Colors.grey400}
-                          value={item.akun}
+                          value={filterAkun(item)}
                         />
                         {item.tujuan === 'tarik tunai' ? (
                           <TextAtom
@@ -482,9 +507,7 @@ const ListHistoryCatatan = ({
                           color={
                             item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400
                           }
-                          value={
-                            `${item.tipe === 'pemasukan' ? '+ ' : '- '} ${formatRupiah(item.nominal)}`
-                          }
+                          value={filterType(item)}
                           fontWeight="bold"
                         />
                       </View>
@@ -546,6 +569,7 @@ const ListHistoryCatatan = ({
                           type: item.tipe,
                           data: item,
                           listKategori: filterKategori(item.tipe),
+                          listAtm: filterNamaAtm(),
                           saldoAtm: saldoAtm,
                           saldoDompet: saldoDompet,
                         });

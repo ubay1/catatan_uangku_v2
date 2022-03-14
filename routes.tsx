@@ -7,32 +7,31 @@ import { NavigationContainer } from '@react-navigation/native';
 // import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator, TransitionSpecs, HeaderStyleInterpolators } from '@react-navigation/stack';
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+
 import AppIntroScreen from './src/screens/Intro';
 import HomeScreen from './src/screens/Home';
 import InfoScreen from './src/screens/Info';
 import NoteScreen from './src/screens/Note/Note';
+import AddNote from './src/screens/Note/AddNote';
+import DetailNote from './src/screens/Note/DetailNote';
+import AddAtm from './src/screens/DetailsAtm/AddAtm';
 import FilterCustomTanggalNote from './src/screens/Note/FilterCustomTanggalNote';
+import SplashScreenss from './src/screens/Splash';
+import CategoryScreen from './src/screens/Category';
+
 import { RootState } from './src/store/rootReducer';
 import { AppDispatch } from './src/store';
 import { setUserName } from './src/store/user';
 import { setIntroFinish } from './src/store/appIntro';
 import { AuthContext } from './context/AuthContext';
-import SplashScreenss from './src/screens/Splash';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import LinearGradient from 'react-native-linear-gradient';
 import { setPage } from './src/store/whatsPage';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import CategoryScreen from './src/screens/Category';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Colors } from 'react-native-paper';
 import { COLOR_ACTIVE } from './src/assets/styles/global';
-import { StackNote } from './interfaceRoutes';
-import AddNote from './src/screens/Note/AddNote';
 import TextAtom from './src/components/atoms/text/TextAtom';
-import DetailNote from './src/screens/Note/DetailNote';
 
 const horizontalAnimation = {
   cardStyleInterpolator: ({ current, layouts }: any) => {
@@ -133,6 +132,7 @@ const HomeNavigator = () => {
       <Stack.Screen name="Info" component={InfoScreen} />
       <Stack.Screen name="DetailNote" component={DetailNote} />
       <Stack.Screen name="AddNote" component={AddNote} />
+      <Stack.Screen name="AddAtm" component={AddAtm} />
     </Stack.Navigator>
   );
 };

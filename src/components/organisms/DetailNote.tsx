@@ -10,9 +10,10 @@ import { setHideTab, setShowTab } from '../../store/navigationRedux';
 import FormInput from '../molecules/detailNote/FormInput';
 import Header from '../atoms/header/Header';
 import { IPropsAddNote } from '../molecules/addNote/types';
+import { IPropsEditNote } from '../molecules/detailNote/types';
 
-const DetailNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
-  const {title, data: dataProps, listKategori, saldoAtm, saldoDompet} = route.params;
+const DetailNoteOrganisms = ({navigation, route}: IPropsEditNote) => {
+  const {title, data: dataProps, listKategori, listAtm, saldoAtm, saldoDompet} = route.params;
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */

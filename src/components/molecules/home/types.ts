@@ -14,6 +14,7 @@ export interface IPropsListCatatan {
   loading: boolean;
   allCatatan: any;
   allKategori: any;
+  allAtm: any;
   saldoAtm: number;
   saldoDompet: number;
   navigation?: any;

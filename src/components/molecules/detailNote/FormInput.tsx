@@ -36,13 +36,15 @@ import {setPage} from '../../../store/whatsPage';
 import SnackbarAtom from '../../atoms/alert/SnackbarAtom';
 import {IPropsFormInputAddNote} from '../addNote/types';
 import ModalAtom from '../../atoms/alert/ModalAtom';
+import { IPropsFormInputEditNote } from './types';
 
-const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
+const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
   const {
     title,
     type,
     data: dataProps,
     listKategori,
+    listAtm,
     saldoAtm,
     saldoDompet,
   } = route.params;
@@ -51,7 +53,6 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
   const [loadingUpdateData, setLoadingUpdateData] = React.useState(false);
-  const [loadingDeleteData, setLoadingDeleteData] = React.useState(false);
 
   // state id note
   const [idCatatan, setIdCatatan] = React.useState(0);
@@ -66,6 +67,9 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
   // state kategori
   const [selectKategori, setSelectKategori] = React.useState('');
   const [kategoriList, setKategoriList] = React.useState<any[]>([]);
+  // state atm
+  const [selectAtm, setSelectAtm] = React.useState('');
+  const [atmList, setAtmList] = React.useState<any[]>([]);
   // state tujuan
   const [selectTujuan, setSelectTujuan] = React.useState('');
   // state nominal
@@ -85,6 +89,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
 
   React.useEffect(() => {
     setKategoriList(listKategori);
+    setAtmList(listAtm);
     setIdCatatan(dataProps.id);
     setTipeCatatan(dataProps.tipe);
     setDate(new Date(dataProps.tanggal));
@@ -93,6 +98,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
     setNominal(dataProps.nominal.toString());
     setKeterangan(dataProps.keterangan);
     setSelectKategori(dataProps.kategori);
+    setSelectAtm(dataProps.nama_atm);
 
     return () => {
       listKategori;
@@ -133,6 +139,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
       const data: any = {
         id: idCatatan,
         tipe: type,
+        nama_atm: selectAtm,
         tanggal: moment(date).format('YYYY-MM-DD').toString(),
         tanggal_int: Number(moment(date).format('DD')),
         bulan: Number(moment(date).format('MM')),
@@ -284,6 +291,35 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
           />
         </View>
 
+        {/* atm */}
+        <View style={{marginTop: 20, display: selectAkun === 'atm' ? 'flex' : 'none'}}>
+          <TextAtom value="Atm" />
+          <DropDownPicker
+            placeholder="Pilih Atm"
+            items={atmList}
+            defaultValue={selectAtm}
+            containerStyle={{height: 50, marginTop: 5}}
+            style={{
+              backgroundColor: COLOR_DISABLED,
+              borderColor: COLOR_INPUT_PLACEHOLDER,
+            }}
+            itemStyle={{
+              justifyContent: 'flex-start',
+            }}
+            labelStyle={{fontSize: 15}}
+            placeholderStyle={{
+              color: COLOR_INPUT_PLACEHOLDER,
+            }}
+            dropDownStyle={{
+              backgroundColor: '#fff',
+              borderColor: COLOR_INPUT_PLACEHOLDER,
+            }}
+            onChangeItem={(item: any) => {
+              setSelectAtm(item.value);
+            }}
+          />
+        </View>
+
         {/* kategori */}
         <View style={{marginTop: 20}}>
           <TextAtom value="Kategori" />
@@ -299,7 +335,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
             itemStyle={{
               justifyContent: 'flex-start',
             }}
-            labelStyle={{textTransform: 'capitalize', fontSize: 15}}
+            labelStyle={{fontSize: 15}}
             placeholderStyle={{
               color: COLOR_INPUT_PLACEHOLDER,
             }}
@@ -332,7 +368,7 @@ const FormInput = ({navigation, route}: IPropsFormInputAddNote) => {
               itemStyle={{
                 justifyContent: 'flex-start',
               }}
-              labelStyle={{textTransform: 'capitalize', fontSize: 15}}
+              labelStyle={{fontSize: 15}}
               placeholderStyle={{
                 color: COLOR_INPUT_PLACEHOLDER,
               }}

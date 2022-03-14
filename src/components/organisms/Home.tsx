@@ -11,6 +11,7 @@ import {
   getAllCatatan,
   getSepuluhCatatanTerakhir,
   deleteCatatan,
+  getAllAtm,
 } from '../../../db/database';
 import {AppDispatch} from '../../store';
 import {setPage} from '../../store/whatsPage';
@@ -37,6 +38,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   const [loading, setLoading] = React.useState(false);
   const [allKategori, setAllKategori] = React.useState([]);
   const [allCatatan, setAllCatatan] = React.useState([]);
+  const [allAtm, setAllAtm] = React.useState([]);
 
   // snackbar
   const [visibleSnackbar, setVisibleSnackbar] = React.useState({
@@ -166,6 +168,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       const values: any = await Promise.all([
         getAllKategori(),
         getSepuluhCatatanTerakhir(),
+        getAllAtm(),
       ]);
       const newListKategori: any = [];
       values[0].forEach((item: any) => {
@@ -182,7 +185,16 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       const responseGetListCatatan = values[1].map((item: any) => item);
       setAllCatatan(responseGetListCatatan);
 
-      console.log(newListKategori, responseGetListCatatan);
+      const newListAtm: any = [];
+      values[2].forEach((item: any) => {
+        newListAtm.push({
+          id: item.id,
+          nama_atm: item.nama_atm,
+        });
+      });
+      setAllAtm(newListAtm);
+
+      console.log(newListKategori, responseGetListCatatan, newListAtm);
     } catch (error) {
       console.log('error load all');
     } finally {
@@ -264,6 +276,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
         loading={loading}
         allKategori={allKategori}
         allCatatan={allCatatan}
+        allAtm={allAtm}
         saldoAtm={allBalanceData.saldoAtm}
         saldoDompet={allBalanceData.saldoDompet}
         navigation={navigation}

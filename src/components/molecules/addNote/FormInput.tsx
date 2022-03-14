@@ -61,14 +61,14 @@ const FormInput = ({
   const [date, setDate] = React.useState<any>(new Date());
   const [mode, setMode] = React.useState<any>('date');
   const [show, setShow] = React.useState(false);
-
   // state saldo
   const [selectAkun, setselectAkun] = React.useState('');
-
   // state kategori
   const [selectKategori, setSelectKategori] = React.useState('');
   const [kategoriList, setKategoriList] = React.useState<any[]>([]);
-
+  // state atm
+  const [selectAtm, setSelectAtm] = React.useState('');
+  const [atmList, setAtmList] = React.useState<any[]>([]);
   // state tujuan
   const [selectTujuan, setSelectTujuan] = React.useState('');
 
@@ -94,7 +94,12 @@ const FormInput = ({
     if (listKategori.length !== 0) {
       filterKategori(type);
     }
-  }, [listKategori]);
+
+    if (listAtm.length !== 0) {
+      filterNamaAtm();
+    }
+    console.log(listAtm);
+  }, [listKategori, listAtm]);
 
   React.useEffect(() => {
     navigation.addListener('focus', (e: any) => {
@@ -118,10 +123,28 @@ const FormInput = ({
     setKategoriList(filterItem);
   };
 
+  const filterNamaAtm = () => {
+    const filterItem: any[] = [];
+    listAtm.forEach((item: any) => {
+        const list: any = {
+          label: item.nama_atm,
+          value: item.nama_atm,
+        };
+        filterItem.push(list);
+    });
+    setAtmList(filterItem);
+  };
+
   const gotoCategory = () => {
     dispatch(setShowTab());
     dispatch(setPage({page: 'Category'}));
     navigation.navigate('Category');
+  };
+
+  const gotoAddAtm = () => {
+    dispatch(setShowTab());
+    dispatch(setPage({page: 'AddAtm'}));
+    navigation.navigate('AddAtm');
   };
 
   const submitNote = async () => {
@@ -142,6 +165,7 @@ const FormInput = ({
     } else {
       const data: any = {
         tipe: type,
+        nama_atm: selectAtm,
         tanggal: moment(date).format('YYYY-MM-DD').toString(),
         tanggal_int: Number(moment(date).format('DD')),
         bulan: Number(moment(date).format('MM')),
@@ -284,13 +308,13 @@ const FormInput = ({
             title="Tambah ATM"
             bgColor="transparent"
             textColor={COLOR_ACTIVE}
-            action={gotoCategory}
+            action={gotoAddAtm}
           />
         </View>
         <DropDownPicker
           placeholder="Pilih Atm"
-          items={kategoriList}
-          defaultValue={selectKategori}
+          items={atmList}
+          defaultValue={selectAtm}
           containerStyle={{height: 50, marginTop: 5}}
           style={{
             backgroundColor: COLOR_DISABLED,
@@ -299,7 +323,7 @@ const FormInput = ({
           itemStyle={{
             justifyContent: 'flex-start',
           }}
-          labelStyle={{textTransform: 'capitalize', fontSize: 15}}
+          labelStyle={{fontSize: 15}}
           placeholderStyle={{
             color: COLOR_INPUT_PLACEHOLDER,
           }}
@@ -308,7 +332,7 @@ const FormInput = ({
             borderColor: COLOR_INPUT_PLACEHOLDER,
           }}
           onChangeItem={(item: any) => {
-            setSelectKategori(item.value);
+            setSelectAtm(item.value);
           }}
         />
       </View>
@@ -336,7 +360,7 @@ const FormInput = ({
           itemStyle={{
             justifyContent: 'flex-start',
           }}
-          labelStyle={{textTransform: 'capitalize', fontSize: 15}}
+          labelStyle={{fontSize: 15}}
           placeholderStyle={{
             color: COLOR_INPUT_PLACEHOLDER,
           }}
@@ -369,7 +393,7 @@ const FormInput = ({
             itemStyle={{
               justifyContent: 'flex-start',
             }}
-            labelStyle={{textTransform: 'capitalize', fontSize: 15}}
+            labelStyle={{fontSize: 15}}
             placeholderStyle={{
               color: COLOR_INPUT_PLACEHOLDER,
             }}

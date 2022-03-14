@@ -1,9 +1,10 @@
 import React from 'react';
+import { StackAddAtm } from '../../../interfaceRoutes';
 import AddAtmOrganisms from '../../components/organisms/AddAtm';
 
-const AddAtm = () => {
+const AddAtm = ({navigation, route}: StackAddAtm) => {
   return (
-    <AddAtmOrganisms />
+    <AddAtmOrganisms navigation={navigation} route={route}/>
   );
 };
 

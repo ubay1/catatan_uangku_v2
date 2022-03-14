@@ -72,13 +72,13 @@ const AddNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
       setlistKategori(newListKategori);
 
       const newListAtm: any = [];
-      const responseAllAtm = values[1].forEach((item: any) => {
+      values[1].forEach((item: any) => {
         newListAtm.push({
           id: item.id,
           nama_atm: item.nama_atm,
         });
       });
-      setlistAtm(responseAllAtm);
+      setlistAtm(newListAtm);
 
       console.log(newListKategori, newListAtm);
     } catch (error) {

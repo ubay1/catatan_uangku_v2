@@ -11,7 +11,6 @@ import { IPropsAddAtm } from '../molecules/addAtm/types';
 import FormInput from '../molecules/addAtm/FormInput';
 
 const AddAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
-  const {title, data: dataProps, saldoAtm, saldoDompet} = route.params;
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */

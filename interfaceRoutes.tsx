@@ -9,19 +9,23 @@ export type RootStackParamList = {
   AddNote: {
     title: string;
     type: string;
-    saldoAtm?: number,
-    saldoDompet?: number,
+    saldoAtm?: number;
+    saldoDompet?: number;
   },
   DetailNote: {
     title?: string;
     type?: string;
     data?: any;
     listKategori?: any;
-    saldoAtm?: number,
-    saldoDompet?: number,
+    listAtm?: any;
+    listEmoney?: any;
+    saldoAtm?: number;
+    saldoDompet?: number;
   },
-  Category: undefined
-  Info: undefined
+  Category: undefined;
+  Info: undefined;
+  AddAtm: undefined;
+  AddEmoney: undefined;
 };
 
 
@@ -56,4 +60,12 @@ export type StackCategory = {
 export type StackInfo = {
   route: RouteProp<RootStackParamList, 'Info'>;
   navigation: StackNavigationProp<RootStackParamList, 'Info'>;
+}
+export type StackAddAtm = {
+  route: RouteProp<RootStackParamList, 'AddAtm'>;
+  navigation: StackNavigationProp<RootStackParamList, 'AddAtm'>;
+}
+export type StackAddEmoney = {
+  route: RouteProp<RootStackParamList, 'AddEmoney'>;
+  navigation: StackNavigationProp<RootStackParamList, 'AddEmoney'>;
 }
