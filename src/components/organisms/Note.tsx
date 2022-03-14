@@ -16,15 +16,15 @@ import SelectMonth from '../molecules/note/SelectMonth';
 import styles from '../../assets/styles/global';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import FilterNote from '../../screens/Note/FilterNote';
-import { StackCatatan } from '../../../interfaceRoutes';
+import FilterCustomTanggalNote from '../../screens/Note/FilterCustomTanggalNote';
+import { StackNote } from '../../../interfaceRoutes';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/rootReducer';
 import { AppDispatch } from '../../store';
 import { setListNote, setTotalSaldo, setTotalSaldoPemasukan, setTotalSaldoPengeluaran } from '../../store/listNote';
 
 
-const NoteOrganisms = ({route, navigation}: StackCatatan) => {
+const NoteOrganisms = ({route, navigation}: StackNote) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -40,7 +40,7 @@ const NoteOrganisms = ({route, navigation}: StackCatatan) => {
     if (type === 'customTanggal') {
       // showModalCustomDate();
       setselectJenisFilter('');
-      navigation.navigate('FilterNote');
+      navigation.navigate('FilterCustomTanggalNote');
     } else if (type === 'bulanIni') {
       // setfetchAllCatatan(true);
       getCatatanByMonth(moment().format('M'));
@@ -109,7 +109,7 @@ const NoteOrganisms = ({route, navigation}: StackCatatan) => {
         visible={visibleCustomDate}
         setPageActive="Note"
       >
-        <FilterNote />
+        <FilterCustomTanggalNote />
       </ModalAtom> */}
     </View>
   );

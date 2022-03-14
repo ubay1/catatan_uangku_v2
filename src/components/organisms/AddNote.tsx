@@ -4,7 +4,7 @@
 import React from 'react';
 import {SafeAreaView, ScrollView, View} from 'react-native';
 import { useDispatch } from 'react-redux';
-import { getAllKategori } from '../../../db/database';
+import { getAllAtm, getAllKategori } from '../../../db/database';
 import {StackAddNote} from '../../../interfaceRoutes';
 import { COLOR_BLACK } from '../../assets/styles/global';
 import { AppDispatch } from '../../store';
@@ -13,10 +13,10 @@ import { setPage } from '../../store/whatsPage';
 import OverlayWithText from '../atoms/overlay/OverlayWithText';
 import TextAtom from '../atoms/text/TextAtom';
 import FormInput from '../molecules/addNote/FormInput';
-import HeaderAddNote from '../molecules/addNote/Header';
+import Header from '../atoms/header/Header';
 import { IPropsAddNote } from '../molecules/addNote/types';
 
-const AddNote = ({navigation, route}: IPropsAddNote) => {
+const AddNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
   const {title, data: dataProps, saldoAtm, saldoDompet} = route.params;
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
@@ -24,6 +24,7 @@ const AddNote = ({navigation, route}: IPropsAddNote) => {
   const dispatch: AppDispatch = useDispatch();
 
   const [listKategori, setlistKategori] = React.useState([]);
+  const [listAtm, setlistAtm] = React.useState([]);
   const [loadingScreen, setloadingScreen] = React.useState(false);
 
   React.useEffect(() => {
@@ -36,7 +37,8 @@ const AddNote = ({navigation, route}: IPropsAddNote) => {
       setloadingScreen(true);
 
       setTimeout(() => {
-        getKategori();
+        // getKategori();
+        loadAll();
       }, 0);
 
       console.log(saldoAtm, saldoDompet);
@@ -52,14 +54,38 @@ const AddNote = ({navigation, route}: IPropsAddNote) => {
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
-  const getKategori = async () => {
+  const loadAll = async () => {
+    setloadingScreen(true);
     try {
-      const result = await getAllKategori();
-      setlistKategori(JSON.parse(JSON.stringify(result)));
+      const values: any = await Promise.all([
+        getAllKategori(),
+        getAllAtm(),
+      ]);
+      const newListKategori: any = [];
+      values[0].forEach((item: any) => {
+        newListKategori.push({
+          id: item.id,
+          nama_kategori: item.nama_kategori,
+          tipe_kategori: item.tipe_kategori,
+        });
+      });
+      setlistKategori(newListKategori);
+
+      const newListAtm: any = [];
+      const responseAllAtm = values[1].forEach((item: any) => {
+        newListAtm.push({
+          id: item.id,
+          nama_atm: item.nama_atm,
+        });
+      });
+      setlistAtm(responseAllAtm);
+
+      console.log(newListKategori, newListAtm);
     } catch (error) {
-      console.log(error);
+      console.log('error load all');
     } finally {
       setloadingScreen(false);
+      console.log('sukses load all');
     }
   };
   /* -------------------------------------------------------------------------- */
@@ -70,11 +96,11 @@ const AddNote = ({navigation, route}: IPropsAddNote) => {
         <OverlayWithText loadingScreen={loadingScreen}/>
         {/* <TextAtom value={loadingScreen.toString()}/> */}
         <ScrollView style={{marginHorizontal: 10, marginBottom: 0}}>
-          <HeaderAddNote navigation={navigation} title={title}/>
-          <FormInput navigation={navigation} route={route} listKategori={listKategori}/>
+          <Header navigation={navigation} title={title}/>
+          <FormInput navigation={navigation} route={route} listKategori={listKategori} listAtm={listAtm}/>
         </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default AddNote;
+export default AddNoteOrganisms;

@@ -13,7 +13,7 @@ import AppIntroScreen from './src/screens/Intro';
 import HomeScreen from './src/screens/Home';
 import InfoScreen from './src/screens/Info';
 import NoteScreen from './src/screens/Note/Note';
-import FilterNote from './src/screens/Note/FilterNote';
+import FilterCustomTanggalNote from './src/screens/Note/FilterCustomTanggalNote';
 import { RootState } from './src/store/rootReducer';
 import { AppDispatch } from './src/store';
 import { setUserName } from './src/store/user';
@@ -29,7 +29,7 @@ import CategoryScreen from './src/screens/Category';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from 'react-native-paper';
 import { COLOR_ACTIVE } from './src/assets/styles/global';
-import { StackCatatan } from './interfaceRoutes';
+import { StackNote } from './interfaceRoutes';
 import AddNote from './src/screens/Note/AddNote';
 import TextAtom from './src/components/atoms/text/TextAtom';
 import DetailNote from './src/screens/Note/DetailNote';
@@ -148,7 +148,7 @@ const NoteNavigator = () => {
       }}
     >
       <Stack.Screen name="Note" component={NoteScreen}/>
-      <Stack.Screen name="FilterNote" component={FilterNote}/>
+      <Stack.Screen name="FilterCustomTanggalNote" component={FilterCustomTanggalNote}/>
     </Stack.Navigator>
   );
 };

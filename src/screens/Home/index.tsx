@@ -9,7 +9,7 @@ import { AppDispatch } from '../../store';
 import { RootState } from '../../store/rootReducer';
 import 'intl';
 import 'intl/locale-data/jsonp/id';
-import { StackBeranda } from '../../../interfaceRoutes';
+import { StackHome } from '../../../interfaceRoutes';
 // import Animated from 'react-native-reanimated';
 import HomeOrganims from '../../components/organisms/Home';
 export interface IListKategori {
@@ -17,7 +17,7 @@ export interface IListKategori {
   nama_kategori: any,
 }
 
-const HomeScreen = ({ navigation }: StackBeranda) => {
+const HomeScreen = ({ navigation }: StackHome) => {
   const dispatch: AppDispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const whatspage = useSelector((state: RootState) => state.whatsPage);

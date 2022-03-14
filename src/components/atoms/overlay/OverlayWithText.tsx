@@ -29,7 +29,7 @@ const OverlayWithText = (props: {loadingScreen: boolean}) => {
         borderRadius: 10,
       }}>
         <ActivityIndicator size="large" color={COLOR_WHITE} />
-        <TextAtom value="Memuat data kategori.." color="#fff" mTop={5}/>
+        <TextAtom value="Memuat data .." color="#fff" mTop={5}/>
       </View>
     </View>
   );

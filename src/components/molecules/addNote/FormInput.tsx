@@ -40,11 +40,13 @@ import SnackbarAtom from '../../atoms/alert/SnackbarAtom';
 import ButtonTextAtom from '../../atoms/button/ButtonTextAtom';
 import {setShowTab} from '../../../store/navigationRedux';
 import {RootState} from '../../../store/rootReducer';
+import { listSaldo } from '../../../constants/Saldo';
 
 const FormInput = ({
   navigation,
   route,
   listKategori,
+  listAtm,
 }: IPropsFormInputAddNote) => {
   const {title, type, saldoAtm, saldoDompet} = route.params;
 
@@ -249,8 +251,7 @@ const FormInput = ({
           placeholder="Pilih Saldo"
           items={[
             {label: 'Pilih Saldo', value: '', hidden: true},
-            {label: 'ATM', value: 'atm'},
-            {label: 'Dompet', value: 'dompet'},
+            ...listSaldo,
           ]}
           defaultValue={selectAkun}
           containerStyle={{height: 50, marginTop: 5}}
@@ -271,6 +272,43 @@ const FormInput = ({
           }}
           onChangeItem={(item: any) => {
             setselectAkun(item.value);
+          }}
+        />
+      </View>
+
+      {/* atm */}
+      <View style={{marginTop: 20, display: selectAkun === 'atm' ? 'flex' : 'none'}}>
+        <View style={stylesCustom.containerKategori}>
+          <TextAtom value="Atm" />
+          <ButtonTextAtom
+            title="Tambah ATM"
+            bgColor="transparent"
+            textColor={COLOR_ACTIVE}
+            action={gotoCategory}
+          />
+        </View>
+        <DropDownPicker
+          placeholder="Pilih Atm"
+          items={kategoriList}
+          defaultValue={selectKategori}
+          containerStyle={{height: 50, marginTop: 5}}
+          style={{
+            backgroundColor: COLOR_DISABLED,
+            borderColor: COLOR_INPUT_PLACEHOLDER,
+          }}
+          itemStyle={{
+            justifyContent: 'flex-start',
+          }}
+          labelStyle={{textTransform: 'capitalize', fontSize: 15}}
+          placeholderStyle={{
+            color: COLOR_INPUT_PLACEHOLDER,
+          }}
+          dropDownStyle={{
+            backgroundColor: '#fff',
+            borderColor: COLOR_INPUT_PLACEHOLDER,
+          }}
+          onChangeItem={(item: any) => {
+            setSelectKategori(item.value);
           }}
         />
       </View>
