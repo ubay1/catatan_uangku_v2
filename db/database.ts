@@ -68,20 +68,20 @@ let realm = new Realm({
 const dbOptions = {
   schema : [SaldoSchemaV2, KategoriSchema, AtmSchema, EmoneySchema],
   schemaVersion : 2,
-  migration: (oldRealm: any, newRealm: any) => {
-    // only apply this change if upgrading to schemaVersion 1
-    if (oldRealm.schemaVersion < 1) {
-      const oldObjects = oldRealm.objects('SaldoSchemaV2');
-      const newObjects = newRealm.objects('SaldoSchemaV2');
+  // migration: (oldRealm: any, newRealm: any) => {
+  //   // only apply this change if upgrading to schemaVersion 1
+  //   if (oldRealm.schemaVersion < 1) {
+  //     const oldObjects = oldRealm.objects('SaldoSchemaV2');
+  //     const newObjects = newRealm.objects('SaldoSchemaV2');
 
-      // loop through all objects and set the name property in the new schema
-      for (let i = 0; i < oldObjects.length; i++) {
-          newObjects[i].tanggal_int = 'tanggal_int';
-          newObjects[i].bulan = 'bulan';
-          newObjects[i].tahun = 'tahun';
-      }
-  }
-  },
+  //     // loop through all objects and set the name property in the new schema
+  //     for (let i = 0; i < oldObjects.length; i++) {
+  //         newObjects[i].tanggal_int = 'tanggal_int';
+  //         newObjects[i].bulan = 'bulan';
+  //         newObjects[i].tahun = 'tahun';
+  //     }
+  //   }
+  // },
 };
 
 /* -------------------------------------------------------------------------- */
