@@ -45,6 +45,7 @@ const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
     data: dataProps,
     listKategori,
     listAtm,
+    listEmoney,
     saldoAtm,
     saldoDompet,
   } = route.params;
@@ -102,6 +103,8 @@ const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
 
     return () => {
       listKategori;
+      listAtm,
+      listEmoney,
       dataProps.id;
       dataProps.tipe;
       dataProps.tanggal;
@@ -132,7 +135,7 @@ const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
       setVisibleSnackbar({
         isOpen: true,
         type: 'error',
-        msg: 'Harap isi form yang disediakan',
+        msg: 'Harap isi semua form yang disediakan',
       });
       setLoadingUpdateData(false);
     } else {

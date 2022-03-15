@@ -8,4 +8,5 @@ export interface IPropsFormInputAddNote {
   route?: any;
   listKategori?: any;
   listAtm?: any;
+  listEmoney?: any;
 }

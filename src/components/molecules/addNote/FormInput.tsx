@@ -47,6 +47,7 @@ const FormInput = ({
   route,
   listKategori,
   listAtm,
+  listEmoney,
 }: IPropsFormInputAddNote) => {
   const {title, type, saldoAtm, saldoDompet} = route.params;
 
@@ -69,6 +70,9 @@ const FormInput = ({
   // state atm
   const [selectAtm, setSelectAtm] = React.useState('');
   const [atmList, setAtmList] = React.useState<any[]>([]);
+  // state emoney
+  const [selectEmoney, setSelectEmoney] = React.useState('');
+  const [emoneyList, setEmoneyList] = React.useState<any[]>([]);
   // state tujuan
   const [selectTujuan, setSelectTujuan] = React.useState('');
 
@@ -98,8 +102,11 @@ const FormInput = ({
     if (listAtm.length !== 0) {
       filterNamaAtm();
     }
-    console.log(listAtm);
-  }, [listKategori, listAtm]);
+
+    if (listEmoney.length !== 0) {
+      filterNamaEmoney();
+    }
+  }, [listKategori, listAtm, listEmoney]);
 
   React.useEffect(() => {
     navigation.addListener('focus', (e: any) => {
@@ -135,6 +142,18 @@ const FormInput = ({
     setAtmList(filterItem);
   };
 
+  const filterNamaEmoney = () => {
+    const filterItem: any[] = [];
+    listEmoney.forEach((item: any) => {
+        const list: any = {
+          label: item.nama_emoney,
+          value: item.nama_emoney,
+        };
+        filterItem.push(list);
+    });
+    setEmoneyList(filterItem);
+  };
+
   const gotoCategory = () => {
     dispatch(setShowTab());
     dispatch(setPage({page: 'Category'}));
@@ -147,6 +166,12 @@ const FormInput = ({
     navigation.navigate('AddAtm');
   };
 
+  const gotoAddEmoney = () => {
+    dispatch(setShowTab());
+    dispatch(setPage({page: 'AddEmoney'}));
+    navigation.navigate('AddEmoney');
+  };
+
   const submitNote = async () => {
     setloading(true);
 
@@ -154,18 +179,21 @@ const FormInput = ({
       selectAkun === '' ||
       selectKategori === '' ||
       nominal === '' ||
-      keterangan === ''
+      keterangan === '' ||
+      selectAkun === 'atm' && selectAtm === '' ||
+      selectAkun === 'emoney' && selectEmoney === ''
     ) {
       setVisibleSnackbar({
         isOpen: true,
         type: 'error',
-        msg: 'Harap isi form yang disediakan',
+        msg: 'Harap isi semua form yang disediakan',
       });
       setloading(false);
     } else {
       const data: any = {
         tipe: type,
         nama_atm: selectAtm,
+        nama_emoney: selectEmoney,
         tanggal: moment(date).format('YYYY-MM-DD').toString(),
         tanggal_int: Number(moment(date).format('DD')),
         bulan: Number(moment(date).format('MM')),
@@ -333,6 +361,43 @@ const FormInput = ({
           }}
           onChangeItem={(item: any) => {
             setSelectAtm(item.value);
+          }}
+        />
+      </View>
+
+      {/* emoney */}
+      <View style={{marginTop: 20, display: selectAkun === 'emoney' ? 'flex' : 'none'}}>
+        <View style={stylesCustom.containerKategori}>
+          <TextAtom value="eMoney" />
+          <ButtonTextAtom
+            title="Tambah eMoney"
+            bgColor="transparent"
+            textColor={COLOR_ACTIVE}
+            action={gotoAddEmoney}
+          />
+        </View>
+        <DropDownPicker
+          placeholder="Pilih eMoney"
+          items={emoneyList}
+          defaultValue={selectEmoney}
+          containerStyle={{height: 50, marginTop: 5}}
+          style={{
+            backgroundColor: COLOR_DISABLED,
+            borderColor: COLOR_INPUT_PLACEHOLDER,
+          }}
+          itemStyle={{
+            justifyContent: 'flex-start',
+          }}
+          labelStyle={{fontSize: 15}}
+          placeholderStyle={{
+            color: COLOR_INPUT_PLACEHOLDER,
+          }}
+          dropDownStyle={{
+            backgroundColor: '#fff',
+            borderColor: COLOR_INPUT_PLACEHOLDER,
+          }}
+          onChangeItem={(item: any) => {
+            setSelectEmoney(item.value);
           }}
         />
       </View>

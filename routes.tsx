@@ -14,12 +14,13 @@ import AppIntroScreen from './src/screens/Intro';
 import HomeScreen from './src/screens/Home';
 import InfoScreen from './src/screens/Info';
 import NoteScreen from './src/screens/Note/Note';
+import SplashScreenss from './src/screens/Splash';
+import CategoryScreen from './src/screens/Category';
 import AddNote from './src/screens/Note/AddNote';
 import DetailNote from './src/screens/Note/DetailNote';
 import AddAtm from './src/screens/DetailsAtm/AddAtm';
+import AddEmoney from './src/screens/DetailsEmoney/AddEmoney';
 import FilterCustomTanggalNote from './src/screens/Note/FilterCustomTanggalNote';
-import SplashScreenss from './src/screens/Splash';
-import CategoryScreen from './src/screens/Category';
 
 import { RootState } from './src/store/rootReducer';
 import { AppDispatch } from './src/store';
@@ -133,6 +134,7 @@ const HomeNavigator = () => {
       <Stack.Screen name="DetailNote" component={DetailNote} />
       <Stack.Screen name="AddNote" component={AddNote} />
       <Stack.Screen name="AddAtm" component={AddAtm} />
+      <Stack.Screen name="AddEmoney" component={AddEmoney} />
     </Stack.Navigator>
   );
 };

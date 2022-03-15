@@ -15,6 +15,7 @@ export interface IPropsListCatatan {
   allCatatan: any;
   allKategori: any;
   allAtm: any;
+  allEmoney: any;
   saldoAtm: number;
   saldoDompet: number;
   navigation?: any;

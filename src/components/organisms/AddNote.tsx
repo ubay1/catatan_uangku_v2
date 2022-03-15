@@ -4,7 +4,7 @@
 import React from 'react';
 import {SafeAreaView, ScrollView, View} from 'react-native';
 import { useDispatch } from 'react-redux';
-import { getAllAtm, getAllKategori } from '../../../db/database';
+import { getAllAtm, getAllEmoney, getAllKategori } from '../../../db/database';
 import {StackAddNote} from '../../../interfaceRoutes';
 import { COLOR_BLACK } from '../../assets/styles/global';
 import { AppDispatch } from '../../store';
@@ -25,6 +25,7 @@ const AddNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
 
   const [listKategori, setlistKategori] = React.useState([]);
   const [listAtm, setlistAtm] = React.useState([]);
+  const [listEmoney, setlistEmoney] = React.useState([]);
   const [loadingScreen, setloadingScreen] = React.useState(false);
 
   React.useEffect(() => {
@@ -60,6 +61,7 @@ const AddNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
       const values: any = await Promise.all([
         getAllKategori(),
         getAllAtm(),
+        getAllEmoney(),
       ]);
       const newListKategori: any = [];
       values[0].forEach((item: any) => {
@@ -80,7 +82,16 @@ const AddNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
       });
       setlistAtm(newListAtm);
 
-      console.log(newListKategori, newListAtm);
+      const newListEmoney: any = [];
+      values[2].forEach((item: any) => {
+        newListEmoney.push({
+          id: item.id,
+          nama_emoney: item.nama_emoney,
+        });
+      });
+      setlistEmoney(newListEmoney);
+
+      console.log(newListKategori, newListAtm, newListEmoney);
     } catch (error) {
       console.log('error load all');
     } finally {
@@ -97,7 +108,7 @@ const AddNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
         {/* <TextAtom value={loadingScreen.toString()}/> */}
         <ScrollView style={{marginHorizontal: 10, marginBottom: 0}}>
           <Header navigation={navigation} title={title}/>
-          <FormInput navigation={navigation} route={route} listKategori={listKategori} listAtm={listAtm}/>
+          <FormInput navigation={navigation} route={route} listKategori={listKategori} listAtm={listAtm} listEmoney={listEmoney}/>
         </ScrollView>
     </SafeAreaView>
   );

@@ -46,6 +46,7 @@ const ListHistoryCatatan = ({
   allCatatan,
   allKategori,
   allAtm,
+  allEmoney,
   saldoAtm,
   saldoDompet,
   navigation,
@@ -251,6 +252,18 @@ const ListHistoryCatatan = ({
         const list: any = {
           label: item.nama_atm,
           value: item.nama_atm,
+        };
+        filterItem.push(list);
+    });
+    return filterItem;
+  };
+
+  const filterNamaEmoney = () => {
+    const filterItem: any[] = [];
+    allEmoney.forEach((item: any) => {
+        const list: any = {
+          label: item.nama_emoney,
+          value: item.nama_emoney,
         };
         filterItem.push(list);
     });
@@ -570,6 +583,7 @@ const ListHistoryCatatan = ({
                           data: item,
                           listKategori: filterKategori(item.tipe),
                           listAtm: filterNamaAtm(),
+                          listEmoney: filterNamaEmoney(),
                           saldoAtm: saldoAtm,
                           saldoDompet: saldoDompet,
                         });

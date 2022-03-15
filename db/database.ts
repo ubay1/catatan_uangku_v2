@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 /*                               Declare Schema                               */
 /* -------------------------------------------------------------------------- */
 export const SALDO_SCHEMA = 'saldo';
-export const SaldoSchema = {
+export const SaldoSchemaV2 = {
   name: SALDO_SCHEMA,
   primaryKey: 'id',
   properties: {
@@ -49,15 +49,39 @@ export const AtmSchema = {
   },
 };
 
+export const EMONEY_SCHEMA = 'list_emoney';
+export const EmoneySchema = {
+  name: EMONEY_SCHEMA,
+  primaryKey: 'id',
+  properties: {
+    id: 'int?',
+    nama_emoney: 'string',
+  },
+};
+
 // Create realm
 let realm = new Realm({
-  schema: [SaldoSchema, KategoriSchema, AtmSchema],
-  schemaVersion: 1,
+  schema: [SaldoSchemaV2, KategoriSchema, AtmSchema, EmoneySchema],
+  schemaVersion: 2,
 });
 
 const dbOptions = {
-  schema : [SaldoSchema, KategoriSchema, AtmSchema],
-  schemaVersion : 1,
+  schema : [SaldoSchemaV2, KategoriSchema, AtmSchema, EmoneySchema],
+  schemaVersion : 2,
+  migration: (oldRealm: any, newRealm: any) => {
+    // only apply this change if upgrading to schemaVersion 1
+    if (oldRealm.schemaVersion < 1) {
+      const oldObjects = oldRealm.objects('SaldoSchemaV2');
+      const newObjects = newRealm.objects('SaldoSchemaV2');
+
+      // loop through all objects and set the name property in the new schema
+      for (let i = 0; i < oldObjects.length; i++) {
+          newObjects[i].tanggal_int = 'tanggal_int';
+          newObjects[i].bulan = 'bulan';
+          newObjects[i].tahun = 'tahun';
+      }
+  }
+  },
 };
 
 /* -------------------------------------------------------------------------- */
@@ -88,6 +112,25 @@ const dataDefaultkategori = [
     id: 5,
     nama_kategori: 'Transportasi',
     tipe_kategori: 'pengeluaran',
+  },
+];
+
+const dataDefaultEmoney = [
+  {
+    id: 1,
+    nama_emoney: 'Gopay',
+  },
+  {
+    id: 2,
+    nama_emoney: 'OVO',
+  },
+  {
+    id: 3,
+    nama_emoney: 'Dana',
+  },
+  {
+    id: 4,
+    nama_emoney: 'Shopee Pay',
   },
 ];
 
@@ -310,6 +353,45 @@ export const getAllAtm = () => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
       let allAtm = realm.objects(ATM_SCHEMA).sorted('id', true);
       resolve(allAtm);
+  }).catch((error) => reject(error));
+});
+
+/* -------------------------------------------------------------------------- */
+/*                                  crud Emoney                                  */
+/* -------------------------------------------------------------------------- */
+export const createDefaultEmoney =  () => new Promise((resolve, reject) => {
+  const length = realm.objects(EMONEY_SCHEMA).length;
+  Realm.open(dbOptions).then(realm => {
+      if (length < 1) {
+          realm.write(() => {
+            dataDefaultEmoney.forEach((obj) => (
+              realm.create(EMONEY_SCHEMA, obj)
+            ));
+          });
+        resolve('data default emoney dibuat');
+      } else {
+        resolve('data default sudah ada');
+      }
+  }).catch((error) => reject(error));
+});
+
+export const createEmoney =  (data: any) => new Promise<void>((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
+    realm.write(() => {
+      realm.create(EMONEY_SCHEMA, {
+        id: getPrimaryKeyId(EMONEY_SCHEMA),
+        nama_emoney: data.nama_emoney,
+      });
+
+      resolve();
+    });
+  }).catch((error) => reject(error));
+});
+
+export const getAllEmoney = () => new Promise((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
+      let allEmoney = realm.objects(EMONEY_SCHEMA).sorted('id', true);
+      resolve(allEmoney);
   }).catch((error) => reject(error));
 });
 

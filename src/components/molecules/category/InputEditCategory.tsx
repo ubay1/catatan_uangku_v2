@@ -55,7 +55,7 @@ const InputEditCategory = ({closeModalInputKategori, idInputKategori, defaultVal
       setVisibleSnackbar({
         isOpen: true,
         type: 'error',
-        msg: 'Harap isi form yang disediakan',
+        msg: 'Harap isi semua form yang disediakan',
       });
       setLoading(false);
     } else {

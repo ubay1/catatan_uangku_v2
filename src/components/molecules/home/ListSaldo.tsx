@@ -122,7 +122,7 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
               <IconMCI name="cellphone-nfc" color="#fff" size={30} />
             </View>
             <View style={{alignItems: 'flex-start'}}>
-              <TextAtom value="Saldo e-Money" />
+              <TextAtom value="Saldo eMoney" />
               {
                 loadings ?
                   <ActivityIndicator animating={true} color={Colors.blue500} />
