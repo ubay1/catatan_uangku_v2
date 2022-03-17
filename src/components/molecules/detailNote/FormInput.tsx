@@ -37,6 +37,7 @@ import SnackbarAtom from '../../atoms/alert/SnackbarAtom';
 import {IPropsFormInputAddNote} from '../addNote/types';
 import ModalAtom from '../../atoms/alert/ModalAtom';
 import { IPropsFormInputEditNote } from './types';
+import { listSaldo } from '../../../constants/Saldo';
 
 const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
   const {
@@ -71,6 +72,9 @@ const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
   // state atm
   const [selectAtm, setSelectAtm] = React.useState('');
   const [atmList, setAtmList] = React.useState<any[]>([]);
+  // state emoney
+  const [selectEmoney, setSelectEmoney] = React.useState('');
+  const [emoneyList, setEmoneyList] = React.useState<any[]>([]);
   // state tujuan
   const [selectTujuan, setSelectTujuan] = React.useState('');
   // state nominal
@@ -91,6 +95,7 @@ const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
   React.useEffect(() => {
     setKategoriList(listKategori);
     setAtmList(listAtm);
+    setEmoneyList(listEmoney);
     setIdCatatan(dataProps.id);
     setTipeCatatan(dataProps.tipe);
     setDate(new Date(dataProps.tanggal));
@@ -100,11 +105,12 @@ const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
     setKeterangan(dataProps.keterangan);
     setSelectKategori(dataProps.kategori);
     setSelectAtm(dataProps.nama_atm);
+    setSelectEmoney(dataProps.nama_emoney);
 
     return () => {
       listKategori;
-      listAtm,
-      listEmoney,
+      listAtm;
+      listEmoney;
       dataProps.id;
       dataProps.tipe;
       dataProps.tanggal;
@@ -143,6 +149,7 @@ const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
         id: idCatatan,
         tipe: type,
         nama_atm: selectAtm,
+        nama_emoney: selectEmoney,
         tanggal: moment(date).format('YYYY-MM-DD').toString(),
         tanggal_int: Number(moment(date).format('DD')),
         bulan: Number(moment(date).format('MM')),
@@ -268,8 +275,7 @@ const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
             placeholder="Pilih Saldo"
             items={[
               {label: 'Pilih Saldo', value: '', hidden: true},
-              {label: 'ATM', value: 'atm'},
-              {label: 'Dompet', value: 'dompet'},
+              ...listSaldo,
             ]}
             defaultValue={selectAkun}
             containerStyle={{height: 50, marginTop: 5}}
@@ -319,6 +325,35 @@ const FormInput = ({navigation, route}: IPropsFormInputEditNote) => {
             }}
             onChangeItem={(item: any) => {
               setSelectAtm(item.value);
+            }}
+          />
+        </View>
+
+        {/* emoney */}
+        <View style={{marginTop: 20, display: selectAkun === 'emoney' ? 'flex' : 'none'}}>
+          <TextAtom value="eMoney" />
+          <DropDownPicker
+            placeholder="Pilih eMoney"
+            items={emoneyList}
+            defaultValue={selectEmoney}
+            containerStyle={{height: 50, marginTop: 5}}
+            style={{
+              backgroundColor: COLOR_DISABLED,
+              borderColor: COLOR_INPUT_PLACEHOLDER,
+            }}
+            itemStyle={{
+              justifyContent: 'flex-start',
+            }}
+            labelStyle={{fontSize: 15}}
+            placeholderStyle={{
+              color: COLOR_INPUT_PLACEHOLDER,
+            }}
+            dropDownStyle={{
+              backgroundColor: '#fff',
+              borderColor: COLOR_INPUT_PLACEHOLDER,
+            }}
+            onChangeItem={(item: any) => {
+              setSelectEmoney(item.value);
             }}
           />
         </View>

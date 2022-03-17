@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 /*                               Declare Schema                               */
 /* -------------------------------------------------------------------------- */
 export const SALDO_SCHEMA = 'saldo';
-export const SaldoSchemaV2 = {
+export const SaldoSchema = {
   name: SALDO_SCHEMA,
   primaryKey: 'id',
   properties: {
@@ -61,18 +61,18 @@ export const EmoneySchema = {
 
 // Create realm
 let realm = new Realm({
-  schema: [SaldoSchemaV2, KategoriSchema, AtmSchema, EmoneySchema],
+  schema: [SaldoSchema, KategoriSchema, AtmSchema, EmoneySchema],
   schemaVersion: 2,
 });
 
 const dbOptions = {
-  schema : [SaldoSchemaV2, KategoriSchema, AtmSchema, EmoneySchema],
+  schema : [SaldoSchema, KategoriSchema, AtmSchema, EmoneySchema],
   schemaVersion : 2,
   // migration: (oldRealm: any, newRealm: any) => {
   //   // only apply this change if upgrading to schemaVersion 1
   //   if (oldRealm.schemaVersion < 1) {
-  //     const oldObjects = oldRealm.objects('SaldoSchemaV2');
-  //     const newObjects = newRealm.objects('SaldoSchemaV2');
+  //     const oldObjects = oldRealm.objects('SaldoSchema');
+  //     const newObjects = newRealm.objects('SaldoSchema');
 
   //     // loop through all objects and set the name property in the new schema
   //     for (let i = 0; i < oldObjects.length; i++) {

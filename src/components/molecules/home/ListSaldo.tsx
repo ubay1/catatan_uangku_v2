@@ -127,7 +127,7 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
                 loadings ?
                   <ActivityIndicator animating={true} color={Colors.blue500} />
                   :
-                  <TextAtom value={formatRupiah(allBalanceData.saldoDompet)} fontWeight={'bold'}/>
+                  <TextAtom value={formatRupiah(allBalanceData.saldoEmoney)} fontWeight={'bold'}/>
               }
             </View>
           </View>

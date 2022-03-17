@@ -6,6 +6,4 @@ export interface IPropsEditNote {
 export interface IPropsFormInputEditNote {
   navigation?: any;
   route?: any;
-  listKategori?: any;
-  listAtm?: any;
 }
