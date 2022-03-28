@@ -17,7 +17,11 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import {useDispatch} from 'react-redux';
-import realm, {createDefaultEmoney, createDefaultKategori, SALDO_SCHEMA} from '../../../db/database';
+import realm, {
+  createDefaultEmoney,
+  createDefaultKategori,
+  SALDO_SCHEMA,
+} from '../../../db/database';
 import {AppDispatch} from '../../store';
 import {setCategory} from '../../store/category';
 
@@ -36,15 +40,15 @@ const SplashScreenss = () => {
     }
   };
 
-  // const createKategori = () => {
-  //   createDefaultKategori()
-  //     .then(item => {
-  //       console.log('data default kategori = ', item);
-  //     })
-  //     .catch(err => {
-  //       console.log('error = ', err);
-  //     });
-  // };
+              // const createKategori = () => {
+              //   createDefaultKategori()
+              //     .then(item => {
+              //       console.log('data default kategori = ', item);
+              //     })
+              //     .catch(err => {
+              //       console.log('error = ', err);
+              //     });
+              // };
 
   useEffect(() => {
     loadAll();
