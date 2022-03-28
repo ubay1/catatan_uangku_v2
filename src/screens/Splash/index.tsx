@@ -40,15 +40,15 @@ const SplashScreenss = () => {
     }
   };
 
-              // const createKategori = () => {
-              //   createDefaultKategori()
-              //     .then(item => {
-              //       console.log('data default kategori = ', item);
-              //     })
-              //     .catch(err => {
-              //       console.log('error = ', err);
-              //     });
-              // };
+      // const createKategori = () => {
+      //   createDefaultKategori()
+      //     .then(item => {
+      //       console.log('data default kategori = ', item);
+      //     })
+      //     .catch(err => {
+      //       console.log('error = ', err);
+      //     });
+      // };
 
   useEffect(() => {
     loadAll();
