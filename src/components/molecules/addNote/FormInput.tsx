@@ -30,6 +30,8 @@ import {IPropsFormInputAddNote} from './types';
 import realm, {
   createCatatan,
   getAllKategori,
+  getSaldoByAtmName,
+  getSaldoByEmoneyName,
   SALDO_SCHEMA,
 } from '../../../../db/database';
 import TextareaInputAtom from '../../atoms/input/TextareaInputAtom';
@@ -41,6 +43,7 @@ import ButtonTextAtom from '../../atoms/button/ButtonTextAtom';
 import {setShowTab} from '../../../store/navigationRedux';
 import {RootState} from '../../../store/rootReducer';
 import { listSaldo } from '../../../constants/Saldo';
+import OverlayWithText from '../../atoms/overlay/OverlayWithText';
 
 const FormInput = ({
   navigation,
@@ -49,7 +52,7 @@ const FormInput = ({
   listAtm,
   listEmoney,
 }: IPropsFormInputAddNote) => {
-  const {title, type, saldoAtm, saldoDompet} = route.params;
+  const {title, type, saldoAtm, saldoDompet, saldoEmoney} = route.params;
 
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
@@ -57,6 +60,7 @@ const FormInput = ({
   const dispatch: AppDispatch = useDispatch();
 
   const [loading, setloading] = React.useState(false);
+  const [loadingData, setloadingData] = React.useState(false);
 
   // state date
   const [date, setDate] = React.useState<any>(new Date());
@@ -75,6 +79,10 @@ const FormInput = ({
   const [emoneyList, setEmoneyList] = React.useState<any[]>([]);
   // state tujuan
   const [selectTujuan, setSelectTujuan] = React.useState('');
+  // state total saldo atm
+  const [totalAtm, setTotalAtm] = React.useState<any>('');
+  // state total saldo e-money
+  const [totalEmoney, setTotalEmoney] = React.useState<any>('');
 
   // snackbar
   const [visibleSnackbar, setVisibleSnackbar] = React.useState({
@@ -113,9 +121,87 @@ const FormInput = ({
       console.log('focus form input', type);
     });
   }, [navigation]);
+
+  React.useEffect(() => {
+    console.log(selectAtm);
+    if (type === 'pengeluaran' && selectAkun === 'atm' && selectAtm) {
+      setSelectEmoney('');
+      getSaldoAtmByName(selectAtm);
+    }
+
+    return () => {
+      type;
+      selectAkun;
+      selectAtm;
+    };
+  }, [selectAtm]);
+
+  React.useEffect(() => {
+    console.log(selectEmoney);
+    if (type === 'pengeluaran' && selectAkun === 'emoney' && selectEmoney) {
+      setSelectAtm('');
+      getSaldoEmoneyByName(selectEmoney);
+    }
+
+    return () => {
+      type;
+      selectAkun;
+      selectEmoney;
+    };
+  }, [selectEmoney]);
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
+  const getSaldoAtmByName = (value: string) => {
+    setloadingData(true);
+    setTimeout(async () => {
+      try {
+        const result = await getSaldoByAtmName(value);
+        const resultParse = JSON.parse(JSON.stringify(result));
+
+        let total = 0;
+        resultParse.forEach( function(record: { nominal: number; }) {
+            total += record.nominal;
+        });
+        // const total = resultParse.reduce( function(tot: any, record: any) {
+        //   return tot + record.nominal;
+        // },0);
+
+        setTotalAtm(total);
+      } catch (error) {
+        console.log('error load data atm');
+      } finally {
+        setloadingData(false);
+        console.log('sukses load data atm');
+      }
+    }, 1000);
+  };
+
+  const getSaldoEmoneyByName = (value: string) => {
+    setloadingData(true);
+    setTimeout(async () => {
+      try {
+        const result = await getSaldoByEmoneyName(value);
+        const resultParse = JSON.parse(JSON.stringify(result));
+
+        // let total = 0;
+        // resultParse.forEach( function(record: { nominal: number; }) {
+        //     total += record.nominal;
+        // });
+        const total = resultParse.reduce( function(tot: any, record: any) {
+          return tot + record.nominal;
+        },0);
+
+        setTotalEmoney(total);
+      } catch (error) {
+        console.log('error load data atm');
+      } finally {
+        setloadingData(false);
+        console.log('sukses load data atm');
+      }
+    }, 1000);
+  };
+
   const filterKategori = (type: string) => {
     const filterItem: any[] = [];
     listKategori.forEach((item: any) => {
@@ -248,11 +334,21 @@ const FormInput = ({
       msg: '',
     });
   };
+
+  const validationBeforeSubmit: any = () => {
+    return (type === 'pengeluaran' && selectAkun === 'atm' && totalAtm === 0) ||
+    (type === 'pengeluaran' && selectAkun === 'emoney' && totalEmoney === 0) ||
+    (type === 'pengeluaran' && selectAkun === 'dompet' && saldoDompet === 0) ||
+    (type === 'pengeluaran' && selectAkun === 'atm' && nominal > saldoAtm) ||
+    (type === 'pengeluaran' && selectAkun === 'emoney' && nominal > totalEmoney) ||
+    (type === 'pengeluaran' && selectAkun === 'dompet' && nominal > saldoDompet);
+  };
   /* -------------------------------------------------------------------------- */
   /*                                   show page                                */
   /* -------------------------------------------------------------------------- */
   return (
     <View>
+      <OverlayWithText loadingScreen={loadingData}/>
       {/* date */}
       <View>
         <TextAtom value="Tanggal" />
@@ -287,17 +383,28 @@ const FormInput = ({
       <View style={{marginTop: 20}}>
         <View style={stylesCustom.containerSaldo}>
           <TextAtom value="Saldo" />
-          <TextAtom
-            fontWeight={'bold'}
-            color={COLOR_ACTIVE}
-            value={
-              selectAkun === 'atm'
-                ? `${formatRupiah(saldoAtm)}`
-                : selectAkun === 'dompet'
-                ? `${formatRupiah(saldoDompet)}`
+          {
+            type === 'pemasukan' ?
+            <TextAtom
+              fontWeight={'bold'}
+              color={COLOR_ACTIVE}
+              value={
+                selectAkun === 'atm' ? `${formatRupiah(saldoAtm)}` :
+                selectAkun === 'emoney' ? `${formatRupiah(saldoEmoney)}` :
+                selectAkun === 'dompet' ? `${formatRupiah(saldoDompet)}`
                 : ''
-            }
-          />
+              }
+            />
+            :
+            <TextAtom
+              fontWeight={'bold'}
+              color={COLOR_ACTIVE}
+              value={
+                selectAkun === 'dompet' ? `${formatRupiah(saldoDompet)}`
+                : ''
+              }
+            />
+          }
         </View>
         <DropDownPicker
           placeholder="Pilih Saldo"
@@ -332,12 +439,22 @@ const FormInput = ({
       <View style={{marginTop: 20, display: selectAkun === 'atm' ? 'flex' : 'none'}}>
         <View style={stylesCustom.containerKategori}>
           <TextAtom value="Atm" />
-          <ButtonTextAtom
-            title="Tambah ATM"
-            bgColor="transparent"
-            textColor={COLOR_ACTIVE}
-            action={gotoAddAtm}
-          />
+          {
+            type === 'pemasukan' ?
+            <ButtonTextAtom
+              title="Tambah ATM"
+              bgColor="transparent"
+              textColor={COLOR_ACTIVE}
+              action={gotoAddAtm}
+            /> :
+            type === 'pengeluaran' && selectAkun === 'atm' ?
+              <TextAtom
+                fontWeight={'bold'}
+                color={totalAtm === 0 ? COLOR_ERROR : COLOR_ACTIVE}
+                value={formatRupiah(totalAtm)}
+              />
+            : <TextAtom value="" />
+          }
         </View>
         <DropDownPicker
           placeholder="Pilih Atm"
@@ -369,12 +486,22 @@ const FormInput = ({
       <View style={{marginTop: 20, display: selectAkun === 'emoney' ? 'flex' : 'none'}}>
         <View style={stylesCustom.containerKategori}>
           <TextAtom value="eMoney" />
-          <ButtonTextAtom
-            title="Tambah eMoney"
-            bgColor="transparent"
-            textColor={COLOR_ACTIVE}
-            action={gotoAddEmoney}
-          />
+          {
+            type === 'pemasukan' ?
+            <ButtonTextAtom
+              title="Tambah eMoney"
+              bgColor="transparent"
+              textColor={COLOR_ACTIVE}
+              action={gotoAddEmoney}
+            /> :
+            type === 'pengeluaran' && selectAkun === 'emoney' ?
+              <TextAtom
+                fontWeight={'bold'}
+                color={totalEmoney === 0 ? COLOR_ERROR : COLOR_ACTIVE}
+                value={formatRupiah(totalEmoney)}
+              />
+            : <TextAtom value="" />
+          }
         </View>
         <DropDownPicker
           placeholder="Pilih eMoney"
@@ -514,20 +641,12 @@ const FormInput = ({
           title={loading ? 'Menyimpan Data' : 'Simpan'}
           uppercase={true}
           bgColor={
-            loading ||
-            (type === 'pengeluaran' && selectAkun === 'atm' && saldoAtm === 0) ||
-            (type === 'pengeluaran' && selectAkun === 'dompet' && saldoDompet === 0) ||
-            (type === 'pengeluaran' && selectAkun === 'atm' && nominal > saldoAtm) ||
-            (type === 'pengeluaran' && selectAkun === 'dompet' && nominal > saldoDompet)
+            loading || validationBeforeSubmit()
               ? COLOR_DISABLED
               : COLOR_ACTIVE
           }
           textColor={
-            loading ||
-            (type === 'pengeluaran' && selectAkun === 'atm' && saldoAtm === 0) ||
-            (type === 'pengeluaran' && selectAkun === 'dompet' && saldoDompet === 0) ||
-            (type === 'pengeluaran' && selectAkun === 'atm' && nominal > saldoAtm) ||
-            (type === 'pengeluaran' && selectAkun === 'dompet' && nominal > saldoDompet)
+            loading || validationBeforeSubmit()
               ? COLOR_DISABLED_TEXT
               : COLOR_WHITE
           }
@@ -535,11 +654,7 @@ const FormInput = ({
             submitNote();
           }}
           disabled={
-            loading ||
-            (type === 'pengeluaran' && selectAkun === 'atm' && saldoAtm === 0) ||
-            (type === 'pengeluaran' && selectAkun === 'dompet' && saldoDompet === 0) ||
-            (type === 'pengeluaran' && selectAkun === 'atm' && nominal > saldoAtm) ||
-            (type === 'pengeluaran' && selectAkun === 'dompet' && nominal > saldoDompet)
+            loading || validationBeforeSubmit()
           }
           marginX={0}
         />

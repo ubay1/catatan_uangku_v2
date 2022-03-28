@@ -68,6 +68,7 @@ let realm = new Realm({
 const dbOptions = {
   schema : [SaldoSchema, KategoriSchema, AtmSchema, EmoneySchema],
   schemaVersion : 2,
+  // https://www.mongodb.com/docs/realm/sdk/react-native/examples/modify-an-object-schema/
   // migration: (oldRealm: any, newRealm: any) => {
   //   // only apply this change if upgrading to schemaVersion 1
   //   if (oldRealm.schemaVersion < 1) {
@@ -105,14 +106,14 @@ const dataDefaultkategori = [
   },
   {
     id: 4,
-    nama_kategori: 'Listrik',
-    tipe_kategori: 'pengeluaran',
-  },
-  {
-    id: 5,
     nama_kategori: 'Transportasi',
     tipe_kategori: 'pengeluaran',
   },
+  // {
+  //   id: 5,
+  //   nama_kategori: 'Transportasi',
+  //   tipe_kategori: 'pengeluaran',
+  // },
 ];
 
 const dataDefaultEmoney = [
@@ -349,6 +350,13 @@ export const createAtm =  (data: any) => new Promise<void>((resolve, reject) => 
   }).catch((error) => reject(error));
 });
 
+export const getSaldoByAtmName =  (AtmName: string) => new Promise((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
+    let result = realm.objects(SALDO_SCHEMA).filtered('nama_atm == $0', AtmName);
+    resolve(result);
+  }).catch((error) => reject(error));
+});
+
 export const getAllAtm = () => new Promise((resolve, reject) => {
   Realm.open(dbOptions).then(realm => {
       let allAtm = realm.objects(ATM_SCHEMA).sorted('id', true);
@@ -385,6 +393,13 @@ export const createEmoney =  (data: any) => new Promise<void>((resolve, reject) 
 
       resolve();
     });
+  }).catch((error) => reject(error));
+});
+
+export const getSaldoByEmoneyName =  (EmoneyName: string) => new Promise((resolve, reject) => {
+  Realm.open(dbOptions).then(realm => {
+    let result = realm.objects(SALDO_SCHEMA).filtered('nama_emoney == $0', EmoneyName);
+    resolve(result);
   }).catch((error) => reject(error));
 });
 

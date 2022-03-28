@@ -49,6 +49,7 @@ const ListHistoryCatatan = ({
   allEmoney,
   saldoAtm,
   saldoDompet,
+  saldoEmoney,
   navigation,
   openModalDelete,
 }: IPropsListCatatan) => {
@@ -124,10 +125,10 @@ const ListHistoryCatatan = ({
 
   const filterAkun = (data: any) => {
     return data.akun === 'atm'
-    ? `${data.akun} (${data.nama_atm})`
+    ? `Atm (${data.nama_atm})`
     : data.akun === 'emoney'
-    ? `${data.akun} (${data.nama_emoney})`
-    : data.akun;
+    ? `e-Money (${data.nama_emoney})`
+    : 'Dompet';
   };
 
   const filterType = (data: any) => {
@@ -174,6 +175,7 @@ const ListHistoryCatatan = ({
                 type: 'pemasukan',
                 saldoAtm: saldoAtm,
                 saldoDompet: saldoDompet,
+                saldoEmoney: saldoEmoney,
               });
               closeModalSelectInputType();
             }}>
@@ -224,6 +226,7 @@ const ListHistoryCatatan = ({
                 type: 'pengeluaran',
                 saldoAtm: saldoAtm,
                 saldoDompet: saldoDompet,
+                saldoEmoney: saldoEmoney,
               });
               closeModalSelectInputType();
             }}>
@@ -403,10 +406,11 @@ const ListHistoryCatatan = ({
                       borderColor={COLOR_ERROR}
                       borderWidth={1}
                       icon="delete"
-                      color={COLOR_ERROR}
+                      iconColor={COLOR_ERROR}
                       textColor={COLOR_ERROR}
                       title="Hapus"
                       size={20}
+                      textSize={14}
                       action={() => {
                         openModalDelete(item.id);
                       }}
@@ -419,10 +423,11 @@ const ListHistoryCatatan = ({
                       borderColor={Colors.blue400}
                       borderWidth={1}
                       icon="pencil"
-                      color={COLOR_ACTIVE}
+                      iconColor={COLOR_ACTIVE}
                       textColor={COLOR_ACTIVE}
                       title="Edit"
                       size={20}
+                      textSize={14}
                       action={() => {
                         dispatch(setPage({ page: 'DetailNote' }));
                         navigation.navigate('DetailNote', {
@@ -437,6 +442,7 @@ const ListHistoryCatatan = ({
                           listEmoney: filterNamaEmoney(),
                           saldoAtm: saldoAtm,
                           saldoDompet: saldoDompet,
+                          saldoEmoney: saldoEmoney,
                         });
                       }}
                     />

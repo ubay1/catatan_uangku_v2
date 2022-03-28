@@ -21,6 +21,7 @@ export type RootStackParamList = {
     listEmoney?: any;
     saldoAtm?: number;
     saldoDompet?: number;
+    saldoEmoney?: number;
   },
   Category: undefined;
   Info: undefined;

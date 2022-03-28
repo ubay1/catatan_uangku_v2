@@ -23,10 +23,11 @@ const AddNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
   /* -------------------------------------------------------------------------- */
   const dispatch: AppDispatch = useDispatch();
 
+  const [loadingScreen, setloadingScreen] = React.useState(false);
+
   const [listKategori, setlistKategori] = React.useState([]);
   const [listAtm, setlistAtm] = React.useState([]);
   const [listEmoney, setlistEmoney] = React.useState([]);
-  const [loadingScreen, setloadingScreen] = React.useState(false);
 
   React.useEffect(() => {
     navigation.setOptions({
@@ -42,7 +43,7 @@ const AddNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
         loadAll();
       }, 0);
 
-      console.log(saldoAtm, saldoDompet);
+      // console.log(saldoAtm, saldoDompet);
     });
 
     navigation.addListener('beforeRemove', (param: any) => {
@@ -91,7 +92,7 @@ const AddNoteOrganisms = ({navigation, route}: IPropsAddNote) => {
       });
       setlistEmoney(newListEmoney);
 
-      console.log(newListKategori, newListAtm, newListEmoney);
+      // console.log(newListKategori, newListAtm, newListEmoney);
     } catch (error) {
       console.log('error load all');
     } finally {

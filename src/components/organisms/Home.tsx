@@ -13,6 +13,7 @@ import {
   deleteCatatan,
   getAllAtm,
   getAllEmoney,
+  getSaldoByAtmName,
 } from '../../../db/database';
 import {AppDispatch} from '../../store';
 import {setPage} from '../../store/whatsPage';
@@ -315,6 +316,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
         allEmoney={allEmoney}
         saldoAtm={allBalanceData.saldoAtm}
         saldoDompet={allBalanceData.saldoDompet}
+        saldoEmoney={allBalanceData.saldoEmoney}
         navigation={navigation}
         openModalDelete={showModalDelete}
       />

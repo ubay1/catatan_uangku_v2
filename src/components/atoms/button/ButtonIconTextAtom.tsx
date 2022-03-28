@@ -11,9 +11,10 @@ const ButtonIconTextAtom = ({
   title = '',
   icon,
   uppercase,
-  color,
+  iconColor,
   disabled,
   size = 23,
+  textSize,
   action,
   textColor = '#fff',
   bgColor = '#fff',
@@ -38,11 +39,12 @@ const ButtonIconTextAtom = ({
       justifyContent: 'center',
       flexDirection: 'row',
     }}>
-    <IconMCI name={icon} size={20} color={color} />
+    <IconMCI name={icon} size={16} color={iconColor} />
     <TextAtom
       color={textColor}
       value={title}
       textTransform={uppercase ? 'uppercase' : 'none'}
+      size={textSize}
     />
   </TouchableOpacity>
 );

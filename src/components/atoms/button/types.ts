@@ -30,3 +30,19 @@ export interface IPropsButtonText {
   action?: any;
   fontWeight?: string;
 }
+
+export interface IPropsButtonWithIconText {
+  title: string;
+  bgColor?: string;
+  borderColor: string;
+  borderWidth: number;
+  icon: string;
+  iconColor: string;
+  textColor?: string;
+  uppercase?: boolean;
+  rounded?: number;
+  size: number;
+  textSize?: number;
+  action?: any;
+  disabled?: boolean;
+}
