@@ -97,7 +97,6 @@ const ListCategory = ({
                         <View style={{height: '50%'}}>
                           <TextAtom
                             value={item.nama_kategori}
-                            textTransform="capitalize"
                             fontWeight="bold"
                           />
                         </View>

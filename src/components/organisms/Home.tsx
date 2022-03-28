@@ -11,6 +11,9 @@ import {
   getAllCatatan,
   getSepuluhCatatanTerakhir,
   deleteCatatan,
+  getAllAtm,
+  getAllEmoney,
+  getSaldoByAtmName,
 } from '../../../db/database';
 import {AppDispatch} from '../../store';
 import {setPage} from '../../store/whatsPage';
@@ -37,6 +40,8 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   const [loading, setLoading] = React.useState(false);
   const [allKategori, setAllKategori] = React.useState([]);
   const [allCatatan, setAllCatatan] = React.useState([]);
+  const [allAtm, setAllAtm] = React.useState([]);
+  const [allEmoney, setAllEmoney] = React.useState([]);
 
   // snackbar
   const [visibleSnackbar, setVisibleSnackbar] = React.useState({
@@ -47,13 +52,16 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
 
   const [allBalanceData, setAllBalanceData] = React.useState({
     pemasukanAtm: 0,
-    pemasukanDompet: 0,
     pengeluaranAtm: 0,
+    pemasukanDompet: 0,
     pengeluaranDompet: 0,
+    pemasukanEmoney: 0,
+    pengeluaranEmoney: 0,
     totalSaldo: 0,
     totalPengeluaran: 0,
     saldoAtm: 0,
     saldoDompet: 0,
+    saldoEmoney: 0,
   });
 
   // modal delete
@@ -84,17 +92,23 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   // cek data allCatatan
   React.useEffect(() => {
     let pemasukan_atm: any[] = [];
-    let pemasukan_dompet: any[] = [];
     let pengeluaran_atm: any[] = [];
+    let pemasukan_dompet: any[] = [];
     let pengeluaran_dompet: any[] = [];
+    let pemasukan_emoney: any[] = [];
+    let pengeluaran_emoney: any[] = [];
 
     let totalPemasukanAtm: number = 0;
-    let totalPemasukanDompet: number = 0;
     let totalPengeluaranAtm: number = 0;
+    let totalPemasukanDompet: number = 0;
     let totalPengeluaranDompet: number = 0;
+    let totalPemasukanEmoney: number = 0;
+    let totalPengeluaranEmoney: number = 0;
+
     let totalSaldo: number = 0;
     let totalSaldoAtm: number = 0;
     let totalSaldoDompet: number = 0;
+    let totalSaldoEmoney: number = 0;
     let totalPengeluaranSemuaSaldo: number = 0;
 
     if (allCatatan.length !== 0) {
@@ -112,31 +126,42 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
             }
             // pengeluaran_atm.push(item.nominal);
           }
-        } else {
+        } else if (item.akun === 'dompet') {
           if (item.tipe === 'pemasukan') {
             pemasukan_dompet.push(item.nominal);
           } else {
             pengeluaran_dompet.push(item.nominal);
           }
+        } else {
+          if (item.tipe === 'pemasukan') {
+            pemasukan_emoney.push(item.nominal);
+          } else {
+            pengeluaran_emoney.push(item.nominal);
+          }
         }
       });
 
       totalPemasukanAtm = pemasukan_atm.reduce((a, b) => a + b, 0);
-      totalPemasukanDompet = pemasukan_dompet.reduce((a, b) => a + b, 0);
       totalPengeluaranAtm = pengeluaran_atm.reduce((a, b) => a + b, 0);
+      totalPemasukanDompet = pemasukan_dompet.reduce((a, b) => a + b, 0);
       totalPengeluaranDompet = pengeluaran_dompet.reduce((a, b) => a + b, 0);
+      totalPemasukanEmoney = pemasukan_emoney.reduce((a, b) => a + b, 0);
+      totalPengeluaranEmoney = pengeluaran_emoney.reduce((a, b) => a + b, 0);
     } else {
       totalPemasukanAtm = 0;
-      totalPemasukanDompet = 0;
       totalPengeluaranAtm = 0;
+      totalPemasukanDompet = 0;
       totalPengeluaranDompet = 0;
+      totalPemasukanEmoney = 0;
+      totalPengeluaranEmoney = 0;
     }
 
     totalSaldo =
-      (totalPemasukanAtm + totalPemasukanDompet) -
-      (totalPengeluaranAtm + totalPengeluaranDompet);
+      (totalPemasukanAtm + totalPemasukanDompet + totalPemasukanEmoney) -
+      (totalPengeluaranAtm + totalPengeluaranDompet + totalPengeluaranEmoney);
     totalSaldoAtm = totalPemasukanAtm - totalPengeluaranAtm;
     totalSaldoDompet = totalPemasukanDompet - totalPengeluaranDompet;
+    totalSaldoEmoney = totalPemasukanEmoney - totalPengeluaranEmoney;
     totalPengeluaranSemuaSaldo = totalPengeluaranAtm + totalPengeluaranDompet;
 
     // console.log(
@@ -148,10 +173,13 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       pengeluaranAtm: totalPengeluaranAtm,
       pemasukanDompet: totalPemasukanDompet,
       pengeluaranDompet: totalPengeluaranDompet,
+      pemasukanEmoney: totalPemasukanEmoney,
+      pengeluaranEmoney: totalPengeluaranEmoney,
       totalSaldo: totalSaldo,
       totalPengeluaran: totalPengeluaranSemuaSaldo,
       saldoAtm: totalSaldoAtm,
       saldoDompet: totalSaldoDompet,
+      saldoEmoney: totalSaldoEmoney,
     });
   }, [allCatatan]);
   /* -------------------------------------------------------------------------- */
@@ -166,6 +194,8 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       const values: any = await Promise.all([
         getAllKategori(),
         getSepuluhCatatanTerakhir(),
+        getAllAtm(),
+        getAllEmoney(),
       ]);
       const newListKategori: any = [];
       values[0].forEach((item: any) => {
@@ -182,7 +212,25 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       const responseGetListCatatan = values[1].map((item: any) => item);
       setAllCatatan(responseGetListCatatan);
 
-      console.log(newListKategori, responseGetListCatatan);
+      const newListAtm: any = [];
+      values[2].forEach((item: any) => {
+        newListAtm.push({
+          id: item.id,
+          nama_atm: item.nama_atm,
+        });
+      });
+      setAllAtm(newListAtm);
+
+      const newListEmoney: any = [];
+      values[3].forEach((item: any) => {
+        newListEmoney.push({
+          id: item.id,
+          nama_emoney: item.nama_emoney,
+        });
+      });
+      setAllEmoney(newListEmoney);
+
+      console.log(newListKategori, responseGetListCatatan, newListAtm, newListEmoney);
     } catch (error) {
       console.log('error load all');
     } finally {
@@ -259,13 +307,16 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   return (
     <React.Fragment>
       <Greeting name={name} />
-      <ListSaldo loading={loading} allBalanceData={allBalanceData} />
+      <ListSaldo loading={loading} allBalanceData={allBalanceData} navigation={navigation} />
       <ListHistoryCatatan
         loading={loading}
         allKategori={allKategori}
         allCatatan={allCatatan}
+        allAtm={allAtm}
+        allEmoney={allEmoney}
         saldoAtm={allBalanceData.saldoAtm}
         saldoDompet={allBalanceData.saldoDompet}
+        saldoEmoney={allBalanceData.saldoEmoney}
         navigation={navigation}
         openModalDelete={showModalDelete}
       />

@@ -13,16 +13,16 @@ import loading from '../../store/loading';
 import styles from '../../assets/styles/global';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StackFilterNote } from '../../../interfaceRoutes';
+import { StackFilterCustomTanggalNote } from '../../../interfaceRoutes';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { setHideTab, setShowTab } from '../../store/navigationRedux';
-import HeaderAddNote from '../../components/molecules/addNote/Header';
+import Header from '../../components/atoms/header/Header';
 import { getFilterCatatanByDate } from '../../../db/database';
 import { setListNote, setTotalSaldo, setTotalSaldoPemasukan, setTotalSaldoPengeluaran } from '../../store/listNote';
 
 
-const FilterNote = ({navigation}: StackFilterNote) => {
+const FilterCustomTanggalNote = ({navigation}: StackFilterCustomTanggalNote) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -135,7 +135,7 @@ const FilterNote = ({navigation}: StackFilterNote) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={{marginHorizontal: 10, marginTop: 0}}>
-        <HeaderAddNote navigation={navigation} title={'Custom Tanggal'}/>
+        <Header navigation={navigation} title={'Custom Tanggal'}/>
         <View style={{marginBottom: 20}}>
           <TextAtom value="Dari Tanggal" />
           <View style={styles.containerDate}>
@@ -214,4 +214,4 @@ const FilterNote = ({navigation}: StackFilterNote) => {
   );
 };
 
-export default FilterNote;
+export default FilterCustomTanggalNote;

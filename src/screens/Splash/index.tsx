@@ -17,23 +17,37 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import {useDispatch} from 'react-redux';
-import realm, {createDefaultKategori, SALDO_SCHEMA} from '../../../db/database';
+import realm, {createDefaultEmoney, createDefaultKategori, SALDO_SCHEMA} from '../../../db/database';
 import {AppDispatch} from '../../store';
 import {setCategory} from '../../store/category';
 
 const SplashScreenss = () => {
-  const createKategori = () => {
-    createDefaultKategori()
-      .then(item => {
-        console.log('data default kategori = ', item);
-      })
-      .catch(err => {
-        console.log('error = ', err);
-      });
+  const loadAll = async () => {
+    try {
+      const values: any = await Promise.all([
+        createDefaultKategori(),
+        createDefaultEmoney(),
+      ]);
+      console.log(values);
+    } catch (error) {
+      console.log('error membuat default kategori dan default emoney');
+    } finally {
+      console.log('sukses membuat default kategori dan default emoney');
+    }
   };
 
+  // const createKategori = () => {
+  //   createDefaultKategori()
+  //     .then(item => {
+  //       console.log('data default kategori = ', item);
+  //     })
+  //     .catch(err => {
+  //       console.log('error = ', err);
+  //     });
+  // };
+
   useEffect(() => {
-    createKategori();
+    loadAll();
   }, []);
 
   return (

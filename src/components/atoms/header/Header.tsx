@@ -4,10 +4,14 @@ import {StyleSheet, View} from 'react-native';
 import {FAB, Colors} from 'react-native-paper';
 import styles from '../../../assets/styles/global';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import { IPropsHeaderAddNote } from './types';
-import TextAtom from '../../atoms/text/TextAtom';
+import TextAtom from '../text/TextAtom';
 
-const HeaderAddNote = ({navigation, title}: IPropsHeaderAddNote) => {
+interface IPropsHeader {
+  navigation?: any;
+  title: string;
+}
+
+const Header = ({navigation, title}: IPropsHeader) => {
   return (
     <View style={stylesCustom.container}>
       <View style={{position: 'absolute', left: 0, height: '100%', justifyContent: 'center'}}>
@@ -43,4 +47,4 @@ const stylesCustom = StyleSheet.create({
   },
 });
 
-export default HeaderAddNote;
+export default Header;

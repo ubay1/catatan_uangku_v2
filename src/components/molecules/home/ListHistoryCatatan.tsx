@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import moment from 'moment';
 import React from 'react';
@@ -6,20 +5,16 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
   Pressable,
-  ScrollView,
 } from 'react-native';
-import {Button, Colors, Divider} from 'react-native-paper';
+import {Colors, Divider} from 'react-native-paper';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import {
   COLOR_ACTIVE,
-  COLOR_ACTIVE_SOFT,
   COLOR_BLACK,
   COLOR_ERROR,
-  COLOR_ERROR_SOFT,
   COLOR_WHITE,
 } from '../../../assets/styles/global';
 import {formatRupiah} from '../../../helper/formatNumber';
@@ -27,17 +22,12 @@ import TextAtom from '../../atoms/text/TextAtom';
 import {IPropsListCatatan} from './types';
 import styles from '../../../assets/styles/global';
 import ButtonTextAtom from '../../atoms/button/ButtonTextAtom';
-import List from '../../atoms/List';
 import ModalAtom from '../../atoms/alert/ModalAtom';
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '../../../store';
 import {setPage} from '../../../store/whatsPage';
-import {useFocusEffect} from '@react-navigation/native';
-import ButtonAtom from '../../atoms/button/ButtonAtom';
-import ButtonIconAtom from '../../atoms/button/ButtonIconAtom';
 import ButtonIconTextAtom from '../../atoms/button/ButtonIconTextAtom';
-import { deleteCatatan } from '../../../../db/database';
 
 const Logo = require('../../../assets/logo/logo2.png');
 
@@ -45,8 +35,11 @@ const ListHistoryCatatan = ({
   loading,
   allCatatan,
   allKategori,
+  allAtm,
+  allEmoney,
   saldoAtm,
   saldoDompet,
+  saldoEmoney,
   navigation,
   openModalDelete,
 }: IPropsListCatatan) => {
@@ -56,12 +49,7 @@ const ListHistoryCatatan = ({
   const dispatch: AppDispatch = useDispatch();
   // const [data, setData] = React.useState(null);
   const [loadings, setloadings] = React.useState(true);
-  const [visibleModalInputType, setVisibleModalInputType] = React.useState(
-    false,
-  );
-  const [visibleModalDetailNote, setVisibleModalDetailNote] = React.useState(
-    false,
-  );
+  const [visibleModalInputType, setVisibleModalInputType] = React.useState(false);
 
   React.useEffect(() => {
     setloadings(loading);
@@ -72,154 +60,6 @@ const ListHistoryCatatan = ({
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
-  const renderItems = ({item, index}: any) => {
-    return (
-      <View key={`item-${item.id}`}>
-        <View
-          style={{
-            backgroundColor: '#fff',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            height: responsiveHeight(7),
-            marginBottom: 5,
-            marginHorizontal: 10,
-          }}
-        >
-          <View style={{flexDirection: 'row'}}>
-            <View style={{justifyContent: 'space-between'}}>
-              <View style={{justifyContent: 'center', height: '50%'}}>
-                <TextAtom
-                  fontWeight={'bold'}
-                  value={item.keterangan}
-                />
-              </View>
-              <View
-                style={{
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  height: '50%',
-                }}>
-                <TextAtom
-                  textTransform="uppercase"
-                  color={Colors.grey400}
-                  value={item.akun}
-                />
-                {item.tujuan === 'tarik tunai' ? (
-                  <TextAtom
-                    textTransform="uppercase"
-                    color={
-                      item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400
-                    }
-                    value="tarik tunai"
-                    bgColor={
-                      item.tipe === 'pemasukan' ? Colors.green50 : Colors.red50
-                    }
-                    pHorizontal={5}
-                    mLeft={10}
-                    fontWeight="bold"
-                  />
-                ) : (
-                  <Text />
-                )}
-              </View>
-            </View>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <View style={{marginLeft: 10, height: '100%'}}>
-              <View style={{justifyContent: 'center', height: '50%'}}>
-                <TextAtom
-                  textTransform="capitalize"
-                  color={
-                    item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400
-                  }
-                  value={
-                    `${item.tipe === 'pemasukan' ? '+ ' : '- '} ${formatRupiah(item.nominal)}`
-                  }
-                  fontWeight="bold"
-                />
-              </View>
-              <View style={{justifyContent: 'center', height: '50%'}}>
-                <TextAtom
-                  textTransform="uppercase"
-                  color={Colors.grey400}
-                  textAlign="right"
-                  value={moment(item.tanggal).format('L')}
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: 15,
-            height: 40,
-            marginHorizontal: 10,
-            // backgroundColor: 'orange',
-          }}>
-          <View
-            style={{width: '48%', height: '100%', justifyContent: 'center'}}>
-            <ButtonIconTextAtom
-              bgColor={COLOR_WHITE}
-              borderColor={COLOR_ERROR}
-              borderWidth={1}
-              icon="delete"
-              color={COLOR_ERROR}
-              textColor={COLOR_ERROR}
-              title="Hapus"
-              size={20}
-              action={() => {
-                openModalDelete(item.id);
-              }}
-            />
-          </View>
-          <View
-            style={{width: '48%', height: '100%', justifyContent: 'center'}}>
-            <ButtonIconTextAtom
-              bgColor={COLOR_WHITE}
-              borderColor={Colors.blue400}
-              borderWidth={1}
-              icon="pencil"
-              color={COLOR_ACTIVE}
-              textColor={COLOR_ACTIVE}
-              title="Edit"
-              size={20}
-              action={() => {
-                dispatch(setPage({ page: 'DetailNote' }));
-                navigation.navigate('DetailNote', {
-                  // data: item,
-                  // saldoAtm: saldoAtm,
-                  // saldoDompet: saldoDompet,
-                  title: item.tipe === 'pemasukan' ? 'Edit Pemasukan' : 'Edit Pengeluaran',
-                  type: item.tipe,
-                  data: item,
-                  listKategori: filterKategori(item.tipe),
-                  saldoAtm: saldoAtm,
-                  saldoDompet: saldoDompet,
-                });
-              }}
-            />
-          </View>
-        </View>
-        <Divider
-          style={{
-            marginBottom: 5,
-            borderColor: Colors.grey100,
-            borderWidth: 2,
-          }}
-        />
-      </View>
-    );
-  };
 
   /* ------------------------- Modal Select Input Type ------------------------ */
   const showModalSelectInputType = () => {
@@ -242,6 +82,42 @@ const ListHistoryCatatan = ({
       }
     });
     return filterItem;
+  };
+
+  const filterNamaAtm = () => {
+    const filterItem: any[] = [];
+    allAtm.forEach((item: any) => {
+        const list: any = {
+          label: item.nama_atm,
+          value: item.nama_atm,
+        };
+        filterItem.push(list);
+    });
+    return filterItem;
+  };
+
+  const filterNamaEmoney = () => {
+    const filterItem: any[] = [];
+    allEmoney.forEach((item: any) => {
+        const list: any = {
+          label: item.nama_emoney,
+          value: item.nama_emoney,
+        };
+        filterItem.push(list);
+    });
+    return filterItem;
+  };
+
+  const filterAkun = (data: any) => {
+    return data.akun === 'atm'
+    ? `Atm (${data.nama_atm})`
+    : data.akun === 'emoney'
+    ? `e-Money (${data.nama_emoney})`
+    : 'Dompet';
+  };
+
+  const filterType = (data: any) => {
+    return `${data.tipe === 'pemasukan' ? '+ ' : '- '} ${formatRupiah(data.nominal)}`;
   };
 
   const SelectTypeNote = () => {
@@ -284,6 +160,7 @@ const ListHistoryCatatan = ({
                 type: 'pemasukan',
                 saldoAtm: saldoAtm,
                 saldoDompet: saldoDompet,
+                saldoEmoney: saldoEmoney,
               });
               closeModalSelectInputType();
             }}>
@@ -334,6 +211,7 @@ const ListHistoryCatatan = ({
                 type: 'pengeluaran',
                 saldoAtm: saldoAtm,
                 saldoDompet: saldoDompet,
+                saldoEmoney: saldoEmoney,
               });
               closeModalSelectInputType();
             }}>
@@ -444,9 +322,9 @@ const ListHistoryCatatan = ({
                           height: '50%',
                         }}>
                         <TextAtom
-                          textTransform="uppercase"
                           color={Colors.grey400}
-                          value={item.akun}
+                          value={filterAkun(item)}
+                          size={14}
                         />
                         {item.tujuan === 'tarik tunai' ? (
                           <TextAtom
@@ -461,6 +339,7 @@ const ListHistoryCatatan = ({
                             pHorizontal={5}
                             mLeft={5}
                             fontWeight="bold"
+                            size={14}
                           />
                         ) : (
                           <Text />
@@ -482,9 +361,7 @@ const ListHistoryCatatan = ({
                           color={
                             item.tipe === 'pemasukan' ? Colors.green400 : Colors.red400
                           }
-                          value={
-                            `${item.tipe === 'pemasukan' ? '+ ' : '- '} ${formatRupiah(item.nominal)}`
-                          }
+                          value={filterType(item)}
                           fontWeight="bold"
                         />
                       </View>
@@ -494,6 +371,7 @@ const ListHistoryCatatan = ({
                           color={Colors.grey400}
                           textAlign="right"
                           value={moment(item.tanggal).format('L')}
+                          size={14}
                         />
                       </View>
                     </View>
@@ -516,10 +394,11 @@ const ListHistoryCatatan = ({
                       borderColor={COLOR_ERROR}
                       borderWidth={1}
                       icon="delete"
-                      color={COLOR_ERROR}
+                      iconColor={COLOR_ERROR}
                       textColor={COLOR_ERROR}
                       title="Hapus"
                       size={20}
+                      textSize={14}
                       action={() => {
                         openModalDelete(item.id);
                       }}
@@ -532,10 +411,11 @@ const ListHistoryCatatan = ({
                       borderColor={Colors.blue400}
                       borderWidth={1}
                       icon="pencil"
-                      color={COLOR_ACTIVE}
+                      iconColor={COLOR_ACTIVE}
                       textColor={COLOR_ACTIVE}
                       title="Edit"
                       size={20}
+                      textSize={14}
                       action={() => {
                         dispatch(setPage({ page: 'DetailNote' }));
                         navigation.navigate('DetailNote', {
@@ -546,8 +426,11 @@ const ListHistoryCatatan = ({
                           type: item.tipe,
                           data: item,
                           listKategori: filterKategori(item.tipe),
+                          listAtm: filterNamaAtm(),
+                          listEmoney: filterNamaEmoney(),
                           saldoAtm: saldoAtm,
                           saldoDompet: saldoDompet,
+                          saldoEmoney: saldoEmoney,
                         });
                       }}
                     />

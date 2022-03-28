@@ -10,8 +10,17 @@ import { getAllCatatan, getAllKategori } from '../../../../db/database';
 import TextAtom from '../../atoms/text/TextAtom';
 import { formatRupiah } from '../../../helper/formatNumber';
 import { IPropsListSaldo } from './types';
+import ButtonTextAtom from '../../atoms/button/ButtonTextAtom';
+import { COLOR_ERROR } from '../../../assets/styles/global';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store';
+import { setPage } from '../../../store/whatsPage';
 
-const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
+const ListSaldo = ({loading, allBalanceData, navigation}: IPropsListSaldo) => {
+  /* -------------------------------------------------------------------------- */
+  /*                                    hooks                                   */
+  /* -------------------------------------------------------------------------- */
+  const dispatch: AppDispatch = useDispatch();
   const [loadings, setloadings] = React.useState(true);
 
   React.useEffect(() => {
@@ -20,6 +29,13 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
       loading;
     };
   }, [loading]);
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   method                                   */
+  /* -------------------------------------------------------------------------- */
+  /* -------------------------------------------------------------------------- */
+  /*                                   show page                                */
+  /* -------------------------------------------------------------------------- */
 
   return (
     <>
@@ -52,21 +68,38 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
         backgroundColor: Colors.green50,
       }}
       >
-        <View style={stylesCustom.betweenCenterRow}>
-          <View style={{
-            ...stylesCustom.spaceBackgroundColor,
-            backgroundColor: Colors.green400,
-          }}>
-            <IconEntypo name="credit-card" color="#fff" size={30} />
+        <View style={{...stylesCustom.betweenCenterRow, width: '100%'}}>
+          <View style={{alignItems: 'center', flexDirection: 'row'}}>
+            <View style={{
+              ...stylesCustom.spaceBackgroundColor,
+              backgroundColor: Colors.green400,
+            }}>
+              <IconEntypo name="credit-card" color="#fff" size={30} />
+            </View>
+            <View style={{alignItems: 'flex-start'}}>
+              <TextAtom value="Saldo ATM" />
+              {
+                loadings ?
+                  <ActivityIndicator animating={true} color={Colors.blue500} />
+                  :
+                  <TextAtom value={formatRupiah(allBalanceData.saldoAtm)} fontWeight={'bold'}/>
+              }
+            </View>
           </View>
-          <View style={{alignItems: 'flex-start'}}>
-            <TextAtom value="Saldo ATM" />
-            {
-              loadings ?
-                <ActivityIndicator animating={true} color={Colors.green500} />
-                :
-                <TextAtom value={formatRupiah(allBalanceData.saldoAtm)} fontWeight={'bold'}/>
-            }
+          <View>
+            <ButtonTextAtom
+              title="Rincian"
+              bgColor={Colors.green400}
+              paddingX={5}
+              paddingY={5}
+              rounded={5}
+              action={() => {
+                dispatch(setPage({ page: 'RincianAtm' }));
+                navigation.navigate('RincianAtm', {
+                  saldoAtm: allBalanceData.saldoAtm,
+                });
+              }}
+            />
           </View>
         </View>
       </View>
@@ -95,29 +128,40 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
         </View>
       </View>
 
-      {/* <View style={{
+      <View style={{
         ...stylesCustom.cardSaldo,
         backgroundColor: Colors.red50,
       }}
       >
-        <View style={stylesCustom.betweenCenterRow}>
-          <View style={{
-            ...stylesCustom.spaceBackgroundColor,
-            backgroundColor: Colors.red400,
-          }}>
-            <IconMCI name="currency-usd-off" color="#fff" size={30} />
+        <View style={{...stylesCustom.betweenCenterRow, width: '100%'}}>
+          <View style={{alignItems: 'center', flexDirection: 'row'}}>
+            <View style={{
+              ...stylesCustom.spaceBackgroundColor,
+              backgroundColor: Colors.red400,
+            }}>
+              <IconMCI name="cellphone-nfc" color="#fff" size={30} />
+            </View>
+            <View style={{alignItems: 'flex-start'}}>
+              <TextAtom value="Saldo eMoney" />
+              {
+                loadings ?
+                  <ActivityIndicator animating={true} color={Colors.blue500} />
+                  :
+                  <TextAtom value={formatRupiah(allBalanceData.saldoEmoney)} fontWeight={'bold'}/>
+              }
+            </View>
           </View>
-          <View style={{alignItems: 'flex-start'}}>
-            <TextAtom value="Total Pengeluaran" />
-            {
-              loadings ?
-                <ActivityIndicator animating={true} color={Colors.blue500} />
-                :
-                <TextAtom value={formatRupiah(allBalanceData.totalPengeluaran)} fontWeight={'bold'}/>
-            }
+          <View>
+            <ButtonTextAtom
+              title="Rincian"
+              bgColor={Colors.red400}
+              paddingX={5}
+              paddingY={5}
+              rounded={5}
+            />
           </View>
         </View>
-      </View> */}
+      </View>
     </>
   );
 };

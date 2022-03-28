@@ -57,7 +57,7 @@ const IntroOrganism = () => {
       setVisibleSnackbar({
         isOpen: true,
         type: 'error',
-        msg: 'Harap isi form yang disediakan',
+        msg: 'Harap isi semua form yang disediakan',
       });
     } else {
       setloading(true);

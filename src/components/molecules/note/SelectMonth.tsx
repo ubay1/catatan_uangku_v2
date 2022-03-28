@@ -72,7 +72,7 @@ const SelectMonth = ({
         itemStyle={{
           justifyContent: 'flex-start',
         }}
-        labelStyle={{textTransform: 'capitalize', fontSize: 15}}
+        labelStyle={{fontSize: 15}}
         placeholderStyle={{
           color: COLOR_INPUT_PLACEHOLDER,
         }}
