@@ -26,7 +26,11 @@ export type RootStackParamList = {
   Category: undefined;
   Info: undefined;
   AddAtm: undefined;
+  RincianAtm: {
+    saldoAtm?: number;
+  };
   AddEmoney: undefined;
+  RincianEmoney: undefined;
 };
 
 
@@ -66,7 +70,15 @@ export type StackAddAtm = {
   route: RouteProp<RootStackParamList, 'AddAtm'>;
   navigation: StackNavigationProp<RootStackParamList, 'AddAtm'>;
 }
+export type StackRincianAtm = {
+  route: RouteProp<RootStackParamList, 'RincianAtm'>;
+  navigation: StackNavigationProp<RootStackParamList, 'RincianAtm'>;
+}
 export type StackAddEmoney = {
   route: RouteProp<RootStackParamList, 'AddEmoney'>;
   navigation: StackNavigationProp<RootStackParamList, 'AddEmoney'>;
+}
+export type StackRincianEmoney = {
+  route: RouteProp<RootStackParamList, 'RincianEmoney'>;
+  navigation: StackNavigationProp<RootStackParamList, 'RincianEmoney'>;
 }

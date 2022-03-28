@@ -7,8 +7,8 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { setHideTab, setShowTab } from '../../store/navigationRedux';
 import Header from '../atoms/header/Header';
-import { IPropsAddAtm } from '../molecules/addAtm/types';
-import FormInput from '../molecules/addAtm/FormInput';
+import { IPropsAddAtm } from '../molecules/detailAtm/addAtm/types';
+import FormInput from '../molecules/detailAtm/addAtm/FormInput';
 
 const AddAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
   /* -------------------------------------------------------------------------- */

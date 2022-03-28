@@ -307,7 +307,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   return (
     <React.Fragment>
       <Greeting name={name} />
-      <ListSaldo loading={loading} allBalanceData={allBalanceData} />
+      <ListSaldo loading={loading} allBalanceData={allBalanceData} navigation={navigation} />
       <ListHistoryCatatan
         loading={loading}
         allKategori={allKategori}

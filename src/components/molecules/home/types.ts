@@ -8,6 +8,8 @@ export interface IPropsHomeScreen {
 export interface IPropsListSaldo {
   loading: boolean;
   allBalanceData: any;
+  navigation?: any;
+  route?: any;
 }
 
 export interface IPropsListCatatan {

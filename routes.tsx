@@ -19,6 +19,7 @@ import CategoryScreen from './src/screens/Category';
 import AddNote from './src/screens/Note/AddNote';
 import DetailNote from './src/screens/Note/DetailNote';
 import AddAtm from './src/screens/DetailsAtm/AddAtm';
+import RincianAtm from './src/screens/DetailsAtm/RincianAtm';
 import AddEmoney from './src/screens/DetailsEmoney/AddEmoney';
 import FilterCustomTanggalNote from './src/screens/Note/FilterCustomTanggalNote';
 
@@ -134,6 +135,7 @@ const HomeNavigator = () => {
       <Stack.Screen name="DetailNote" component={DetailNote} />
       <Stack.Screen name="AddNote" component={AddNote} />
       <Stack.Screen name="AddAtm" component={AddAtm} />
+      <Stack.Screen name="RincianAtm" component={RincianAtm} />
       <Stack.Screen name="AddEmoney" component={AddEmoney} />
     </Stack.Navigator>
   );

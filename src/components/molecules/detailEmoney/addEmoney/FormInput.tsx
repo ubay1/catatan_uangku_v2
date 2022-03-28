@@ -3,7 +3,7 @@
 import React from 'react';
 import {SafeAreaView, ScrollView, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {createAtm, createEmoney} from '../../../../db/database';
+import {createAtm, createEmoney} from '../../../../../db/database';
 import {
   COLOR_ERROR,
   COLOR_ACTIVE,
@@ -11,13 +11,13 @@ import {
   COLOR_DISABLED,
   COLOR_INPUT_PLACEHOLDER,
   COLOR_DISABLED_TEXT,
-} from '../../../assets/styles/global';
-import {AppDispatch} from '../../../store';
-import { setPage } from '../../../store/whatsPage';
-import SnackbarAtom from '../../atoms/alert/SnackbarAtom';
-import ButtonAtom from '../../atoms/button/ButtonAtom';
-import TextInputAtom from '../../atoms/input/TextInputAtom';
-import TextAtom from '../../atoms/text/TextAtom';
+} from '../../../../assets/styles/global';
+import {AppDispatch} from '../../../../store';
+import { setPage } from '../../../../store/whatsPage';
+import SnackbarAtom from '../../../atoms/alert/SnackbarAtom';
+import ButtonAtom from '../../../atoms/button/ButtonAtom';
+import TextInputAtom from '../../../atoms/input/TextInputAtom';
+import TextAtom from '../../../atoms/text/TextAtom';
 import {IPropsFormInputAddEmoney} from './types';
 
 const InputAddEmoney = ({navigation, route}: IPropsFormInputAddEmoney) => {

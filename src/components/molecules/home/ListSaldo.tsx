@@ -12,8 +12,15 @@ import { formatRupiah } from '../../../helper/formatNumber';
 import { IPropsListSaldo } from './types';
 import ButtonTextAtom from '../../atoms/button/ButtonTextAtom';
 import { COLOR_ERROR } from '../../../assets/styles/global';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store';
+import { setPage } from '../../../store/whatsPage';
 
-const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
+const ListSaldo = ({loading, allBalanceData, navigation}: IPropsListSaldo) => {
+  /* -------------------------------------------------------------------------- */
+  /*                                    hooks                                   */
+  /* -------------------------------------------------------------------------- */
+  const dispatch: AppDispatch = useDispatch();
   const [loadings, setloadings] = React.useState(true);
 
   React.useEffect(() => {
@@ -22,6 +29,13 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
       loading;
     };
   }, [loading]);
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   method                                   */
+  /* -------------------------------------------------------------------------- */
+  /* -------------------------------------------------------------------------- */
+  /*                                   show page                                */
+  /* -------------------------------------------------------------------------- */
 
   return (
     <>
@@ -79,6 +93,12 @@ const ListSaldo = ({loading, allBalanceData}: IPropsListSaldo) => {
               paddingX={5}
               paddingY={5}
               rounded={5}
+              action={() => {
+                dispatch(setPage({ page: 'RincianAtm' }));
+                navigation.navigate('RincianAtm', {
+                  saldoAtm: allBalanceData.saldoAtm,
+                });
+              }}
             />
           </View>
         </View>

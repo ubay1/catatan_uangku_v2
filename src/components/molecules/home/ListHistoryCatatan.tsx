@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import moment from 'moment';
 import React from 'react';
@@ -6,20 +5,16 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
   Pressable,
-  ScrollView,
 } from 'react-native';
-import {Button, Colors, Divider} from 'react-native-paper';
+import {Colors, Divider} from 'react-native-paper';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import {
   COLOR_ACTIVE,
-  COLOR_ACTIVE_SOFT,
   COLOR_BLACK,
   COLOR_ERROR,
-  COLOR_ERROR_SOFT,
   COLOR_WHITE,
 } from '../../../assets/styles/global';
 import {formatRupiah} from '../../../helper/formatNumber';
@@ -27,17 +22,12 @@ import TextAtom from '../../atoms/text/TextAtom';
 import {IPropsListCatatan} from './types';
 import styles from '../../../assets/styles/global';
 import ButtonTextAtom from '../../atoms/button/ButtonTextAtom';
-import List from '../../atoms/List';
 import ModalAtom from '../../atoms/alert/ModalAtom';
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '../../../store';
 import {setPage} from '../../../store/whatsPage';
-import {useFocusEffect} from '@react-navigation/native';
-import ButtonAtom from '../../atoms/button/ButtonAtom';
-import ButtonIconAtom from '../../atoms/button/ButtonIconAtom';
 import ButtonIconTextAtom from '../../atoms/button/ButtonIconTextAtom';
-import { deleteCatatan } from '../../../../db/database';
 
 const Logo = require('../../../assets/logo/logo2.png');
 
@@ -59,12 +49,7 @@ const ListHistoryCatatan = ({
   const dispatch: AppDispatch = useDispatch();
   // const [data, setData] = React.useState(null);
   const [loadings, setloadings] = React.useState(true);
-  const [visibleModalInputType, setVisibleModalInputType] = React.useState(
-    false,
-  );
-  const [visibleModalDetailNote, setVisibleModalDetailNote] = React.useState(
-    false,
-  );
+  const [visibleModalInputType, setVisibleModalInputType] = React.useState(false);
 
   React.useEffect(() => {
     setloadings(loading);
@@ -339,6 +324,7 @@ const ListHistoryCatatan = ({
                         <TextAtom
                           color={Colors.grey400}
                           value={filterAkun(item)}
+                          size={14}
                         />
                         {item.tujuan === 'tarik tunai' ? (
                           <TextAtom
@@ -353,6 +339,7 @@ const ListHistoryCatatan = ({
                             pHorizontal={5}
                             mLeft={5}
                             fontWeight="bold"
+                            size={14}
                           />
                         ) : (
                           <Text />
@@ -384,6 +371,7 @@ const ListHistoryCatatan = ({
                           color={Colors.grey400}
                           textAlign="right"
                           value={moment(item.tanggal).format('L')}
+                          size={14}
                         />
                       </View>
                     </View>
