@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "prettier:fix": "prettier --write",
+    "prettier:check": "prettier --check"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.14.1",
@@ -60,15 +62,10 @@
     "react-test-renderer": "17.0.1",
     "typescript": "^3.8.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "*": [
-      "prettier --write",
-      "git add"
+    "src/*.{ts,tsx}": [
+      "npm prettier:check",
+      "npm lint"
     ]
   },
   "resolutions": {
