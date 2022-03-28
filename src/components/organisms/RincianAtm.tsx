@@ -106,10 +106,7 @@ const RincianAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
           listAtm={listAtm}
         />
       </ScrollView>
-      <FooterListAtm
-        loading={loadingScreen}
-        totalSaldo={saldoAtm}
-      />
+      <FooterListAtm loading={loadingScreen} totalSaldo={saldoAtm} />
     </SafeAreaView>
   );
 };
