@@ -17,7 +17,11 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import {useDispatch} from 'react-redux';
-import realm, {createDefaultEmoney, createDefaultKategori, SALDO_SCHEMA} from '../../../db/database';
+import realm, {
+  createDefaultEmoney,
+  createDefaultKategori,
+  SALDO_SCHEMA,
+} from '../../../db/database';
 import {AppDispatch} from '../../store';
 import {setCategory} from '../../store/category';
 

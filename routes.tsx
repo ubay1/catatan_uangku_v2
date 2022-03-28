@@ -3,12 +3,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 // import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { createStackNavigator, TransitionSpecs, HeaderStyleInterpolators } from '@react-navigation/stack';
-import React, { useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  createStackNavigator,
+  TransitionSpecs,
+  HeaderStyleInterpolators,
+} from '@react-navigation/stack';
+import React, {useState} from 'react';
+import {TouchableOpacity, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
 import AppIntroScreen from './src/screens/Intro';
 import HomeScreen from './src/screens/Home';
@@ -23,20 +27,20 @@ import RincianAtm from './src/screens/DetailsAtm/RincianAtm';
 import AddEmoney from './src/screens/DetailsEmoney/AddEmoney';
 import FilterCustomTanggalNote from './src/screens/Note/FilterCustomTanggalNote';
 
-import { RootState } from './src/store/rootReducer';
-import { AppDispatch } from './src/store';
-import { setUserName } from './src/store/user';
-import { setIntroFinish } from './src/store/appIntro';
-import { AuthContext } from './context/AuthContext';
+import {RootState} from './src/store/rootReducer';
+import {AppDispatch} from './src/store';
+import {setUserName} from './src/store/user';
+import {setIntroFinish} from './src/store/appIntro';
+import {AuthContext} from './context/AuthContext';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { setPage } from './src/store/whatsPage';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { COLOR_ACTIVE } from './src/assets/styles/global';
+import {setPage} from './src/store/whatsPage';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {COLOR_ACTIVE} from './src/assets/styles/global';
 import TextAtom from './src/components/atoms/text/TextAtom';
 
 const horizontalAnimation = {
-  cardStyleInterpolator: ({ current, layouts }: any) => {
+  cardStyleInterpolator: ({current, layouts}: any) => {
     return {
       cardStyle: {
         transform: [
@@ -54,7 +58,7 @@ const horizontalAnimation = {
 
 const verticalAnimation = {
   // gestureDirection: 'vertical',
-  cardStyleInterpolator: ({ current, layouts }: any) => {
+  cardStyleInterpolator: ({current, layouts}: any) => {
     return {
       cardStyle: {
         transform: [
@@ -77,7 +81,7 @@ const MyTransition = {
     close: TransitionSpecs.TransitionIOSSpec,
   },
   headerStyleInterpolator: HeaderStyleInterpolators.forFade,
-  cardStyleInterpolator: ({ current, next, layouts }: any) => {
+  cardStyleInterpolator: ({current, next, layouts}: any) => {
     return {
       cardStyle: {
         transform: [
@@ -113,14 +117,14 @@ const MyTransition = {
   },
 };
 
-
 // ini jika ingin pake top tabs navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-
 const HomeNavigator = () => {
-  const navigationredux = useSelector((state: RootState) => state.navigationredux);
+  const navigationredux = useSelector(
+    (state: RootState) => state.navigationredux,
+  );
   return (
     <Stack.Navigator
       initialRouteName={'Home'}
@@ -128,8 +132,7 @@ const HomeNavigator = () => {
       screenOptions={{
         headerShown: false,
         ...horizontalAnimation,
-      }}
-    >
+      }}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Info" component={InfoScreen} />
       <Stack.Screen name="DetailNote" component={DetailNote} />
@@ -142,76 +145,85 @@ const HomeNavigator = () => {
 };
 
 const NoteNavigator = () => {
-  const navigationredux = useSelector((state: RootState) => state.navigationredux);
+  const navigationredux = useSelector(
+    (state: RootState) => state.navigationredux,
+  );
   return (
     <Stack.Navigator
       initialRouteName={'Note'}
       mode={'modal'}
       screenOptions={{
         headerShown: !navigationredux.showTab,
-      }}
-    >
-      <Stack.Screen name="Note" component={NoteScreen}/>
-      <Stack.Screen name="FilterCustomTanggalNote" component={FilterCustomTanggalNote}/>
+      }}>
+      <Stack.Screen name="Note" component={NoteScreen} />
+      <Stack.Screen
+        name="FilterCustomTanggalNote"
+        component={FilterCustomTanggalNote}
+      />
     </Stack.Navigator>
   );
 };
 
 const CategoryNavigator = () => {
-  const navigationredux = useSelector((state: RootState) => state.navigationredux);
+  const navigationredux = useSelector(
+    (state: RootState) => state.navigationredux,
+  );
   return (
     <Stack.Navigator
       initialRouteName={'Category'}
       mode={'modal'}
       screenOptions={{
         headerShown: !navigationredux.showTab,
-      }}
-    >
+      }}>
       <Stack.Screen name="Category" component={CategoryScreen} />
     </Stack.Navigator>
   );
 };
 
 // custom bottom navigation
-function MyTabBar({ state, descriptors, navigation }: any) {
+function MyTabBar({state, descriptors, navigation}: any) {
   const dispatch: AppDispatch = useDispatch();
-  const navigationredux = useSelector((state: RootState) => state.navigationredux);
+  const navigationredux = useSelector(
+    (state: RootState) => state.navigationredux,
+  );
 
   return (
-    <View style={{
-      flexDirection: 'row',
-      justifyContent:'center',
-      alignItems:'center',
-      backgroundColor:  '#fff',
-      height:60,
-      // elevation: 10,
-      borderTopColor: '#eee',
-      borderTopWidth: 1,
-      display: navigationredux.showTab === true ? 'flex' : 'none',
-      }}
-    >
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        height: 60,
+        // elevation: 10,
+        borderTopColor: '#eee',
+        borderTopWidth: 1,
+        display: navigationredux.showTab === true ? 'flex' : 'none',
+      }}>
       {state.routes.map((route: any, index: any) => {
-        const { options } = descriptors[route.key];
+        const {options} = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
             ? options.title
-            : route.name === 'Home' ? 'Beranda'
-              : route.name === 'Note' ? 'Catatan'
-                : 'Kategori';
+            : route.name === 'Home'
+            ? 'Beranda'
+            : route.name === 'Note'
+            ? 'Catatan'
+            : 'Kategori';
 
-            let iconName: any;
+        let iconName: any;
 
-            if (route.name === 'Home') {
-              iconName = 'home';
-            } else if (route.name === 'Note') {
-              iconName = 'notebook';
-            } else if (route.name === 'Category') {
-              iconName = 'plus-box-multiple';
-            } else {
-              iconName = 'plus';
-            }
+        if (route.name === 'Home') {
+          iconName = 'home';
+        } else if (route.name === 'Note') {
+          iconName = 'notebook';
+        } else if (route.name === 'Category') {
+          iconName = 'plus-box-multiple';
+        } else {
+          iconName = 'plus';
+        }
 
         const isFocused = state.index === index;
 
@@ -225,9 +237,11 @@ function MyTabBar({ state, descriptors, navigation }: any) {
           // console.log(route)
 
           if (!isFocused && !event.defaultPrevented) {
-            dispatch(setPage({
-              page: route.name,
-            }));
+            dispatch(
+              setPage({
+                page: route.name,
+              }),
+            );
             navigation.navigate(route.name);
           }
         };
@@ -248,24 +262,30 @@ function MyTabBar({ state, descriptors, navigation }: any) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{ flex: 1, alignItems:'center' }}
-          >
-            <View style={{
-              position: 'relative',
-              bottom: 0,
-              backgroundColor: 'transaprent',
-              borderRadius: 0,
-              elevation: 0,
-              alignItems: 'center',
-            }}>
+            style={{flex: 1, alignItems: 'center'}}>
+            <View
+              style={{
+                position: 'relative',
+                bottom: 0,
+                backgroundColor: 'transaprent',
+                borderRadius: 0,
+                elevation: 0,
+                alignItems: 'center',
+              }}>
               {
                 <>
-                <IconMCI
-                  name={iconName}
-                  size={25}
-                  color={isFocused ? COLOR_ACTIVE : '#ddd'}
-                />
-                <TextAtom color={isFocused ? COLOR_ACTIVE : '#ddd'} value={label} textTransform={'uppercase'} size={12} fontWeight="bold" />
+                  <IconMCI
+                    name={iconName}
+                    size={25}
+                    color={isFocused ? COLOR_ACTIVE : '#ddd'}
+                  />
+                  <TextAtom
+                    color={isFocused ? COLOR_ACTIVE : '#ddd'}
+                    value={label}
+                    textTransform={'uppercase'}
+                    size={12}
+                    fontWeight="bold"
+                  />
                 </>
               }
             </View>
@@ -277,11 +297,12 @@ function MyTabBar({ state, descriptors, navigation }: any) {
 }
 
 const Routes = () => {
-
   const dispatches: AppDispatch = useDispatch();
   const loading = useSelector((state: RootState) => state.loading);
   const appIntro = useSelector((state: RootState) => state.appIntro);
-  const navigationredux = useSelector((state: RootState) => state.navigationredux);
+  const navigationredux = useSelector(
+    (state: RootState) => state.navigationredux,
+  );
   const user = useSelector((state: RootState) => state.user);
   const auth = useSelector((state: RootState) => state.auth);
 
@@ -289,16 +310,20 @@ const Routes = () => {
 
   const emptyRedux = () => {
     dispatches(setUserName({name: ''}));
-    dispatches(setIntroFinish({
-      introFinish: false,
-    }));
+    dispatches(
+      setIntroFinish({
+        introFinish: false,
+      }),
+    );
   };
 
   const storeToRedux = (name: string, introFinish: boolean) => {
     dispatches(setUserName({name: name}));
-    dispatches(setIntroFinish({
-      introFinish: introFinish,
-    }));
+    dispatches(
+      setIntroFinish({
+        introFinish: introFinish,
+      }),
+    );
   };
 
   React.useEffect(() => {
@@ -317,15 +342,19 @@ const Routes = () => {
          */
         if (![null, undefined, ''].includes(parseValueStorage.isIntroFinish)) {
           // console.log('app intro = ',parseValueStorage.isIntroFinish);
-          dispatches(setIntroFinish({
-            introFinish: true,
-          }));
+          dispatches(
+            setIntroFinish({
+              introFinish: true,
+            }),
+          );
           setstateAppIntro(true);
         } else {
           setstateAppIntro(false);
-          dispatches(setIntroFinish({
-            introFinish: false,
-          }));
+          dispatches(
+            setIntroFinish({
+              introFinish: false,
+            }),
+          );
         }
 
         if ([null, undefined, ''].includes(parseValueStorage.name)) {
@@ -343,95 +372,96 @@ const Routes = () => {
     bootstrapAsync();
   }, []);
 
-  const authContext = React.useMemo(() => ({
-    signIn: async (name: string, isIntroFinish: boolean) => {
-      storeToRedux(name, isIntroFinish);
-      // AsyncStorage.setItem('name', dataProfil.name)
-      AsyncStorage.setItem('auth', JSON.stringify({
-        name: name,
-        isIntroFinish: true,
-      }));
-    },
-    signOut: () => {
-      AsyncStorage.removeItem('name');
-      emptyRedux();
-    },
-  }),
-    []
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async (name: string, isIntroFinish: boolean) => {
+        storeToRedux(name, isIntroFinish);
+        // AsyncStorage.setItem('name', dataProfil.name)
+        AsyncStorage.setItem(
+          'auth',
+          JSON.stringify({
+            name: name,
+            isIntroFinish: true,
+          }),
+        );
+      },
+      signOut: () => {
+        AsyncStorage.removeItem('name');
+        emptyRedux();
+      },
+    }),
+    [],
   );
 
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {
-          user.isLoading ?
-            <Stack.Navigator
-              initialRouteName={'Splash'}
-              mode="card"
-              screenOptions={{
-                headerShown: !navigationredux.showTab,
-              }}
-            >
-              <Stack.Screen name="Splash" component={SplashScreenss} />
-            </Stack.Navigator>
-          : appIntro.introFinish === false ?
-            <Stack.Navigator
-              initialRouteName={'AppIntro'}
-              mode="card"
-              screenOptions={{
-                headerShown: !navigationredux.showTab,
-              }}
-            >
-              <Stack.Screen name="AppIntro" component={AppIntroScreen} />
-            </Stack.Navigator>
-              :
-                <Tab.Navigator
-                  tabBar={props => <MyTabBar {...props} />}
-                  /* ------------------------- material top navigator ------------------------- */
-                  // tabBarPosition={'bottom'}
-                  // swipeEnabled={false}
-                  // tabBarOptions={{
-                  //   tabStyle: {alignItems: 'center', justifyContent: 'center', padding: 10},
-                  //   showLabel: true,
-                  //   indicatorStyle: {
-                  //     backgroundColor: Colors.blue400,
-                  //     height: 3,
-                  //   },
-                  //   activeTintColor: Colors.blue400,
-                  //   inactiveTintColor: Colors.grey400,
-                  //   labelStyle: { fontWeight: 'bold', textTransform: 'uppercase' },
-                  //   style: {
-                  //     paddingBottom: 0,
-                  //     backgroundColor:  '#fff',
-                  //     borderTopColor: '#f2f2f2',
-                  //     borderTopWidth: 0,
-                  //     borderBottomColor: '#fff',
-                  //     borderBottomWidth: 0,
-                  //     overflow: 'hidden',
-                  //     display: navigationredux.showTab === true ? 'flex' : 'none',
-                  //   },
-                  // }}
-                  // screenOptions={({ route }) => ({
-                  //   tabBarIcon: ({ focused, color, size }: any) => {
-                  //     let iconName: any;
+        {user.isLoading ? (
+          <Stack.Navigator
+            initialRouteName={'Splash'}
+            mode="card"
+            screenOptions={{
+              headerShown: !navigationredux.showTab,
+            }}>
+            <Stack.Screen name="Splash" component={SplashScreenss} />
+          </Stack.Navigator>
+        ) : appIntro.introFinish === false ? (
+          <Stack.Navigator
+            initialRouteName={'AppIntro'}
+            mode="card"
+            screenOptions={{
+              headerShown: !navigationredux.showTab,
+            }}>
+            <Stack.Screen name="AppIntro" component={AppIntroScreen} />
+          </Stack.Navigator>
+        ) : (
+          <Tab.Navigator
+            tabBar={props => <MyTabBar {...props} />}
+            /* ------------------------- material top navigator ------------------------- */
+            // tabBarPosition={'bottom'}
+            // swipeEnabled={false}
+            // tabBarOptions={{
+            //   tabStyle: {alignItems: 'center', justifyContent: 'center', padding: 10},
+            //   showLabel: true,
+            //   indicatorStyle: {
+            //     backgroundColor: Colors.blue400,
+            //     height: 3,
+            //   },
+            //   activeTintColor: Colors.blue400,
+            //   inactiveTintColor: Colors.grey400,
+            //   labelStyle: { fontWeight: 'bold', textTransform: 'uppercase' },
+            //   style: {
+            //     paddingBottom: 0,
+            //     backgroundColor:  '#fff',
+            //     borderTopColor: '#f2f2f2',
+            //     borderTopWidth: 0,
+            //     borderBottomColor: '#fff',
+            //     borderBottomWidth: 0,
+            //     overflow: 'hidden',
+            //     display: navigationredux.showTab === true ? 'flex' : 'none',
+            //   },
+            // }}
+            // screenOptions={({ route }) => ({
+            //   tabBarIcon: ({ focused, color, size }: any) => {
+            //     let iconName: any;
 
-                  //     if (route.name === 'Home') {
-                  //       iconName = 'home';
-                  //     } else if (route.name === 'Catatan') {
-                  //       iconName = 'history';
-                  //     } else {
-                  //       iconName = 'history';
-                  //     }
-                  //       return <IconMCI name={iconName} size={30} color={color} />;
+            //     if (route.name === 'Home') {
+            //       iconName = 'home';
+            //     } else if (route.name === 'Catatan') {
+            //       iconName = 'history';
+            //     } else {
+            //       iconName = 'history';
+            //     }
+            //       return <IconMCI name={iconName} size={30} color={color} />;
 
-                  //   },
-                  // })}
-                >
-                  <Tab.Screen name="Home" component={HomeNavigator} />
-                  <Tab.Screen name="Note" component={NoteNavigator} />
-                  <Tab.Screen name="Category" component={CategoryNavigator}/>
-                </Tab.Navigator>
-        }
+            //   },
+            // })}
+          >
+            <Tab.Screen name="Home" component={HomeNavigator} />
+            <Tab.Screen name="Note" component={NoteNavigator} />
+            <Tab.Screen name="Category" component={CategoryNavigator} />
+          </Tab.Navigator>
+        )}
       </NavigationContainer>
     </AuthContext.Provider>
   );

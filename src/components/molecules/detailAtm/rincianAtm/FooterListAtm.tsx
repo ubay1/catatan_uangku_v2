@@ -1,10 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { COLOR_ACTIVE, COLOR_DISABLED } from '../../../../assets/styles/global';
-import { formatRupiah } from '../../../../helper/formatNumber';
+import {ActivityIndicator, View} from 'react-native';
+import {COLOR_ACTIVE, COLOR_DISABLED} from '../../../../assets/styles/global';
+import {formatRupiah} from '../../../../helper/formatNumber';
 import TextAtom from '../../../atoms/text/TextAtom';
-import { IPropsFooterRincianAtm } from './types';
+import {IPropsFooterRincianAtm} from './types';
 
 const FooterListAtm = ({loading, totalSaldo}: IPropsFooterRincianAtm) => {
   return (
@@ -21,18 +21,17 @@ const FooterListAtm = ({loading, totalSaldo}: IPropsFooterRincianAtm) => {
         paddingHorizontal: 10,
         paddingVertical: 20,
         elevation: 2,
-      }}
-    >
-      <TextAtom value="Total" size={20}/>
-      {
-        loading ?
+      }}>
+      <TextAtom value="Total" size={20} />
+      {loading ? (
         <ActivityIndicator
           size={'large'}
           animating={true}
           color={COLOR_ACTIVE}
-        /> :
-        <TextAtom value={formatRupiah(totalSaldo)} size={20}/>
-      }
+        />
+      ) : (
+        <TextAtom value={formatRupiah(totalSaldo)} size={20} />
+      )}
     </View>
   );
 };
