@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import { Colors } from 'react-native-paper';
+import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
+import {Colors} from 'react-native-paper';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFh from 'react-native-vector-icons/Feather';
-import { getAllCatatan, getAllKategori } from '../../../../db/database';
+import {getAllCatatan, getAllKategori} from '../../../../db/database';
 import TextAtom from '../../atoms/text/TextAtom';
-import { formatRupiah } from '../../../helper/formatNumber';
-import { IPropsListSaldo } from './types';
+import {formatRupiah} from '../../../helper/formatNumber';
+import {IPropsListSaldo} from './types';
 import ButtonTextAtom from '../../atoms/button/ButtonTextAtom';
-import { COLOR_ERROR } from '../../../assets/styles/global';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../store';
-import { setPage } from '../../../store/whatsPage';
+import {COLOR_ERROR} from '../../../assets/styles/global';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '../../../store';
+import {setPage} from '../../../store/whatsPage';
 
 const ListSaldo = ({loading, allBalanceData, navigation}: IPropsListSaldo) => {
   /* -------------------------------------------------------------------------- */
@@ -39,51 +39,57 @@ const ListSaldo = ({loading, allBalanceData, navigation}: IPropsListSaldo) => {
 
   return (
     <>
-      <View style={{
-        ...stylesCustom.cardSaldo,
-        backgroundColor: Colors.orange50,
-      }}
-      >
+      <View
+        style={{
+          ...stylesCustom.cardSaldo,
+          backgroundColor: Colors.orange50,
+        }}>
         <View style={stylesCustom.betweenCenterRow}>
-          <View style={{
-            ...stylesCustom.spaceBackgroundColor,
-            backgroundColor: Colors.orange400,
-          }}>
+          <View
+            style={{
+              ...stylesCustom.spaceBackgroundColor,
+              backgroundColor: Colors.orange400,
+            }}>
             <IconFh name="dollar-sign" color="#fff" size={30} />
           </View>
           <View style={{alignItems: 'flex-start'}}>
             <TextAtom value="Total Saldo" />
-            {
-              loadings ?
-                <ActivityIndicator animating={true} color={Colors.red500} />
-                :
-                <TextAtom value={formatRupiah(allBalanceData.totalSaldo)} fontWeight={'bold'}/>
-            }
+            {loadings ? (
+              <ActivityIndicator animating={true} color={Colors.red500} />
+            ) : (
+              <TextAtom
+                value={formatRupiah(allBalanceData.totalSaldo)}
+                fontWeight={'bold'}
+              />
+            )}
           </View>
         </View>
       </View>
 
-      <View style={{
-        ...stylesCustom.cardSaldo,
-        backgroundColor: Colors.green50,
-      }}
-      >
+      <View
+        style={{
+          ...stylesCustom.cardSaldo,
+          backgroundColor: Colors.green50,
+        }}>
         <View style={{...stylesCustom.betweenCenterRow, width: '100%'}}>
           <View style={{alignItems: 'center', flexDirection: 'row'}}>
-            <View style={{
-              ...stylesCustom.spaceBackgroundColor,
-              backgroundColor: Colors.green400,
-            }}>
+            <View
+              style={{
+                ...stylesCustom.spaceBackgroundColor,
+                backgroundColor: Colors.green400,
+              }}>
               <IconEntypo name="credit-card" color="#fff" size={30} />
             </View>
             <View style={{alignItems: 'flex-start'}}>
               <TextAtom value="Saldo ATM" />
-              {
-                loadings ?
-                  <ActivityIndicator animating={true} color={Colors.blue500} />
-                  :
-                  <TextAtom value={formatRupiah(allBalanceData.saldoAtm)} fontWeight={'bold'}/>
-              }
+              {loadings ? (
+                <ActivityIndicator animating={true} color={Colors.blue500} />
+              ) : (
+                <TextAtom
+                  value={formatRupiah(allBalanceData.saldoAtm)}
+                  fontWeight={'bold'}
+                />
+              )}
             </View>
           </View>
           <View>
@@ -94,7 +100,7 @@ const ListSaldo = ({loading, allBalanceData, navigation}: IPropsListSaldo) => {
               paddingY={5}
               rounded={5}
               action={() => {
-                dispatch(setPage({ page: 'RincianAtm' }));
+                dispatch(setPage({page: 'RincianAtm'}));
                 navigation.navigate('RincianAtm', {
                   saldoAtm: allBalanceData.saldoAtm,
                 });
@@ -104,51 +110,57 @@ const ListSaldo = ({loading, allBalanceData, navigation}: IPropsListSaldo) => {
         </View>
       </View>
 
-      <View style={{
-        ...stylesCustom.cardSaldo,
-        backgroundColor: Colors.blue50,
-      }}
-      >
+      <View
+        style={{
+          ...stylesCustom.cardSaldo,
+          backgroundColor: Colors.blue50,
+        }}>
         <View style={stylesCustom.betweenCenterRow}>
-          <View style={{
-            ...stylesCustom.spaceBackgroundColor,
-            backgroundColor: Colors.blue400,
-          }}>
+          <View
+            style={{
+              ...stylesCustom.spaceBackgroundColor,
+              backgroundColor: Colors.blue400,
+            }}>
             <IconMCI name="bag-personal-outline" color="#fff" size={30} />
           </View>
           <View style={{alignItems: 'flex-start'}}>
             <TextAtom value="Saldo Dompet" />
-            {
-              loadings ?
-                <ActivityIndicator animating={true} color={Colors.blue500} />
-                :
-                <TextAtom value={formatRupiah(allBalanceData.saldoDompet)} fontWeight={'bold'}/>
-            }
+            {loadings ? (
+              <ActivityIndicator animating={true} color={Colors.blue500} />
+            ) : (
+              <TextAtom
+                value={formatRupiah(allBalanceData.saldoDompet)}
+                fontWeight={'bold'}
+              />
+            )}
           </View>
         </View>
       </View>
 
-      <View style={{
-        ...stylesCustom.cardSaldo,
-        backgroundColor: Colors.red50,
-      }}
-      >
+      <View
+        style={{
+          ...stylesCustom.cardSaldo,
+          backgroundColor: Colors.red50,
+        }}>
         <View style={{...stylesCustom.betweenCenterRow, width: '100%'}}>
           <View style={{alignItems: 'center', flexDirection: 'row'}}>
-            <View style={{
-              ...stylesCustom.spaceBackgroundColor,
-              backgroundColor: Colors.red400,
-            }}>
+            <View
+              style={{
+                ...stylesCustom.spaceBackgroundColor,
+                backgroundColor: Colors.red400,
+              }}>
               <IconMCI name="cellphone-nfc" color="#fff" size={30} />
             </View>
             <View style={{alignItems: 'flex-start'}}>
               <TextAtom value="Saldo eMoney" />
-              {
-                loadings ?
-                  <ActivityIndicator animating={true} color={Colors.blue500} />
-                  :
-                  <TextAtom value={formatRupiah(allBalanceData.saldoEmoney)} fontWeight={'bold'}/>
-              }
+              {loadings ? (
+                <ActivityIndicator animating={true} color={Colors.blue500} />
+              ) : (
+                <TextAtom
+                  value={formatRupiah(allBalanceData.saldoEmoney)}
+                  fontWeight={'bold'}
+                />
+              )}
             </View>
           </View>
           <View>
@@ -158,6 +170,12 @@ const ListSaldo = ({loading, allBalanceData, navigation}: IPropsListSaldo) => {
               paddingX={5}
               paddingY={5}
               rounded={5}
+              action={() => {
+                dispatch(setPage({page: 'RincianEmoney'}));
+                navigation.navigate('RincianEmoney', {
+                  saldoEmoney: allBalanceData.saldoEmoney,
+                });
+              }}
             />
           </View>
         </View>

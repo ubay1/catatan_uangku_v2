@@ -4,9 +4,9 @@ import {ActivityIndicator, View} from 'react-native';
 import {COLOR_ACTIVE, COLOR_DISABLED} from '../../../../assets/styles/global';
 import {formatRupiah} from '../../../../helper/formatNumber';
 import TextAtom from '../../../atoms/text/TextAtom';
-import {IPropsFooterRincianAtm} from './types';
+import {IPropsFooterRincianEmoney} from './types';
 
-const FooterListAtm = ({loading, totalSaldo}: IPropsFooterRincianAtm) => {
+const FooterListEmoney = ({loading, totalSaldo}: IPropsFooterRincianEmoney) => {
   return (
     <View
       style={{
@@ -38,4 +38,4 @@ const FooterListAtm = ({loading, totalSaldo}: IPropsFooterRincianAtm) => {
   );
 };
 
-export default FooterListAtm;
+export default FooterListEmoney;

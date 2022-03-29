@@ -30,7 +30,9 @@ export type RootStackParamList = {
     saldoAtm?: number;
   };
   AddEmoney: undefined;
-  RincianEmoney: undefined;
+  RincianEmoney: {
+    saldoEmoney?: number;
+  };
 };
 
 export type StackIntro = {

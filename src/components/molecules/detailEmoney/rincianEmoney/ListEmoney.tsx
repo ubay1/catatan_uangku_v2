@@ -16,7 +16,7 @@ import {useDispatch} from 'react-redux';
 import {COLOR_ACTIVE, COLOR_DISABLED} from '../../../../assets/styles/global';
 import {AppDispatch} from '../../../../store';
 import {setHideTab, setShowTab} from '../../../../store/navigationRedux';
-import {IPropsRincianAtm} from './types';
+import {IPropsRincianEmoney} from './types';
 import styles from '../../../../assets/styles/global';
 import TextAtom from '../../../atoms/text/TextAtom';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -25,7 +25,12 @@ import {formatRupiah} from '../../../../helper/formatNumber';
 
 const Logo = require('../../../../assets/logo/logo2.png');
 
-const ListAtm = ({navigation, route, loading, listAtm}: IPropsRincianAtm) => {
+const ListEmoney = ({
+  navigation,
+  route,
+  loading,
+  listEmoney,
+}: IPropsRincianEmoney) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -54,17 +59,17 @@ const ListAtm = ({navigation, route, loading, listAtm}: IPropsRincianAtm) => {
           animating={true}
           color={COLOR_ACTIVE}
         />
-      ) : listAtm.length === 0 ? (
+      ) : listEmoney.length === 0 ? (
         <View style={stylesCustom.spaceIfNoteNotFound}>
           <Image source={Logo} style={styles.logo} />
           <TextAtom value="Belum ada ATM" mBottom={20} />
         </View>
       ) : (
-        listAtm.map((item: any) => {
+        listEmoney.map((item: any) => {
           return (
             <>
               <TouchableOpacity
-                key={`listAtm-${item.id}`}
+                key={`listEmoney-${item.id}`}
                 style={{
                   backgroundColor: '#fff',
                   flexDirection: 'row',
@@ -73,7 +78,7 @@ const ListAtm = ({navigation, route, loading, listAtm}: IPropsRincianAtm) => {
                   // marginBottom: 5,
                   // marginLeft: 10,
                 }}>
-                <TextAtom value={item.nama_atm} mBottom={20} mTop={20} />
+                <TextAtom value={item.nama_emoney} mBottom={20} mTop={20} />
                 <View
                   style={{
                     flexDirection: 'row',
@@ -133,4 +138,4 @@ const stylesCustom = StyleSheet.create({
   },
 });
 
-export default ListAtm;
+export default ListEmoney;

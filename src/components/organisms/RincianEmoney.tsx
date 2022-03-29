@@ -4,16 +4,21 @@
 import React from 'react';
 import {SafeAreaView, ScrollView} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {getAllAtm, getSaldoByAtmName} from '../../../db/database';
+import {
+  getAllAtm,
+  getAllEmoney,
+  getSaldoByAtmName,
+  getSaldoByEmoneyName,
+} from '../../../db/database';
 import {AppDispatch} from '../../store';
 import {setHideTab, setShowTab} from '../../store/navigationRedux';
 import Header from '../atoms/header/Header';
-import {IPropsAddAtm} from '../molecules/detailAtm/addAtm/types';
-import FooterListAtm from '../molecules/detailAtm/rincianAtm/FooterListAtm';
-import ListAtm from '../molecules/detailAtm/rincianAtm/ListAtm';
+import {IPropsAddEmoney} from '../molecules/detailEmoney/addEmoney/types';
+import ListEmoney from '../molecules/detailEmoney/rincianEmoney/ListEmoney';
+import FooterListEmoney from '../molecules/detailEmoney/rincianEmoney/FooterListEmoney';
 
-const RincianAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
-  const {saldoAtm} = route.params;
+const RincianEmoneyOrganisms = ({navigation, route}: IPropsAddEmoney) => {
+  const {saldoEmoney} = route.params;
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -21,7 +26,7 @@ const RincianAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
 
   const [loadingScreen, setloadingScreen] = React.useState(false);
 
-  const [listAtm, setlistAtm] = React.useState<any>([]);
+  const [listEmoney, setlistEmoney] = React.useState([]);
 
   React.useEffect(() => {
     navigation.setOptions({
@@ -34,7 +39,7 @@ const RincianAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
 
       setTimeout(() => {
         // getKategori();
-        loadAllAtm();
+        loadAllEmoney();
       }, 0);
     });
 
@@ -45,17 +50,19 @@ const RincianAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
-  const loadAllAtm = async () => {
+  const loadAllEmoney = async () => {
     setloadingScreen(true);
     try {
-      const result = await getAllAtm();
+      const result = await getAllEmoney();
       const resultParse = JSON.parse(JSON.stringify(result));
 
-      const newListAtm: any = [];
+      console.log(resultParse);
+
+      const newListEmoney: any = [];
 
       resultParse.forEach(async (item: any) => {
         try {
-          const resultSaldo = await getSaldoByAtmName(item.nama_atm);
+          const resultSaldo = await getSaldoByEmoneyName(item.nama_emoney);
           const resultSaldoParse = JSON.parse(JSON.stringify(resultSaldo));
 
           let total = 0;
@@ -72,21 +79,21 @@ const RincianAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
 
           const data = {
             id: item.id,
-            nama_atm: item.nama_atm,
+            nama_emoney: item.nama_emoney,
             totalSaldo: total,
           };
 
-          newListAtm.push(data);
+          newListEmoney.push(data);
         } catch (error) {
-          console.log('error load total saldo masing atm');
+          console.log('error load total saldo masing emoney');
         } finally {
-          if (newListAtm.length === resultParse.length) {
-            setlistAtm(newListAtm);
+          if (newListEmoney.length === resultParse.length) {
+            setlistEmoney(newListEmoney);
           }
         }
       });
     } catch (error) {
-      console.log('error load list atm');
+      console.log('error load list emoney');
     } finally {
       setloadingScreen(false);
       console.log('sukses load lsit atm');
@@ -98,16 +105,16 @@ const RincianAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <ScrollView style={{marginHorizontal: 10, marginBottom: 65}}>
-        <Header navigation={navigation} title={'Rincian Atm'} />
-        <ListAtm
+        <Header navigation={navigation} title={'Rincian e-Money'} />
+        <ListEmoney
           loading={loadingScreen}
           navigation={navigation}
-          listAtm={listAtm}
+          listEmoney={listEmoney}
         />
       </ScrollView>
-      <FooterListAtm loading={loadingScreen} totalSaldo={saldoAtm} />
+      <FooterListEmoney loading={loadingScreen} totalSaldo={saldoEmoney} />
     </SafeAreaView>
   );
 };
 
-export default RincianAtmOrganisms;
+export default RincianEmoneyOrganisms;

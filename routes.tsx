@@ -25,6 +25,7 @@ import DetailNote from './src/screens/Note/DetailNote';
 import AddAtm from './src/screens/DetailsAtm/AddAtm';
 import RincianAtm from './src/screens/DetailsAtm/RincianAtm';
 import AddEmoney from './src/screens/DetailsEmoney/AddEmoney';
+import RincianEmoney from './src/screens/DetailsEmoney/RincianEmoney';
 import FilterCustomTanggalNote from './src/screens/Note/FilterCustomTanggalNote';
 
 import {RootState} from './src/store/rootReducer';
@@ -139,6 +140,7 @@ const HomeNavigator = () => {
       <Stack.Screen name="AddNote" component={AddNote} />
       <Stack.Screen name="AddAtm" component={AddAtm} />
       <Stack.Screen name="RincianAtm" component={RincianAtm} />
+      <Stack.Screen name="RincianEmoney" component={RincianEmoney} />
       <Stack.Screen name="AddEmoney" component={AddEmoney} />
     </Stack.Navigator>
   );

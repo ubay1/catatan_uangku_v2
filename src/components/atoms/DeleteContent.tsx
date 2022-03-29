@@ -1,13 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View} from 'react-native';
 import {Colors} from 'react-native-paper';
-import {COLOR_ACTIVE, COLOR_DISABLED, COLOR_DISABLED_TEXT, COLOR_ERROR, COLOR_WHITE} from '../../assets/styles/global';
+import {
+  COLOR_ACTIVE,
+  COLOR_DISABLED,
+  COLOR_DISABLED_TEXT,
+  COLOR_ERROR,
+  COLOR_WHITE,
+} from '../../assets/styles/global';
 import ButtonAtom from './button/ButtonAtom';
 import TextAtom from './text/TextAtom';
 
-const DeleteContent = (props: {loading?: boolean, cancelDelete: any, submitDelete: any}) => {
+const DeleteContent = (props: {
+  loading?: boolean;
+  cancelDelete: any;
+  submitDelete: any;
+}) => {
   return (
     <View style={{marginHorizontal: 10, marginTop: 20}}>
       <TextAtom fontWeight={'bold'} value="Yakin mau hapus ?" size={25} />
