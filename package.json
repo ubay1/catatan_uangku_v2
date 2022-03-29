@@ -8,8 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "prettier:fix": "prettier --write",
-    "prettier:check": "prettier --check"
+    "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ."
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.14.1",
@@ -65,7 +64,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write",
-      "npm run lint"
+      "npm run lint:fix"
     ]
   },
   "resolutions": {

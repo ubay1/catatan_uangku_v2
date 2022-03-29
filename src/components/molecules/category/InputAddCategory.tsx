@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
@@ -17,14 +16,14 @@ import {
   COLOR_DISABLED_TEXT,
 } from '../../../assets/styles/global';
 import {AppDispatch} from '../../../store';
-import { RootState } from '../../../store/rootReducer';
+import {RootState} from '../../../store/rootReducer';
 import {setPage} from '../../../store/whatsPage';
 import SnackbarAtom from '../../atoms/alert/SnackbarAtom';
 import ButtonAtom from '../../atoms/button/ButtonAtom';
 import TextInputAtom from '../../atoms/input/TextInputAtom';
 import TextAtom from '../../atoms/text/TextAtom';
-import { IPropsInputCategory } from './types';
-import { v4 as uuidv4 } from 'uuid';
+import {IPropsInputCategory} from './types';
+import {v4 as uuidv4} from 'uuid';
 
 const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
   /* -------------------------------------------------------------------------- */
@@ -132,7 +131,10 @@ const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
             ]}
             defaultValue={tipeKategori}
             containerStyle={{height: 50, marginTop: 5}}
-            style={{backgroundColor: COLOR_DISABLED, borderColor: COLOR_INPUT_PLACEHOLDER}}
+            style={{
+              backgroundColor: COLOR_DISABLED,
+              borderColor: COLOR_INPUT_PLACEHOLDER,
+            }}
             itemStyle={{
               justifyContent: 'flex-start',
             }}
@@ -157,7 +159,7 @@ const InputAddCategory = ({closeModalInputKategori}: IPropsInputCategory) => {
               placeholderTextColor={COLOR_INPUT_PLACEHOLDER}
               onChangeText={setNamaKategori}
               mode={'outlined'}
-              theme={{ colors: { primary: COLOR_ACTIVE}}}
+              theme={{colors: {primary: COLOR_ACTIVE}}}
               marginX={0}
               marginY={0}
             />
