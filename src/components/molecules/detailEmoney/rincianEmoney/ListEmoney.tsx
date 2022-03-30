@@ -67,7 +67,7 @@ const ListEmoney = ({
       ) : (
         listEmoney.map((item: any) => {
           return (
-            <>
+            <React.Fragment key={`listEmoney-${item.id}`}>
               <TouchableOpacity
                 key={`listEmoney-${item.id}`}
                 style={{
@@ -101,7 +101,7 @@ const ListEmoney = ({
                   borderWidth: 0,
                 }}
               />
-            </>
+            </React.Fragment>
           );
         })
       )}

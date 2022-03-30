@@ -6,25 +6,25 @@ import moment from 'moment';
 import React, {useState} from 'react';
 import {SafeAreaView, View} from 'react-native';
 import {Colors, Button} from 'react-native-paper';
-import {COLOR_ACTIVE} from '../../assets/styles/global';
-import ButtonAtom from '../../components/atoms/button/ButtonAtom';
-import TextAtom from '../../components/atoms/text/TextAtom';
-import loading from '../../store/loading';
-import styles from '../../assets/styles/global';
+import {COLOR_ACTIVE} from '../../../assets/styles/global';
+import ButtonAtom from '../../../components/atoms/button/ButtonAtom';
+import TextAtom from '../../../components/atoms/text/TextAtom';
+import loading from '../../../store/loading';
+import styles from '../../../assets/styles/global';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import {StackFilterCustomTanggalNote} from '../../../interfaceRoutes';
+import {StackFilterCustomTanggalNote} from '../../../../interfaceRoutes';
 import {useDispatch} from 'react-redux';
-import {AppDispatch} from '../../store';
-import {setHideTab, setShowTab} from '../../store/navigationRedux';
-import Header from '../../components/atoms/header/Header';
-import {getFilterCatatanByDate} from '../../../db/database';
+import {AppDispatch} from '../../../store';
+import {setHideTab, setShowTab} from '../../../store/navigationRedux';
+import Header from '../../../components/atoms/header/Header';
+import {getFilterCatatanByDate} from '../../../../db/database';
 import {
   setListNote,
   setTotalSaldo,
   setTotalSaldoPemasukan,
   setTotalSaldoPengeluaran,
-} from '../../store/listNote';
+} from '../../../store/listNote';
 
 const FilterCustomTanggalNote = ({
   navigation,

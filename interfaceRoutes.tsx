@@ -2,10 +2,10 @@ import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type RootStackParamList = {
-  Intro: undefined;
-  Home: undefined;
-  Note: undefined;
-  FilterCustomTanggalNote: undefined;
+  Intro: any;
+  Home: any;
+  Note: any;
+  FilterCustomTanggalNote: any;
   AddNote: {
     title: string;
     type: string;
@@ -23,16 +23,18 @@ export type RootStackParamList = {
     saldoDompet?: number;
     saldoEmoney?: number;
   };
-  Category: undefined;
-  Info: undefined;
-  AddAtm: undefined;
+  Category: any;
+  Info: any;
+  AddAtm: any;
   RincianAtm: {
     saldoAtm?: number;
   };
-  AddEmoney: undefined;
+  ListNotePerAtm: any;
+  AddEmoney: any;
   RincianEmoney: {
     saldoEmoney?: number;
   };
+  ListNotePerEmoney: any;
 };
 
 export type StackIntro = {
@@ -78,6 +80,10 @@ export type StackRincianAtm = {
   route: RouteProp<RootStackParamList, 'RincianAtm'>;
   navigation: StackNavigationProp<RootStackParamList, 'RincianAtm'>;
 };
+export type StackListNotePerAtm = {
+  route: RouteProp<RootStackParamList, 'ListNotePerAtm'>;
+  navigation: StackNavigationProp<RootStackParamList, 'ListNotePerAtm'>;
+};
 export type StackAddEmoney = {
   route: RouteProp<RootStackParamList, 'AddEmoney'>;
   navigation: StackNavigationProp<RootStackParamList, 'AddEmoney'>;
@@ -85,4 +91,8 @@ export type StackAddEmoney = {
 export type StackRincianEmoney = {
   route: RouteProp<RootStackParamList, 'RincianEmoney'>;
   navigation: StackNavigationProp<RootStackParamList, 'RincianEmoney'>;
+};
+export type StackListNotePerEmoney = {
+  route: RouteProp<RootStackParamList, 'ListNotePerEmoney'>;
+  navigation: StackNavigationProp<RootStackParamList, 'ListNotePerEmoney'>;
 };

@@ -62,9 +62,8 @@ const ListAtm = ({navigation, route, loading, listAtm}: IPropsRincianAtm) => {
       ) : (
         listAtm.map((item: any) => {
           return (
-            <>
+            <React.Fragment key={`listAtm-${item.id}`}>
               <TouchableOpacity
-                key={`listAtm-${item.id}`}
                 style={{
                   backgroundColor: '#fff',
                   flexDirection: 'row',
@@ -96,7 +95,7 @@ const ListAtm = ({navigation, route, loading, listAtm}: IPropsRincianAtm) => {
                   borderWidth: 0,
                 }}
               />
-            </>
+            </React.Fragment>
           );
         })
       )}

@@ -14,7 +14,7 @@ export interface IPropsListSaldo {
 
 export interface IPropsListCatatan {
   loading: boolean;
-  allCatatan: any;
+  allLastCatatan: any;
   allKategori: any;
   allAtm: any;
   allEmoney: any;

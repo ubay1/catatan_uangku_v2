@@ -18,6 +18,7 @@ const TextAtom = ({
 }: IPropsText) => (
   <View style={{backgroundColor: bgColor, marginLeft: mLeft}}>
     <Text
+      numberOfLines={1}
       style={{
         fontSize: size,
         color: color,
@@ -29,7 +30,7 @@ const TextAtom = ({
         paddingHorizontal: pHorizontal,
         paddingVertical: pVertical,
       }}>
-      {value}
+      {value.length > 25 ? value.substring(0, 25) + '...' : value}
     </Text>
   </View>
 );

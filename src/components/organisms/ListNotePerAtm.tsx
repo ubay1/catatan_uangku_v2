@@ -8,7 +8,7 @@ import {getFilterCatatanByMonth} from '../../../db/database';
 import ListCatatan from '../molecules/note/ListCatatan';
 import ListSaldo from '../molecules/note/ListSaldo';
 import SelectMonth from '../molecules/note/SelectMonth';
-import {StackNote} from '../../../interfaceRoutes';
+import {StackListNotePerAtm, StackNote} from '../../../interfaceRoutes';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '../../store';
 import {
@@ -18,7 +18,7 @@ import {
   setTotalSaldoPengeluaran,
 } from '../../store/listNote';
 
-const NoteOrganisms = ({route, navigation}: StackNote) => {
+const ListNotePerAtmOrganisms = ({route, navigation}: StackListNotePerAtm) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -129,4 +129,4 @@ const stylesCustom = StyleSheet.create({
   },
 });
 
-export default NoteOrganisms;
+export default ListNotePerAtmOrganisms;

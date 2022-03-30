@@ -23,11 +23,15 @@ import Greeting from '../molecules/home/Greeting';
 import ListHistoryCatatan from '../molecules/home/ListHistoryCatatan';
 import ListSaldo from '../molecules/home/ListSaldo';
 import {IPropsHomeScreen} from '../molecules/home/types';
-import styles, { COLOR_ACTIVE, COLOR_ERROR, COLOR_WHITE } from '../../assets/styles/global';
+import styles, {
+  COLOR_ACTIVE,
+  COLOR_ERROR,
+  COLOR_WHITE,
+} from '../../assets/styles/global';
 import {RootState} from '../../store/rootReducer';
 import DeleteContent from '../atoms/DeleteContent';
 import SnackbarAtom from '../atoms/alert/SnackbarAtom';
-import { setCategory } from '../../store/category';
+import {setCategory} from '../../store/category';
 
 const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   const dispatch: AppDispatch = useDispatch();
@@ -39,6 +43,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   // const [data, setData] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [allKategori, setAllKategori] = React.useState([]);
+  const [allLastCatatan, setAllLastCatatan] = React.useState([]);
   const [allCatatan, setAllCatatan] = React.useState([]);
   const [allAtm, setAllAtm] = React.useState([]);
   const [allEmoney, setAllEmoney] = React.useState([]);
@@ -157,7 +162,9 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
     }
 
     totalSaldo =
-      (totalPemasukanAtm + totalPemasukanDompet + totalPemasukanEmoney) -
+      totalPemasukanAtm +
+      totalPemasukanDompet +
+      totalPemasukanEmoney -
       (totalPengeluaranAtm + totalPengeluaranDompet + totalPengeluaranEmoney);
     totalSaldoAtm = totalPemasukanAtm - totalPengeluaranAtm;
     totalSaldoDompet = totalPemasukanDompet - totalPengeluaranDompet;
@@ -194,6 +201,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       const values: any = await Promise.all([
         getAllKategori(),
         getSepuluhCatatanTerakhir(),
+        getAllCatatan(),
         getAllAtm(),
         getAllEmoney(),
       ]);
@@ -209,11 +217,14 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
 
       // dispatch(setCategory({data: newListKategori}));
 
-      const responseGetListCatatan = values[1].map((item: any) => item);
-      setAllCatatan(responseGetListCatatan);
+      const resLastCatatan = values[1].map((item: any) => item);
+      setAllLastCatatan(resLastCatatan);
+
+      const resAllCatatan = values[2].map((item: any) => item);
+      setAllCatatan(resAllCatatan);
 
       const newListAtm: any = [];
-      values[2].forEach((item: any) => {
+      values[3].forEach((item: any) => {
         newListAtm.push({
           id: item.id,
           nama_atm: item.nama_atm,
@@ -222,7 +233,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       setAllAtm(newListAtm);
 
       const newListEmoney: any = [];
-      values[3].forEach((item: any) => {
+      values[4].forEach((item: any) => {
         newListEmoney.push({
           id: item.id,
           nama_emoney: item.nama_emoney,
@@ -230,7 +241,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       });
       setAllEmoney(newListEmoney);
 
-      console.log(newListKategori, responseGetListCatatan, newListAtm, newListEmoney);
+      console.log(resAllCatatan);
     } catch (error) {
       console.log('error load all');
     } finally {
@@ -263,7 +274,7 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
     setAllKategori([]);
 
     try {
-      await  deleteCatatan(id);
+      await deleteCatatan(id);
       setVisibleSnackbar({
         isOpen: true,
         type: 'success',
@@ -285,14 +296,13 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
       <ModalAtom
         closeModal={closeModalDelete}
         visible={visibleModalDelete}
-        setPageActive="Category"
-      >
+        setPageActive="Category">
         <DeleteContent
           loading={loading}
           cancelDelete={() => {
             closeModalDelete();
           }}
-          submitDelete={()=> {
+          submitDelete={() => {
             submitDeleteNote(idCatatan);
           }}
         />
@@ -307,11 +317,15 @@ const HomeOrganims = ({name, pageActive, navigation}: IPropsHomeScreen) => {
   return (
     <React.Fragment>
       <Greeting name={name} />
-      <ListSaldo loading={loading} allBalanceData={allBalanceData} navigation={navigation} />
+      <ListSaldo
+        loading={loading}
+        allBalanceData={allBalanceData}
+        navigation={navigation}
+      />
       <ListHistoryCatatan
         loading={loading}
         allKategori={allKategori}
-        allCatatan={allCatatan}
+        allLastCatatan={allLastCatatan}
         allAtm={allAtm}
         allEmoney={allEmoney}
         saldoAtm={allBalanceData.saldoAtm}
