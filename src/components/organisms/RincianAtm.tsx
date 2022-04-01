@@ -19,7 +19,7 @@ const RincianAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
   /* -------------------------------------------------------------------------- */
   const dispatch: AppDispatch = useDispatch();
 
-  const [loadingScreen, setloadingScreen] = React.useState(false);
+  const [loadingScreen, setloadingScreen] = React.useState(true);
 
   const [listAtm, setlistAtm] = React.useState<any>([]);
 
@@ -27,26 +27,33 @@ const RincianAtmOrganisms = ({navigation, route}: IPropsAddAtm) => {
     navigation.setOptions({
       headerShown: false,
     });
+    dispatch(setHideTab());
+    // dispatch(setHideTab());
+    // setloadingScreen(true);
 
-    navigation.addListener('focus', (e: any) => {
-      dispatch(setHideTab());
-      setloadingScreen(true);
-
-      setTimeout(() => {
-        // getKategori();
-        loadAllAtm();
-      }, 0);
-    });
+    // navigation.addListener('focus', (e: any) => {
+    // setTimeout(() => {
+    // loadAllAtm();
+    // }, 0);
+    // });
 
     navigation.addListener('beforeRemove', (param: any) => {
       dispatch(setShowTab());
     });
   }, [navigation]);
+
+  React.useEffect(() => {
+    loadAllAtm();
+
+    // return () => {
+    //   loadAllAtm();
+    // };
+  }, []);
+
   /* -------------------------------------------------------------------------- */
   /*                                   method                                   */
   /* -------------------------------------------------------------------------- */
   const loadAllAtm = async () => {
-    setloadingScreen(true);
     try {
       const result = await getAllAtm();
       const resultParse = JSON.parse(JSON.stringify(result));

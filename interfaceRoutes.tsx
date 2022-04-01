@@ -29,12 +29,16 @@ export type RootStackParamList = {
   RincianAtm: {
     saldoAtm?: number;
   };
-  ListNotePerAtm: any;
+  ListNotePerAtm: {
+    nama_atm: string;
+  };
   AddEmoney: any;
   RincianEmoney: {
     saldoEmoney?: number;
   };
-  ListNotePerEmoney: any;
+  ListNotePerEmoney: {
+    nama_emoney: string;
+  };
 };
 
 export type StackIntro = {

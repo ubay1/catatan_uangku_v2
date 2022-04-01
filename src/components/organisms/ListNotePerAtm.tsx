@@ -1,13 +1,14 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable radix */
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import moment from 'moment';
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {getFilterCatatanByMonth} from '../../../db/database';
 import ListCatatan from '../molecules/note/ListCatatan';
 import ListSaldo from '../molecules/note/ListSaldo';
-import SelectMonth from '../molecules/note/SelectMonth';
+import SelectMonth from '../atoms/SelectMonth';
 import {StackListNotePerAtm, StackNote} from '../../../interfaceRoutes';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '../../store';
@@ -17,8 +18,11 @@ import {
   setTotalSaldoPemasukan,
   setTotalSaldoPengeluaran,
 } from '../../store/listNote';
+import TextAtom from '../atoms/text/TextAtom';
+import Header from '../atoms/header/Header';
 
 const ListNotePerAtmOrganisms = ({route, navigation}: StackListNotePerAtm) => {
+  const {nama_atm} = route.params;
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */
   /* -------------------------------------------------------------------------- */
@@ -101,22 +105,19 @@ const ListNotePerAtmOrganisms = ({route, navigation}: StackListNotePerAtm) => {
   /*                                   show page                                */
   /* -------------------------------------------------------------------------- */
   return (
-    <View style={stylesCustom.container}>
-      <SelectMonth
-        selectJenisFilter={selectJenisFilter}
-        eventSelectTypeNote={eventSelectTypeNote}
-      />
-      <ListSaldo />
-      <ListCatatan />
-
-      {/* <ModalAtom
-        closeModal={eventCloseModalCustom}
-        visible={visibleCustomDate}
-        setPageActive="Note"
-      >
-        <FilterCustomTanggalNote />
-      </ModalAtom> */}
-    </View>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <ScrollView style={{marginHorizontal: 10, marginBottom: 65}}>
+        <Header
+          navigation={navigation}
+          title={`List Catatan Atm ${nama_atm}`}
+        />
+        <SelectMonth
+          selectJenisFilter={selectJenisFilter}
+          eventSelectTypeNote={eventSelectTypeNote}
+        />
+        <TextAtom value={nama_atm} mTop={80} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

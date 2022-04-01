@@ -1,51 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Colors, Button, Portal, Modal} from 'react-native-paper';
+import {Colors} from 'react-native-paper';
 import {
-  responsiveFontSize,
-  responsiveHeight,
-} from 'react-native-responsive-dimensions';
-import TextAtom from '../../../atoms/text/TextAtom';
-import styles, {
-  COLOR_ACTIVE,
   COLOR_DISABLED,
   COLOR_INPUT_PLACEHOLDER,
-} from '../../../../assets/styles/global';
-import moment from 'moment';
-import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  getFilterCatatanByDate,
-  getFilterCatatanByMonth,
-} from '../../../../../db/database';
+} from '../../assets/styles/global';
 import {IPropsSelectMonth} from './types';
-import ModalAtom from '../../../atoms/alert/ModalAtom';
-import ButtonAtom from '../../../atoms/button/ButtonAtom';
 
 const SelectMonth = ({
-  loading,
-  fromDate,
-  toDate,
   selectJenisFilter,
-  showFromDate,
-  showToDate,
-  modeFromDate,
-  modeToDate,
   eventSelectTypeNote,
-  eventOpenCustomFromDate,
-  eventOpenCustomToDate,
-  eventCloseModalCustom,
-  visibleCustomDate,
-  isShowFromDateCustom,
-  isShowToDateCustom,
-  onChangeFromDate,
-  showDatepickerFromDate,
-  onChangeToDate,
-  showDatepickerToDate,
-  onSubmitCustomDate,
 }: IPropsSelectMonth) => {
   /* -------------------------------------------------------------------------- */
   /*                                    hooks                                   */

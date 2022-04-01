@@ -7,7 +7,7 @@ import {StyleSheet, View} from 'react-native';
 import {getFilterCatatanByMonth} from '../../../db/database';
 import ListCatatan from '../molecules/note/ListCatatan';
 import ListSaldo from '../molecules/note/ListSaldo';
-import SelectMonth from '../molecules/note/SelectMonth';
+import SelectMonth from '../atoms/SelectMonth';
 import {StackNote} from '../../../interfaceRoutes';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '../../store';
@@ -108,14 +108,6 @@ const NoteOrganisms = ({route, navigation}: StackNote) => {
       />
       <ListSaldo />
       <ListCatatan />
-
-      {/* <ModalAtom
-        closeModal={eventCloseModalCustom}
-        visible={visibleCustomDate}
-        setPageActive="Note"
-      >
-        <FilterCustomTanggalNote />
-      </ModalAtom> */}
     </View>
   );
 };

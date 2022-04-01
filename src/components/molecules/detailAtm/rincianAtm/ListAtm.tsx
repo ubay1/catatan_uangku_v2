@@ -71,6 +71,11 @@ const ListAtm = ({navigation, route, loading, listAtm}: IPropsRincianAtm) => {
                   // height: responsiveHeight(7),
                   // marginBottom: 5,
                   // marginLeft: 10,
+                }}
+                onPress={() => {
+                  navigation.navigate('ListNotePerAtm', {
+                    nama_atm: item.nama_atm,
+                  });
                 }}>
                 <TextAtom value={item.nama_atm} mBottom={20} mTop={20} />
                 <View
